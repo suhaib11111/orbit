@@ -1050,7 +1050,6 @@ body.focusing .stats{opacity:0;pointer-events:none}
 @media (hover:none){.prow:hover{border-color:transparent}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-property:opacity,color,background-color,border-color,fill,stroke!important;transition-duration:.15s!important}
-  .splash{display:none!important}
 }
 
 /* ================= RESPONSIVE LAYOUT (tablet / laptop / desktop) ================= */
@@ -1259,6 +1258,16 @@ h1,h2,h3{text-wrap:balance}
 .splash.quick,.splash.quick .sp-in{animation:spOut .3s ease .3s forwards!important}
 .splash.quick *{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}
 .splash.quick .sp-glow,.splash.quick .sp-tag{display:none}
+/* Entrance cover = the home-screen icon from the first frame (no pop-in, ring already drawn) */
+.splash .sp-planet{animation:none}
+.splash .sp-ring{stroke-dasharray:none;stroke-dashoffset:0;animation:none}
+.splash.out{opacity:0;visibility:hidden;transition:opacity .2s ease,visibility 0s linear .2s}
+.splash .sp-orb,.splash .sp-orb-c{transform-box:view-box;transform-origin:0 0}
+.splash .sp-orb{transform:rotate(134.18deg);animation:spLap 1.4s cubic-bezier(.45,0,.2,1) .25s both}
+.splash .sp-orb-c{transform:rotate(-134.18deg);animation:spLapC 1.4s cubic-bezier(.45,0,.2,1) .25s both}
+@keyframes spLap{from{transform:rotate(134.18deg)}to{transform:rotate(494.18deg)}}
+@keyframes spLapC{from{transform:rotate(-134.18deg)}to{transform:rotate(-494.18deg)}}
+.splash.quick .sp-planet ellipse{opacity:.22!important}
 </style>
 <style>
 /* ================= MONEY SYSTEM ================= */
@@ -1384,16 +1393,18 @@ h1,h2,h3{text-wrap:balance}
     <svg class="sp-logo" viewBox="0 0 160 160">
       <defs>
         <radialGradient id="spPl" cx="38%" cy="34%" r="70%"><stop offset="0" stop-color="#3FB3A9"/><stop offset=".55" stop-color="#17807C"/><stop offset="1" stop-color="#0E5E5B"/></radialGradient>
-        <clipPath id="spFront"><rect x="0" y="80" width="160" height="80"/></clipPath>
-        <clipPath id="spBack"><rect x="0" y="0" width="160" height="80"/></clipPath>
+        <clipPath id="spFront"><rect x="-20" y="80" width="200" height="100"/></clipPath>
+        <clipPath id="spBack"><rect x="-20" y="-20" width="200" height="100"/></clipPath>
       </defs>
+      <!-- Same logo as the home-screen icon, shown from the first frame. The moon laps once (behind the planet on the far side) and lands where it sits on the icon (134.18deg on the ring). -->
       <g transform="rotate(-22 80 80)">
-        <ellipse class="sp-ring sp-ring-back" cx="80" cy="80" rx="66" ry="22" fill="none" stroke="#7FD1C3" stroke-width="6" stroke-linecap="round" clip-path="url(#spBack)"/>
+        <ellipse class="sp-ring sp-ring-back" cx="80" cy="80" rx="66" ry="22" fill="none" stroke="#7FD1C3" stroke-width="7" clip-path="url(#spBack)"/>
+        <g clip-path="url(#spBack)"><g transform="translate(80 80) scale(1 .33333)"><g class="sp-orb"><g transform="translate(66 0)"><g class="sp-orb-c"><circle class="sp-moon" r="10" transform="scale(1 3)" fill="#FF8F5A"/></g></g></g></g></g>
       </g>
       <g class="sp-planet"><circle cx="80" cy="80" r="34" fill="url(#spPl)"/><ellipse cx="68" cy="66" rx="10" ry="6" fill="#fff" opacity=".22"/></g>
       <g transform="rotate(-22 80 80)">
-        <ellipse class="sp-ring sp-ring-front" cx="80" cy="80" rx="66" ry="22" fill="none" stroke="#7FD1C3" stroke-width="6" stroke-linecap="round" clip-path="url(#spFront)"/>
-        <circle r="8.5" fill="#FF8F5A" opacity="0"><set attributeName="opacity" to="1" begin="0.6s" fill="freeze"/><animateMotion dur="1.3s" begin="0.6s" fill="freeze" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".45 0 .2 1" path="M146 80 A66 22 0 1 1 14 80 A66 22 0 1 1 146 80"/></circle>
+        <ellipse class="sp-ring sp-ring-front" cx="80" cy="80" rx="66" ry="22" fill="none" stroke="#7FD1C3" stroke-width="7" clip-path="url(#spFront)"/>
+        <g clip-path="url(#spFront)"><g transform="translate(80 80) scale(1 .33333)"><g class="sp-orb"><g transform="translate(66 0)"><g class="sp-orb-c"><circle class="sp-moon" r="10" transform="scale(1 3)" fill="#FF8F5A"/></g></g></g></g></g>
       </g>
       <g class="sp-spark"><circle cx="30" cy="34" r="2.2" fill="#FF8F5A"/><circle cx="134" cy="128" r="2.6" fill="#7FD1C3"/><circle cx="140" cy="38" r="1.8" fill="#17807C"/></g>
     </svg>
@@ -3282,7 +3293,8 @@ window.addEventListener('resize',moveInd);
 paintIcons();
 setTimeout(moveInd,60);
 (function(){ var s=document.getElementById('splash'); if(!s) return; var k='orbit-splash-day', seen=null; try{ seen=localStorage.getItem(k); localStorage.setItem(k,today()); }catch(e){}
-  if(seen===today()){ s.classList.add('quick'); setTimeout(function(){ s.classList.add('gone'); },700); } else setTimeout(function(){ s.classList.add('gone'); },2600); })();
+  var rm=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if(seen===today()||rm){ s.classList.add('quick'); setTimeout(function(){ s.classList.add('out'); },450); setTimeout(function(){ s.classList.add('gone'); },700); } else setTimeout(function(){ s.classList.add('gone'); },2600); })();
 
 // ================= Motion helpers (visual only) =================
 var RM=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
