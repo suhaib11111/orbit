@@ -14,7 +14,7 @@
 <meta name="theme-color" content="#0B2A30" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Noto+Naskh+Arabic:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Noto+Naskh+Arabic:wght@700&family=Noto+Sans+Arabic:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#FFFFFF; --surface:#F6F8F9; --soft:#EDF1F3; --ink:#0E3B43; --muted:#5F6E72; --line:#E3E8EB;
@@ -1582,6 +1582,18 @@ h1,h2,h3{text-wrap:balance}
 :root[data-theme="dark"] .nav button[aria-current="page"][data-view="college"]{color:#8EC5FF}
 :root[data-theme="dark"] .nav button[aria-current="page"][data-view="mail"]{color:#FF9AB0}
 :root[data-theme="dark"] .mday{background:color-mix(in srgb,#3E8ED0 20%,var(--surface))}
+/* Kurdish (Sorani), right to left */
+.langbtn{width:auto!important;padding:0 .55rem;border-radius:999px;display:flex!important;align-items:center;gap:.3rem;font:800 .78rem "Noto Sans Arabic","Plus Jakarta Sans",sans-serif;color:var(--ink)}
+.langbtn .ic{color:#3E8ED0}
+html[lang="ckb"] body{font-family:"Noto Sans Arabic","Plus Jakarta Sans",sans-serif}
+:root[lang="ckb"]{--disp:"Noto Sans Arabic","Bricolage Grotesque",sans-serif}
+html[lang="ckb"] h1,html[lang="ckb"] h2,html[lang="ckb"] h3{letter-spacing:0}
+html[dir="rtl"] .mshare-top{right:auto;left:0}
+html[dir="rtl"] .ccard.subj{box-shadow:inset -5px 0 0 var(--c)}
+html[dir="rtl"] .ccard.subj.cur{box-shadow:inset -5px 0 0 var(--c),0 0 0 2px color-mix(in srgb,var(--ok) 45%,transparent)}
+html[dir="rtl"] .ml-display{text-align:left}
+html[dir="rtl"] .ml-display small{text-align:right}
+html[dir="rtl"] .mback .ic,html[dir="rtl"] .mrep-arrow{transform:scaleX(-1)}
 @media (prefers-reduced-motion:reduce){.mhero,.mt-pc,.mt-bar span,.mh-bar span,.mc-track span{transition:none!important}.mrow.dotpop .mrow-ic{animation:none!important}}
 </style>
 
@@ -1623,6 +1635,7 @@ h1,h2,h3{text-wrap:balance}
       <span class="stat xp" title="Total XP"><span data-ic="star"></span><span id="xp">0</span></span>
       <span class="stat wk" title="Weeks done"><span data-ic="check"></span><span id="weeks">0</span></span>
       </button>
+      <button type="button" class="helpbtn langbtn" id="langBtn" aria-label="Language · زمان"><span data-ic="globe"></span><span class="lb" aria-hidden="true">کو</span></button>
       <button type="button" class="helpbtn" data-view="guide" aria-label="Profile and settings"><span data-ic="user"></span></button>
     </div>
   </div>
@@ -4314,6 +4327,194 @@ renderMoney();
 
 all();
 renderToday();
+// ===== Language: English / کوردی (Sorani). Translates what's on screen; course and topic names stay in English. =====
+var KU={
+'Today':'ئەمڕۆ','Path':'ڕێگا','College':'کۆلێژ','Mail':'ئیمەیڵ','Plan':'پلان','Schedule':'خشتە','Money':'پارە','Focus':'سەرنجدان',
+'Profile & guide':'پرۆفایل و ڕێنمایی','Profile and settings':'پرۆفایل و ڕێکخستنەکان','Back to Today':'گەڕانەوە بۆ ئەمڕۆ',
+'Good morning':'بەیانیت باش','Good afternoon':'نیوەڕۆت باش','Good evening':'ئێوارەت باش','Do this now':'ئێستا ئەمە بکە','Up next':'دواتر',
+'Start':'دەستپێکردن','Focus today':'سەرنجی ئەمڕۆ','Today’s plan':'پلانی ئەمڕۆ','Full week':'هەموو هەفتە','Next class':'وانەی داهاتوو','next class':'وانەی داهاتوو',
+'University time':'کاتی زانکۆ','Not at university':'لە زانکۆ نیت','At university':'لە زانکۆیت','at university today':'ئەمڕۆ لە زانکۆ','I’m at university':'من لە زانکۆم',
+'Your paths':'ڕێگاکانت','Open path':'کردنەوەی ڕێگا','Review today’s lectures':'پێداچوونەوەی وانەکانی ئەمڕۆ','Preview tomorrow’s slides':'سەیرکردنی سلایدەکانی سبەی',
+'Lunch and rest':'نانی نیوەڕۆ و پشوو','Walk, water, no phone':'پیاسە، ئاو، بێ مۆبایل','Short break':'پشووی کورت','Break':'پشوو','NOW':'ئێستا','IN CLASS':'لە وانەدا',
+'Done':'تەواو','Yest.':'دوێنێ','today':'ئەمڕۆ','Today ':'ئەمڕۆ ','studied today':'ئەمڕۆ خوێندرا','weeks done':'هەفتەی تەواو','Weeks done':'هەفتەی تەواوبوو',
+'Day streak':'ڕۆژی بەردەوام','-day streak':' ڕۆژ لەسەر یەک','Total XP':'کۆی XP','Your stats':'ئامارەکانت','What do these numbers mean?':'ئەم ژمارانە مانایان چییە؟',
+'Days in a row you studied. Finish one session today to keep it.':'ئەو ڕۆژانەی لەسەر یەک خوێندووتە. ئەمڕۆ دانیشتنێک تەواو بکە بۆ پاراستنی.',
+'Weeks finished across all your paths.':'هەفتە تەواوبووەکان لە هەموو ڕێگاکانت.','You earn 10 XP for every week you finish on your path.':'بۆ هەر هەفتەیەک لە ڕێگاکەت تەواوی دەکەیت 10 XP وەردەگریت.',
+'Last 7 days at uni':'7 ڕۆژی ڕابردوو لە زانکۆ','Open the running timer':'کردنەوەی کاتژمێرە کارپێکراوەکە','Open Money':'کردنەوەی پارە','Avg/day':'تێکڕا/ڕۆژ','Week':'هەفتە','Month':'مانگ',
+'START':'دەستپێک','The engineer':'ئەندازیار','Topics it covers':'ئەو بابەتانەی دەیگرێتەوە','done':'تەواو',
+'Pick a subject and press play. Every minute counts toward your history.':'بابەتێک هەڵبژێرە و دەست بە کاتژمێرەکە بکە. هەموو خولەکێک بۆ مێژووەکەت هەژمار دەکرێت.',
+'Stopwatch':'کاتژمێری وەستان','Pomodoro':'پۆمۆدۆرۆ','Ready':'ئامادە','Save':'پاشەکەوت','Stop and save':'وەستان و پاشەکەوت','Skip':'تێپەڕاندن','Skip to next phase':'چوون بۆ قۆناغی داهاتوو',
+'Forgot the timer? Add time yourself':'کاتژمێرەکەت لەبیرچوو؟ کات خۆت زیاد بکە','Study history':'مێژووی خوێندن','Topic time this week':'کاتی بابەتەکان لەم هەفتەیە',
+'No study time here yet.':'هێشتا کاتی خوێندن لێرە نییە.','Your sessions will show up here.':'دانیشتنەکانت لێرە دەردەکەون.','Sessions':'دانیشتنەکان','Minutes':'خولەک',
+'Subject':'بابەت','Study mode':'شێوازی خوێندن','Timer mode':'شێوازی کاتژمێر','Change subject':'گۆڕینی بابەت','Choose a subject':'بابەتێک هەڵبژێرە','Main':'سەرەکی','Focus time':'کاتی سەرنجدان',
+'Your next class, room and teacher at a glance.':'وانەی داهاتوو، ژوور و مامۆستاکەت بە یەک نیگا.','Group 1':'گروپی 1','Group 2':'گروپی 2','Timetable group':'گروپی خشتە',
+'ROOM':'ژوور','Room':'ژوور','In class now':'ئێستا لە وانەدایت','Head to your room now':'ئێستا بڕۆ بۆ ژوورەکەت','Done for today':'ئەمڕۆ تەواو','No classes today':'ئەمڕۆ وانە نییە',
+'Tomorrow':'سبەی','left':'ماوە','until it starts':'تا دەست پێدەکات','Tap to add the teacher':'دەستی لێ بدە بۆ زیادکردنی مامۆستا','Coming up':'داهاتوو','Alerts':'ئاگادارکردنەوە',
+'Last class today. Lecture review comes next in your schedule.':'دوایین وانەی ئەمڕۆ. پێداچوونەوەی وانەکان دواتر لە خشتەکەتە.',
+'Quizzes & exams':'کویز و تاقیکردنەوەکان','Your schedule shifts its focus to a subject as its exam gets close.':'کاتێک تاقیکردنەوەی بابەتێک نزیک دەبێتەوە، خشتەکەت سەرنجی دەخاتە سەری.',
+'No quizzes or exams coming up. Add one when your teacher announces it.':'هیچ کویز یان تاقیکردنەوەیەک نییە. کاتێک مامۆستاکەت ڕایگەیاند زیادی بکە.',
+'＋ Add a quiz or exam':'＋ زیادکردنی کویز یان تاقیکردنەوە','New quiz or exam':'کویز یان تاقیکردنەوەی نوێ','Quiz':'کویز','Assignment':'ئەرک','Midterm':'نیوەی وەرز','Final':'کۆتایی','Grades':'نمرەکان',
+'From the scores you add to finished quizzes and exams.':'لەو نمرانەی بۆ کویز و تاقیکردنەوە تەواوبووەکان زیادیان دەکەیت.',
+'Finished quizzes and exams appear here, with your score.':'کویز و تاقیکردنەوە تەواوبووەکان لێرە دەردەکەون لەگەڵ نمرەکەت.',
+'Add a score like 17/20 or 85% to a finished quiz to see your averages.':'نمرەیەک وەک 17/20 یان 85% بۆ کویزێکی تەواوبوو زیاد بکە بۆ بینینی تێکڕاکانت.',
+'Mistake notebook':'دەفتەری هەڵەکان','Write every mistake and the right way. Review each one weekly.':'هەموو هەڵەیەک و ڕێگا دروستەکەی بنووسە. هەفتانە پێیاندا بچۆرەوە.',
+'＋ Add a mistake':'＋ زیادکردنی هەڵە','What went wrong':'چی هەڵە بوو','The right way':'ڕێگا دروستەکە','Photo (optional)':'وێنە (ئارەزوومەندانە)','Photo':'وێنە',
+'Photos (questions, slides, your graded paper)':'وێنەکان (پرسیار، سلاید، پەڕەی نمرەدارکراو)','＋ Add a class':'＋ زیادکردنی وانە','Add a class':'زیادکردنی وانە',
+'Edit class':'دەستکاریکردنی وانە','Delete class':'سڕینەوەی وانە','Course code':'کۆدی وانە','Course name':'ناوی وانە','Starts':'دەستپێک','Ends':'کۆتایی','Teacher':'مامۆستا',
+'Teacher’s name':'ناوی مامۆستا','Day':'ڕۆژ','Day of the week':'ڕۆژی هەفتە','Time':'کات','Time range':'ماوەی کات','Date':'بەروار','Name':'ناو','Close':'داخستن','Cancel':'هەڵوەشاندنەوە',
+'Class':'وانە','Free':'بەتاڵ','Filter':'پاڵاوتن','Topics':'بابەتەکان','Type':'جۆر',
+'Your classes and study sessions, built from this week on your path.':'وانەکانت و کاتەکانی خوێندن، لەسەر بنەمای ئەم هەفتەیەی ڕێگاکەت.',
+'Light':'سووک','Intense':'چڕ','Light day':'ڕۆژی سووک','Intense day':'ڕۆژی چڕ','easy tomorrow':'سبەی ئاسان','hard day':'ڕۆژی قورس','Make it yours':'بیکە هی خۆت',
+'Start your day at':'ڕۆژەکەت دەست پێبکە لە','Free day':'ڕۆژی بەتاڵ','deep work':'کاری قووڵ','Active subjects this week. Tap to pause:':'بابەتە چالاکەکانی ئەم هەفتەیە. بۆ ڕاگرتن دەستیان لێ بدە:',
+'Classes come from your College timetable. Study sessions fit around them automatically.':'وانەکان لە خشتەی کۆلێژەکەتەوە دێن. کاتەکانی خوێندن بە شێوەی خۆکار لە دەوریان ڕێک دەخرێن.',
+'Pause a subject in Schedule and its time disappears.':'بابەتێک لە خشتە ڕابگرە و کاتەکەی نامێنێت.','Flashcards first, then the lesson.':'سەرەتا فلاشکارت، پاشان وانەکە.',
+'Break: stand up, water':'پشوو: هەستە، ئاو بخۆرەوە','Hardest subject first. 2 rounds with short breaks':'سەرەتا قورسترین بابەت. 2 خول لەگەڵ پشووی کورت',
+'Spent':'خەرجکراو','Money in':'پارەی هاتوو','money in':'پارەی هاتوو','What are you adding':'چی زیاد دەکەیت','Amount':'بڕ','Full bill':'کۆی پسوولە','Your share':'بەشی تۆ','your share':'بەشی تۆ','Put aside':'لاوەنان',
+'Food & drinks':'خواردن و خواردنەوە','Taxi / Transport':'تەکسی و هاتوچۆ','Coffee':'قاوە','Books':'کتێب','Fun':'خۆشی','Others':'هیتر','Other':'هیتر','Category':'بەش',
+'Pick a category':'بەشێک هەڵبژێرە','Enter amount':'بڕەکە بنووسە','→ To college':'بۆ زانکۆ','← Home':'بۆ ماڵەوە','⇄ Both ways':'⇄ هاتن و چوون','To college':'بۆ زانکۆ','Home':'ماڵەوە','both ways':'هاتن و چوون',
+'🚕 Taxi':'🚕 تەکسی','🚌 Bus':'🚌 پاس','🚗 Friend’s car':'🚗 ئۆتۆمبێلی هاوڕێ','🚶 Walk':'🚶 بە پێ','Taxi':'تەکسی','Bus':'پاس','Walk':'بە پێ','Friend’s car':'ئۆتۆمبێلی هاوڕێ',
+'Direction':'ئاراستە','How you went':'چۆن چوویت','Just me':'تەنها من','+1 friend':'+1 هاوڕێ','Each paid own':'هەرکەس هی خۆی','I paid all':'من هەمووم دا','A friend paid':'هاوڕێیەک دای',
+'Who was with you':'کێ لەگەڵت بوو','Who paid':'کێ پارەی دا','Same as usual':'وەک هەمیشە','Paid from':'پارەدان لە','Goes into':'دەچێتە ناو','Kind of money':'جۆری پارە',
+'Monthly':'مانگانە','Gift':'دیاری','Work':'کار','Cash':'کاش','Fill this month’s goal':'ئامانجی ئەم مانگە پڕ بکەرەوە','saved this month':'پاشەکەوتی ئەم مانگە','saved':'پاشەکەوتکراو',
+'After you add it, Orbit suggests how much to put aside.':'دوای زیادکردنی، Orbit پێشنیار دەکات چەندی لێ لاوە بنێیت.','Quick add':'زیادکردنی خێرا',
+'Monthly report':'ڕاپۆرتی مانگانە','Savings & wallets':'پاشەکەوت و جزدانەکان','Savings':'پاشەکەوت','Put money aside':'پارە لاوە بنێ','Take out':'دەرهێنان',
+'Saving goal this month':'ئامانجی پاشەکەوتی ئەم مانگە','Tap Set to start':'بۆ دەستپێکردن «دانان» دابگرە','Left now':'ئێستا ماوە','Set':'دانان',
+'Who owes who':'کێ قەرزداری کێیە','No one owes anyone. Split a taxi or a meal and it shows up here.':'کەس قەرزداری کەس نییە. تەکسی یان ژەمێک بەش بکە و لێرە دەردەکەوێت.',
+'They owe me':'ئەوان قەرزدارمن','I owe them':'من قەرزداریانم','Who owes':'کێ قەرزدارە','Owed to you':'قەرزی تۆ لای خەڵک','You owe':'قەرزی خەڵک لای تۆ','Settled':'دراوە','+ Add':'+ زیادکردن','Add':'زیادکردن',
+'Getting to college':'چوون بۆ زانکۆ','trips':'جار','trip':'جار','shared':'بە هاوبەشی','saved by sharing':'پاشەکەوت بە هاوبەشی','trips shared':'جار بە هاوبەشی',
+'Last 7 days':'7 ڕۆژی ڕابردوو','Categories this month':'بەشەکانی ئەم مانگە','Recurring bills':'پسوولە دووبارەکان','Mark paid':'دراوە','Overdue':'دواکەوتوو','Due today':'ئەمڕۆ دەدرێت',
+'Money settings':'ڕێکخستنی پارە','Monthly budget':'بودجەی مانگانە','Currency':'دراو','Save each month':'پاشەکەوتی هەر مانگێک','Monthly limits':'سنووری مانگانە',
+'Orbit warns you at 80% and when a limit is reached.':'Orbit لە 80% و کاتی گەیشتن بە سنوور ئاگادارت دەکاتەوە.','No limit':'بێ سنوور','Reset money data':'سڕینەوەی زانیاری پارە',
+'Rent':'کرێ','Phone':'مۆبایل','Internet':'ئینتەرنێت','This month':'ئەم مانگە','Monthly budget used':'بودجەی مانگانەی بەکارهاتوو','Share':'هاوبەشکردن','Send a month report':'ناردنی ڕاپۆرتی مانگێک',
+'Previous month':'مانگی پێشوو','Next month':'مانگی داهاتوو','Language':'زمان','The link works until':'بەستەرەکە کار دەکات تا','1 day':'1 ڕۆژ','1 week':'1 هەفتە','1 month':'1 مانگ','Pick a date':'بەروارێک هەڵبژێرە',
+'Link ready ✓':'بەستەر ئامادەیە ✓','Send link':'ناردنی بەستەر','Copy':'کۆپی','Open':'کردنەوە','Stop':'وەستاندن','Links you shared':'ئەو بەستەرانەی هاوبەشت کردوون','Language of the shared report':'زمانی ڕاپۆرتی هاوبەشکراو',
+'Log your first taxi to college and Orbit will remember the route.':'یەکەم تەکسیت بۆ زانکۆ تۆمار بکە و Orbit ڕێگاکە لەبیر دەکات.',
+'Nothing logged today. Add your first expense above.':'ئەمڕۆ هیچ تۆمار نەکراوە. یەکەم خەرجیت لە سەرەوە زیاد بکە.','Money & budget':'پارە و بودجە','Auto':'خۆکار',
+'Your settings, your data, and how to use Orbit well.':'ڕێکخستنەکانت، زانیارییەکانت، و چۆنیەتی باش بەکارهێنانی Orbit.','Your profile':'پرۆفایلەکەت','Theme':'ڕووکار','Dark':'تاریک',
+'Edit profile and setup':'دەستکاریکردنی پرۆفایل و ڕێکخستن','Your data':'زانیارییەکانت','Orbit account':'هەژماری Orbit','Sign in or create an account':'چوونەژوورەوە یان دروستکردنی هەژمار',
+'Sign in to have the same Orbit on your phone, laptop and iPad.':'بچۆ ژوورەوە بۆ ئەوەی هەمان Orbit لە مۆبایل، لاپتۆپ و ئایپادەکەت هەبێت.','Sign in':'چوونەژوورەوە','Email':'ئیمەیڵ',
+'Orbit password':'وشەی نهێنی Orbit','New Orbit password':'وشەی نهێنی نوێی Orbit','Your Orbit password':'وشەی نهێنی Orbitـەکەت','8 or more characters':'8 پیت یان زیاتر','Create account':'دروستکردنی هەژمار',
+'New here? Create an account':'نوێیت؟ هەژمارێک دروست بکە','Forgot your Orbit password?':'وشەی نهێنیت لەبیرچووە؟','I already have an account':'پێشتر هەژمارم هەیە','Send me the link':'بەستەرەکەم بۆ بنێرە',
+'Sync now':'ئێستا هاوکاتی بکە','Sign out':'چوونەدەرەوە','Synced':'هاوکاتکراوە','Saving…':'پاشەکەوت دەکرێت…','Use my account’s data':'زانیارییەکانی هەژمارەکەم بەکاربهێنە','Combine both':'هەردووکیان تێکەڵ بکە',
+'Download backup file':'داگرتنی فایلی پاشەکەوت','Restore from a file':'گەڕاندنەوە لە فایلێک','Restore from my account':'گەڕاندنەوە لە هەژمارەکەم','Back up to my account':'پاشەکەوتکردن لە هەژمارەکەم','Clear all progress':'سڕینەوەی هەموو پێشکەوتنەکان',
+'Welcome to Orbit':'بەخێربێیت بۆ Orbit','Your whole university life in one place: study path, focus timer, classes, exams and mail.':'هەموو ژیانی زانکۆکەت لە یەک شوێن: ڕێگای خوێندن، کاتژمێری سەرنجدان، وانەکان، تاقیکردنەوەکان و ئیمەیڵ.',
+'Let’s set it up':'با ڕێکی بخەین','I already use Orbit':'پێشتر Orbit بەکاردەهێنم','What should we call you?':'ناوت چی بێت؟','Your first name is enough.':'ناوی یەکەمت بەسە.','Your name':'ناوەکەت','Continue':'بەردەوامبوون',
+'What do you study?':'چی دەخوێنیت؟','Computer Science & AI':'زانستی کۆمپیوتەر و AI','Software Engineering':'ئەندازیاری نەرمەکاڵا','Computer Engineering':'ئەندازیاری کۆمپیوتەر','Something else':'شتێکی تر',
+'Which group are you in?':'لە کام گروپیت؟','You can switch groups later in College.':'دواتر دەتوانیت لە کۆلێژ گروپ بگۆڕیت.','No group / other':'بێ گروپ / هیتر',
+'What do you want to grow in?':'دەتەوێت لە چیدا گەشە بکەیت؟','Pick your paths. You can pause or add them anytime.':'ڕێگاکانت هەڵبژێرە. هەر کاتێک دەتوانیت ڕایانبگریت یان زیادیان بکەیت.',
+'Your timetable':'خشتەی وانەکانت','Your plan and class alerts are built around it.':'پلان و ئاگادارکردنەوەی وانەکانت لەسەری دادەمەزرێن.','Keep my current timetable':'خشتەکەی ئێستام بهێڵەوە',
+'Your classes stay as they are':'وانەکانت وەک خۆیان دەمێننەوە','Start empty':'بە بەتاڵی دەست پێبکە','Add your own classes in College':'وانەکانی خۆت لە کۆلێژ زیاد بکە','Fall semester classes, rooms included':'وانەکانی وەرزی پاییز، لەگەڵ ژوورەکان',
+'See your university email here?':'ئیمەیڵی زانکۆکەت لێرە ببینیت؟','Yes, connect my Outlook':'بەڵێ، Outlookـەکەم ببەستەوە','Claude will ask for your OK first':'Claude سەرەتا ڕەزامەندیت وەردەگرێت',
+'Not now':'ئێستا نا','You can turn it on later in Mail':'دواتر دەتوانیت لە ئیمەیڵ چالاکی بکەیت','Enter Orbit':'چوونە ناو Orbit','Your university life, in one orbit':'ژیانی زانکۆکەت، لە یەک خولگەدا',
+'Your Outlook inbox.':'سندوقی Outlookـەکەت.','Mail is off':'ئیمەیڵ کوژاوەتەوە','Connect my Outlook':'Outlookـەکەم ببەستەوە','Search emails':'گەڕان لە ئیمەیڵەکان','Search loaded emails':'گەڕان لە ئیمەیڵەکان',
+'Refresh':'نوێکردنەوە','New email alerts':'ئاگادارکردنەوەی ئیمەیڵی نوێ','Load older emails':'بارکردنی ئیمەیڵە کۆنەکان','Mail works inside Claude':'ئیمەیڵ تەنها لەناو Claude کار دەکات',
+'The one rule':'تاکە یاسا','Your week':'هەفتەکەت','Win every lecture':'هەموو وانەیەک ببەرەوە','Study math so it sticks':'بیرکاری بخوێنە بە شێوەیەک بمێنێتەوە','Great student, real engineer':'خوێندکاری باش، ئەندازیاری ڕاستەقینە',
+'Before':'پێش وانە','During':'لە کاتی وانەدا','After':'دوای وانە','Little homework tomorrow.':'سبەی ئەرکی کەم.','Hard topic or an exam coming.':'بابەتی قورس یان تاقیکردنەوەیەک لە ڕێدایە.',
+'Hours per subject in UG1, when every path is active:':'کاتژمێری هەر بابەتێک لە UG1، کاتێک هەموو ڕێگاکان چالاکن:','Total':'کۆ','Math':'بیرکاری','Coding':'کۆدنووسین','English':'ئینگلیزی','Arabic':'عەرەبی',
+'Problem Solving':'چارەسەری کێشە','Computer Fund.':'بنەماکانی کۆمپیوتەر','Computer Fundamentals':'بنەماکانی کۆمپیوتەر','Public Speaking':'قسەکردن بەردەم خەڵک',
+'Saturday':'شەممە','Sunday':'یەکشەممە','Monday':'دووشەممە','Tuesday':'سێشەممە','Wednesday':'چوارشەممە','Thursday':'پێنجشەممە','Friday':'هەینی',
+'Sat':'شەممە','Sun':'یەکش','Mon':'دووش','Tue':'سێش','Wed':'چوارش','Thu':'پێنجش','Fri':'هەینی','Sa':'ش','Su':'ی','Mo':'د','Tu':'س','We':'چ','Th':'پ','Fr':'هـ',
+'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
+'what you have now. Orbit then keeps track of what’s left.':'بۆ ئەوەی ئێستا چەندت هەیە. پاشان Orbit ئەوەی ماوە بەدوادا دەچێت.','Opens until the end of':'تا کۆتایی ڕۆژی',', then it stops.':'، پاشان دەوەستێت.',
+'Sign in to Orbit':'بچۆ ژوورەوە بۆ Orbit','so you can also stop a link before its date.':'بۆ ئەوەی بتوانیت بەستەرێک پێش کاتەکەی ڕابگریت.'
+};
+var KU_PREFIX=[
+ ['Connect your Outlook to see your inbox','Outlookـەکەت ببەستەوە بۆ بینینی ئیمەیڵەکانت لێرە. تەنها خۆت دەیانبینیت.'],
+ ['Orbit can show your Outlook inbox','Orbit دەتوانێت سندوقی Outlookـەکەت پیشان بدات و کاتێک کراوەیە ئاگادارت بکاتەوە.'],
+ ['Leave it on Auto and the goal is 15%','لەسەر «خۆکار» جێی بهێڵە و ئامانجەکە 15%ی ئەو پارەیە دەبێت کە هەموو مانگێک دێت.'],
+ ['A good start for a student.','دەستپێکێکی باشە بۆ خوێندکار. کاتێک پارەی هاتوو زیاد بکەیت، ئامانجەکە دەبێتە 15%ی.'],
+ ['Goal = 15% of the money that came in','ئامانج = 15%ی ئەو پارەیەی ئەم مانگە هاتووە.'],
+ ['Your own monthly goal.','ئامانجی مانگانەی خۆت. لە ڕێکخستنی پارە بیگۆڕە.'],
+ ['No mistakes saved yet.','هێشتا هیچ هەڵەیەک پاشەکەوت نەکراوە. هەر هەڵەیەک بینووسیت، دووبارەی ناکەیتەوە.'],
+ ['Signed in to your Orbit account?','لە هەژماری Orbit چوویتە ژوورەوە؟ هەموو شتێک خۆکارانە لەوێ پاشەکەوت دەکرێت. دەتوانیت فایلی پاشەکەوتیش هەبێت. وێنەکان لەسەر ئەو ئامێرە دەمێننەوە کە پێی گیراون.'],
+ ['On your laptop or iPad, open Orbit','لە لاپتۆپ یان ئایپادەکەت Orbit بکەرەوە، بەم ئیمەیڵە و وشەی نهێنیەکەت بچۆ ژوورەوە و هەموو شتێک لەوێ دەردەکەوێت. وێنەکان لەسەر ئەو ئامێرە دەمێننەوە کە پێی گیراون.'],
+ ['Make your Orbit account with your email','هەژماری Orbit بە ئیمەیڵەکەت و وشەیەکی نهێنی نوێ تەنها بۆ Orbit دروست بکە. وشەی نهێنی ئیمەیڵەکەت بەکارمەهێنە.'],
+ ['Want a cap, like coffee at 40,000','سنوورێکت دەوێت، وەک 40,000 بۆ قاوە لە مانگێکدا؟ لە ڕێکخستنی پارەدا سنوور دابنێ.'],
+ ['The link carries only','تەنها ژمارەکانی ئەو مانگە لە بەستەرەکەدایە. ئەوەی بۆی دەنێریت دەتوانێت بیکاتەوە.'],
+ ['Your account already has Orbit data','هەژمارەکەت پێشتر زانیاری Orbitـی تێدایە'],
+ ['Either way, what’s on this device now','بە هەر حاڵ، ئەوەی ئێستا لەسەر ئەم ئامێرەیە وەک پاشەکەوت دەمێنێتەوە.'],
+ ['Pick the last day it should open.','دوایین ڕۆژ هەڵبژێرە کە دەبێت بکرێتەوە.']
+];
+var KU_MONTHS_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function kuMonthTxt(s){ return s.replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December) (\d{4})\b/g,function(m,mo,y){ return KU_MONTHS[KU_MONTHS_EN.indexOf(mo)]+' '+y; }); }
+var KU_RULES=[
+ [/^(\d+) h (\d+) min$/,function(m){ return m[1]+' کاتژمێر و '+m[2]+' خولەک'; }],
+ [/^(\d+) h$/,function(m){ return m[1]+' کاتژمێر'; }],
+ [/^(\d+) min$/,function(m){ return m[1]+' خولەک'; }],
+ [/^Week (\d+(?:–\d+)?)$/,function(m){ return 'هەفتەی '+m[1]; }],
+ [/^Week (\d+(?:–\d+)?): (.+)$/,function(m){ return 'هەفتەی '+m[1]+': '+m[2]; }],
+ [/^Unit (\d+) trophy$/,function(m){ return 'خەڵاتی یەکەی '+m[1]; }],
+ [/^Unit (\d+)$/,function(m){ return 'یەکەی '+m[1]; }],
+ [/^Weeks (.+)$/,function(m){ return 'هەفتەکانی '+m[1]; }],
+ [/^(\d+) days left$/,function(m){ return m[1]+' ڕۆژ ماوە'; }],
+ [/^(\d+) class(es)?$/,function(m){ return m[1]+' وانە'; }],
+ [/^Room (.+)$/,function(m){ return 'ژووری '+m[1]; }],
+ [/^to (.+)$/,function(m){ return 'تا '+kuTime(m[1]); }],
+ [/^(.+) a day$/,function(m){ return kuSeg(m[1])+' لە ڕۆژێکدا'; }],
+ [/^(.+) every day$/,function(m){ return kuSeg(m[1])+' هەموو ڕۆژێک'; }],
+ [/^(.+) on (\d+) days$/,function(m){ return kuSeg(m[1])+' لە '+m[2]+' ڕۆژدا'; }],
+ [/^≈ (.+) \/ week$/,function(m){ return '≈ '+kuSeg(m[1])+' لە هەفتەیەکدا'; }],
+ [/^(.+) \/ week$/,function(m){ return kuSeg(m[1])+' لە هەفتەیەکدا'; }],
+ [/^(.+) of (.+) goal$/,function(m){ return kuSeg(m[1])+' لە ئامانجی '+kuSeg(m[2]); }],
+ [/^of (.+) budget$/,function(m){ return 'لە بودجەی '+kuMoney(m[1]); }],
+ [/^(.+) per day$/,function(m){ return kuMoney(m[1])+' بۆ هەر ڕۆژێک'; }],
+ [/^of (.+) allowed$/,function(m){ return 'لە '+kuMoney(m[1])+'ی ڕێگەپێدراو'; }],
+ [/^(.+) left$/,function(m){ return kuSeg(m[1])+' ماوە'; }],
+ [/^Goal (.+)$/,function(m){ return 'ئامانج '+kuMoney(m[1]); }],
+ [/^This month (.+) of (.+)$/,function(m){ return 'ئەم مانگە '+kuMoney(m[1])+' لە '+kuMoney(m[2]); }],
+ [/^Due (\d+)\w*$/,function(m){ return 'کاتی دان: '+m[1]; }],
+ [/^Mark (.+) done$/,function(m){ return kuSeg(m[1])+' تەواو بوو'; }],
+ [/^Use the UKH CS & AI Group (\d) timetable$/,function(m){ return 'خشتەی گروپی '+m[1]+'ی CS & AI لە UKH بەکاربهێنە'; }],
+ [/^Spent in (.+)$/,function(m){ return 'خەرجی '+kuSeg(m[1]); }],
+ [/^Nothing logged in (.+) yet\.$/,function(m){ return 'هێشتا هیچ شتێک لە '+kuMonthTxt(m[1])+' تۆمار نەکراوە.'; }],
+ [/^Biggest: (.+)$/,function(m){ return 'زۆرترین: '+kuSeg(m[1]); }],
+ [/^Send (.+) to someone$/,function(m){ return 'ناردنی '+kuSeg(m[1])+' بۆ کەسێک'; }],
+ [/^Create link for (.+)$/,function(m){ return 'دروستکردنی بەستەر بۆ '+kuSeg(m[1]); }],
+ [/^Your (.+) report is ready$/,function(m){ return 'ڕاپۆرتی '+kuSeg(m[1])+' ئامادەیە'; }],
+ [/^Then: (.+)$/,function(m){ return 'پاشان: '+kuTime(m[1]).replace(' in room ',' لە ژووری ').replace(' at ',' لە کاتژمێر '); }],
+ [/^Add (.+) to (.+)$/,function(m){ return 'زیادکردنی '+kuMoney(m[1])+' بۆ '+kuSeg(m[2]); }],
+ [/^Only (.+) is in the link\.(.*)$/,function(m){ return 'تەنها '+kuSeg(m[1])+' لە بەستەرەکەدایە.'+(/Stop it/.test(m[2])?' هەر کاتێک بتەوێت لە «ئەو بەستەرانەی هاوبەشت کردوون» ڕایبگرە.':''); }],
+ [/^, last saved (.+) on a (.+)\. This (.+) has some too\. What should it use\?$/,function(m){ return '، دوایین جار '+kuTime(m[1])+' لەسەر '+m[2]+' پاشەکەوت کراوە. ئەم '+m[3]+'ـەش هەندێکی هەیە. کامیان بەکاربهێنێت؟'; }],
+ [/^Save (.+ IQD)$/,function(m){ return 'پاشەکەوتکردنی '+kuMoney(m[1]); }]
+];
+function kuTime(s){ return String(s).replace(/(\d{1,2}:\d{2})\s?AM/g,'$1 پ.ن').replace(/(\d{1,2}:\d{2})\s?PM/g,'$1 د.ن'); }
+function kuMoney(s){ return kuTime(String(s)).replace(/\bIQD\b/g,'دینار').replace(/\bUSD\b/g,'دۆلار').replace(/\bEUR\b/g,'یۆرۆ'); }
+function kuSeg(t){ var r=kuOne(t); return r==null?t:r; }
+function kuOne(t){
+  if(Object.prototype.hasOwnProperty.call(KU,t)) return KU[t];
+  for(var i=0;i<KU_PREFIX.length;i++) if(t.indexOf(KU_PREFIX[i][0])===0) return KU_PREFIX[i][1];
+  for(var j=0;j<KU_RULES.length;j++){ var m=t.match(KU_RULES[j][0]); if(m) return KU_RULES[j][1](m); }
+  var seps=[' · ',': ',' – ',' → '];
+  for(var k=0;k<seps.length;k++) if(t.indexOf(seps[k])>0){ var parts=t.split(seps[k]), out=parts.map(kuSeg).join(seps[k]); if(out!==t) return out; }
+  var x=kuMonthTxt(kuMoney(t)); return x!==t?x:null;
+}
+function kuText(v){ var lead=v.match(/^\s*/)[0], trail=v.match(/\s*$/)[0], t=v.trim(); if(!t||!/[A-Za-z]/.test(t)) return null; var r=kuOne(t); return r==null||r===t?null:lead+r+trail; }
+var I18N_SKIP='script,style,svg,input,textarea,select,option,[data-noi18n],.mailc,.acct-who b';
+function trText(n){ var p=n.parentElement; if(!p||p.closest(I18N_SKIP)) return; var r=kuText(n.nodeValue); if(r!=null) n.nodeValue=r; }
+function trAttrs(el){ ['placeholder','aria-label','title'].forEach(function(a){ var v=el.getAttribute&&el.getAttribute(a); if(v){ var r=kuText(v); if(r!=null) el.setAttribute(a,r); } }); }
+function trTree(root){
+  if(root.nodeType===3){ trText(root); return; }
+  if(root.nodeType!==1||root.closest&&root.closest('script,style,svg')) return;
+  trAttrs(root); root.querySelectorAll&&root.querySelectorAll('[placeholder],[aria-label],[title]').forEach(trAttrs);
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT), n; var list=[]; while((n=w.nextNode())) list.push(n); list.forEach(trText);
+}
+var i18nObs=null;
+function langNow(){ return meta&&meta.lang==='ku'?'ku':'en'; }
+function applyLang(){
+  var ku=langNow()==='ku';
+  document.documentElement.lang=ku?'ckb':'en'; document.documentElement.dir=ku?'rtl':'ltr';
+  var b=document.getElementById('langBtn'); if(b){ b.setAttribute('data-lang',ku?'ku':'en'); b.querySelector('.lb').textContent=ku?'EN':'کو'; }
+  if(!ku||i18nObs) return;
+  trTree(document.body);
+  i18nObs=new MutationObserver(function(ms){ ms.forEach(function(m){
+    if(m.type==='characterData') trText(m.target);
+    else if(m.type==='attributes') trAttrs(m.target);
+    else m.addedNodes.forEach(trTree); }); });
+  i18nObs.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title']});
+}
+document.addEventListener('click',function(e){ if(!e.target.closest('#langBtn')) return;
+  meta.lang=langNow()==='ku'?'en':'ku'; save(); try{ localStorage.setItem('orbit-splash-day',today()); }catch(x){} location.reload(); });
+applyLang();
 </script>
 <script>
 // Home-screen app: keep a copy so Orbit opens without internet (only on the real web address, not inside Claude)
