@@ -8,196 +8,263 @@
 <title>ڕاپۆرتی مانگانە · Orbit</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#F6F8F9" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0B2A30" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F3F6F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1A1F" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
-  --bg:#F6F8F9; --surface:#FFFFFF; --soft:#EDF1F3; --ink:#0E3B43; --muted:#5F6E72; --line:#E3E8EB; --line-d:#D3DBDF;
-  --brand:#17807C; --ok:#2E7D5B; --ok-t:#13786A; --warm:#FF8F5A; --warm-t:#C2531F; --track:#E6EBEE;
-  --r:22px;
-  color-scheme:light;
+  --bg:#F3F6F7; --surface:#FFFFFF; --soft:#EDF2F3; --ink:#0E3B43; --muted:#5F6E72; --line:#E1E8EA; --line-d:#D3DBDF;
+  --brand:#17807C; --ok:#2E7D5B; --ok-t:#13786A; --warm:#FF8F5A; --warm-t:#C2531F; --blue:#3E8ED0; --track:#E4EAEC;
+  --hero:#1F6F68; --hero-2:#2E7D5B; --on-hero:#fff; --r:22px; color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root{
-  --bg:#0B2A30; --surface:#12363D; --soft:#173F47; --ink:#EAF4F3; --muted:#9DB4B6; --line:#1F4A52; --line-d:#08252B;
-  --ok:#6FCFA2; --ok-t:#5FD3C3; --warm-t:#FF8F5A; --track:#1F4A52; color-scheme:dark;
+  --bg:#0A1A1F; --surface:#11262D; --soft:#173139; --ink:#EAF4F3; --muted:#9DB4B6; --line:#21404A; --line-d:#06141A;
+  --ok:#6FCFA2; --ok-t:#5FD3C3; --warm-t:#FFA27A; --blue:#7FB8F0; --track:#21404A; --hero:#17544F; --hero-2:#1E6B4E; color-scheme:dark;
 }}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.55 "Noto Sans Arabic","Plus Jakarta Sans",system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 html[lang="en"] body{font-family:"Plus Jakarta Sans","Noto Sans Arabic",system-ui,sans-serif}
-.num,.big,.stat b,.cat-v,.day-v,.row-a{font-variant-numeric:tabular-nums}
-html[lang="en"] .big,html[lang="en"] .stat b,html[lang="en"] h1{font-family:"Bricolage Grotesque","Plus Jakarta Sans",sans-serif}
-.wrap{max-width:560px;margin:0 auto;padding:16px 16px 40px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 14px}
+html[lang="en"] .num,html[lang="en"] h1,html[lang="en"] .big{font-family:"Bricolage Grotesque","Plus Jakarta Sans",sans-serif}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:620px;margin:0 auto;padding:12px 16px 44px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 10px}
 .brand{display:flex;align-items:center;gap:8px;font:800 1.05rem "Plus Jakarta Sans",sans-serif;direction:ltr}
 .brand svg{width:30px;height:30px}
-.lang{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:0 14px;min-height:44px;font:700 .9rem inherit;font-family:"Noto Sans Arabic","Plus Jakarta Sans",sans-serif;cursor:pointer;box-shadow:0 2px 0 var(--line-d)}
-.lang:active{transform:translateY(2px);box-shadow:none}
-h1{font-size:1.65rem;line-height:1.25;margin:4px 0 2px;font-weight:800;letter-spacing:-.01em}
-.sub{color:var(--muted);font-weight:600;margin:0 0 16px}
+.lang{position:relative}
+.lang-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--blue);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 0 var(--line-d)}
+.lang-btn svg{width:22px;height:22px}
+.lang-menu{position:absolute;top:52px;inset-inline-end:0;min-width:170px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:0 12px 32px rgba(0,0,0,.16);z-index:5}
+.lang-menu[hidden]{display:none}
+.lang-menu button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;border:0;background:none;color:var(--ink);border-radius:10px;padding:0 12px;font:700 1rem "Noto Sans Arabic","Plus Jakarta Sans",sans-serif;cursor:pointer;text-align:start}
+.lang-menu button:hover,.lang-menu button:focus-visible{background:var(--soft);outline:none}
+.lang-menu .tick{color:var(--ok-t);font-weight:800}
+h1{font-size:clamp(1.5rem,6vw,1.9rem);line-height:1.25;margin:6px 0 2px;font-weight:800;letter-spacing:-.01em}
+.period{color:var(--muted);font-weight:600;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.chip{display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:5px 12px;font-size:.84rem;font-weight:700;color:var(--muted)}
+.chip b{color:var(--ink);font-weight:800}
+.chip.live{border-color:color-mix(in srgb,var(--blue) 45%,var(--line));background:color-mix(in srgb,var(--blue) 10%,var(--surface));color:var(--ink)}
+.chip.live i{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.chip.live i{animation:none}}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-top:12px;box-shadow:0 3px 0 var(--line-d)}
-.hero{background:var(--ok);color:#fff;border:0;box-shadow:0 5px 0 color-mix(in srgb,var(--ok) 65%,#000)}
-@media (prefers-color-scheme: dark){.hero{color:#0B2A30}}
-.hero small{display:block;font-weight:700;opacity:.92}
-.big{display:block;font-weight:800;font-size:clamp(2.1rem,10vw,2.9rem);line-height:1.1;margin:6px 0 2px;letter-spacing:-.01em}
-.big em,.unit{font-style:normal;font-size:.45em;font-weight:700;opacity:.85}
-.bar{height:12px;border-radius:12px;background:rgba(255,255,255,.3);overflow:hidden;margin:12px 0 8px}
+h2{font-size:1.08rem;margin:0 0 12px;font-weight:800;display:flex;align-items:center;gap:8px}
+h2 .ic{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:none}
+h2 .ic svg{width:17px;height:17px}
+.hero{background:linear-gradient(150deg,var(--hero),var(--hero-2));color:var(--on-hero);border:0;box-shadow:0 6px 0 color-mix(in srgb,var(--hero) 60%,#000)}
+.hero small{display:block;font-weight:700;opacity:.9}
+.big{display:block;font-weight:800;font-size:clamp(2.2rem,11vw,3.1rem);line-height:1.08;margin:6px 0 4px;letter-spacing:-.01em}
+.unit{font-style:normal;font-size:.42em;font-weight:700;opacity:.85}
+.bar{height:12px;border-radius:12px;background:rgba(255,255,255,.25);overflow:hidden;margin:14px 0 8px}
 .bar span{display:block;height:100%;border-radius:12px;background:#fff}
-@media (prefers-color-scheme: dark){.bar{background:rgba(11,42,48,.25)}.bar span{background:#0B2A30}}
-.hero .of{font-weight:600;opacity:.92}
-.cmp{display:inline-block;margin-top:10px;font-weight:800;font-size:.9rem;border-radius:999px;padding:3px 12px;background:rgba(255,255,255,.22)}
-@media (prefers-color-scheme: dark){.cmp{background:rgba(11,42,48,.18)}}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
-.stat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 8px;text-align:center;box-shadow:0 3px 0 var(--line-d)}
-.stat b{display:block;font-weight:800;font-size:1.2rem;line-height:1.2;word-break:break-word}
-.stat small{display:block;color:var(--muted);font-weight:700;font-size:.8rem;line-height:1.3;margin-top:2px}
-.stat .d{display:block;font-size:.74rem;font-weight:800;margin-top:4px;line-height:1.3}
-.stat .vs{display:block;font-weight:600;color:var(--muted)}
-.bad{color:var(--warm-t)} .good{color:var(--ok-t)} .same{color:var(--muted)}
-h2{font-size:1.1rem;margin:0 0 10px;font-weight:800}
-.callout{display:flex;align-items:center;gap:12px}
-.dot{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800}
-.callout b{display:block;font-size:1.05rem}
-.callout small{display:block;color:var(--muted);font-weight:600}
-.cat{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:9px 0;border-top:1px solid var(--line)}
-.cat:first-of-type{border-top:0}
-.cat-n{font-weight:700}
-.cat-v{font-weight:800;text-align:end}
-.track{grid-column:1 / -1;height:9px;border-radius:9px;background:var(--track);overflow:hidden}
-.track span{display:block;height:100%;border-radius:9px}
-.cat-p{grid-column:1 / -1;color:var(--muted);font-size:.8rem;font-weight:700}
-.chart{display:flex;align-items:flex-end;gap:2px;height:120px;margin-top:6px}
-.chart i{flex:1;min-width:0;border-radius:4px 4px 2px 2px;background:color-mix(in srgb,var(--ok) 45%,var(--track));min-height:3px}
+.hero-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;font-weight:600;font-size:.93rem;opacity:.95}
+.cmp{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-weight:800;font-size:.9rem;border-radius:999px;padding:4px 12px;background:rgba(255,255,255,.18)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+@media (min-width:520px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 3px 0 var(--line-d);min-width:0}
+.stat small{display:block;color:var(--muted);font-weight:700;font-size:.82rem}
+.stat b{display:block;font-weight:800;font-size:1.2rem;line-height:1.25;margin-top:2px;word-break:break-word}
+.stat .sub{display:block;font-size:.78rem;font-weight:700;margin-top:4px;color:var(--muted)}
+.stat .good{color:var(--ok-t)} .stat .bad{color:var(--warm-t)}
+.stat.t1{border-top:4px solid #3E8ED0}.stat.t2{border-top:4px solid #2E7D5B}.stat.t3{border-top:4px solid #9B7BE0}.stat.t4{border-top:4px solid #FF8F5A}.stat.t5{border-top:4px solid #E8B44C}.stat.t6{border-top:4px solid #F0657A}
+.callout{display:flex;align-items:center;gap:14px}
+.dot{flex:none;width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.95rem}
+.callout small{display:block;color:var(--muted);font-weight:700}
+.callout b{display:block;font-size:1.1rem;font-weight:800}
+.cat{padding:10px 0;border-top:1px solid var(--line)}
+.cat:first-of-type{border-top:0;padding-top:0}
+.cat-h{display:flex;justify-content:space-between;gap:10px;font-weight:800}
+.cat-h span:last-child{white-space:nowrap}
+.track{height:10px;border-radius:10px;background:var(--track);overflow:hidden;margin:6px 0 4px}
+.track span{display:block;height:100%;border-radius:10px}
+.cat-s{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;font-weight:700}
+.chart{display:flex;align-items:flex-end;gap:2px;height:130px;margin-top:4px;border-bottom:1px solid var(--line)}
+.chart i{flex:1;min-width:0;border-radius:4px 4px 0 0;background:color-mix(in srgb,var(--ok) 55%,var(--track));min-height:3px}
 .chart i.z{background:var(--track)}
+.chart i.max{background:var(--warm)}
 .axis{display:flex;justify-content:space-between;color:var(--muted);font-size:.75rem;font-weight:700;margin-top:6px}
-.line{margin:10px 0 0;color:var(--muted);font-weight:600}
-.line b{color:var(--ink)}
-details{margin-top:12px}
-summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font-weight:800;font-size:1.05rem}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"＋";font-weight:800;color:var(--muted)}
-details[open] summary::after{content:"－"}
-.day{margin-top:12px}
-.day-h{display:flex;justify-content:space-between;color:var(--muted);font-weight:800;font-size:.85rem;padding-bottom:4px;border-bottom:1px solid var(--line)}
-.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.weeks{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px;margin-top:14px}
+.wk{background:var(--soft);border-radius:14px;padding:10px;text-align:center}
+.wk small{display:block;color:var(--muted);font-weight:700;font-size:.76rem}
+.wk b{display:block;font-weight:800;font-size:.95rem}
+.note{color:var(--muted);font-weight:600;font-size:.9rem;margin:10px 0 0}
+.note b{color:var(--ink)}
+.day{margin-top:16px}
+.day:first-of-type{margin-top:4px}
+.day-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:8px 12px;background:var(--soft);border-radius:12px;font-weight:800;font-size:.9rem}
+.day-h span:last-child{white-space:nowrap}
+.row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 4px;border-bottom:1px dashed var(--line)}
 .row:last-child{border-bottom:0}
-.row-n{min-width:0}
-.row-n small{display:block;color:var(--muted);font-size:.78rem;font-weight:600}
-.row-a{flex:none;font-weight:800}
-.foot{color:var(--muted);font-size:.82rem;font-weight:600;text-align:center;margin-top:22px;line-height:1.6}
-.err{text-align:center;padding:40px 10px}
-.err b{display:block;font-size:1.2rem;margin-bottom:6px}
+.row time{color:var(--muted);font-size:.8rem;font-weight:700;min-width:3.6em;font-variant-numeric:tabular-nums}
+.row .nm b{display:block;font-weight:700;font-size:.95rem;line-height:1.35}
+.row .nm small{display:block;color:var(--muted);font-size:.78rem;font-weight:600}
+.row .amt{font-weight:800;white-space:nowrap}
+.cdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:6px;vertical-align:middle}
+.more{display:block;width:100%;min-height:48px;margin-top:12px;border:1px solid var(--line);background:var(--soft);border-radius:14px;font-weight:800;font-size:.95rem;font-family:inherit;color:var(--ink);cursor:pointer}
+.foot{color:var(--muted);font-size:.84rem;font-weight:600;text-align:center;margin-top:24px;line-height:1.7}
+.err{text-align:center;padding:56px 12px}
+.err .ico{width:64px;height:64px;margin:0 auto 14px;border-radius:20px;display:grid;place-items:center;background:var(--soft);font-size:1.8rem}
+.err b{display:block;font-size:1.25rem;margin-bottom:6px}
+.err p{color:var(--muted);margin:0}
+.skel{height:120px;border-radius:var(--r);background:linear-gradient(90deg,var(--soft) 25%,var(--surface) 50%,var(--soft) 75%);background-size:200% 100%;animation:sh 1.2s infinite;margin-top:12px}
+@keyframes sh{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.skel{animation:none}}
 </style>
 </head>
 <body>
-<div class="wrap" id="app"><div class="err" id="loading"><b>…</b></div></div>
+<div class="wrap" id="app"><div class="skel"></div><div class="skel"></div></div>
 <script>
 (function(){
 'use strict';
+var SB_URL='https://hauryaiqyapiumjgedtr.supabase.co', SB_KEY='sb_publishable_rtk_DdwyFmIbw_71H4cr-w_a4PndB1r';
 var T={
- ku:{dir:'rtl',html:'ckb',title:'ڕاپۆرتی مانگانە',titleOf:'ڕاپۆرتی مانگانەی ',other:'English',spent:'خەرجی ئەم مانگە',ofBudget:'لە بودجەی ',more:'٪ زیاتر لە ',less:'٪ کەمتر لە ',same:'وەک ',prevSuffix:'',noData:'',
-   moneyIn:'پارەی هاتوو',saved:'پاشەکەوت',avg:'تێکڕای ڕۆژانە',biggest:'زۆرترین خەرجی',ofAll:' لە کۆی خەرجی',byCat:'خەرجی بەپێی بەش',perDay:'خەرجی ڕۆژانە',
+ ku:{dir:'rtl',html:'ckb',name:'کوردی',title:'ڕاپۆرتی مانگانە',titleOf:'ڕاپۆرتی مانگانەی ',spent:'خەرجی ئەم مانگە',ofBudget:'لە بودجەی ',leftBudget:'ماوە لە بودجە',overBudget:'زیاتر لە بودجە',
+   more:'٪ زیاتر لە ',less:'٪ کەمتر لە ',same:'وەک ',moneyIn:'پارەی هاتوو',saved:'پاشەکەوت',savedGoal:'لە ئامانجی ',avg:'تێکڕای ڕۆژانە',count:'ژمارەی خەرجییەکان',bigDay:'زۆرترین ڕۆژ',daysUsed:'ڕۆژی خەرجی',ofDays:' ڕۆژ لە ',
+   biggest:'زۆرترین خەرجی',ofAll:' لە کۆی خەرجی',items:' خەرجی',byCat:'خەرجی بەپێی بەش',perDay:'خەرجی ڕۆژانە',weekN:'هەفتەی ',highest:'بەرزترین ڕۆژ: ',
    college:'چوون بۆ زانکۆ',trips:'جار هاتوچۆ',shared:'بە هاوبەشی',sharedSaved:'پاشەکەوت بە هاوبەشی',classDay:'تێچووی ڕۆژێکی خوێندن نزیکەی ',
-   all:'هەموو خەرجییەکان',made:'ئەم ڕاپۆرتە لە ',made2:' دروستکراوە بە ئەپی Orbit.',snap:'ژمارەکان هی ئەو کاتەن کە بەستەرەکە نێردراوە.',
-   broken:'ئەم بەستەرە تەواو نییە',broken2:'تکایە داوای بەستەرێکی نوێ بکە.',expired:'ئەم بەستەرە بەسەرچووە',expired2:'کاتی ئەم ڕاپۆرتە تەواو بووە. داوای بەستەرێکی نوێ بکە.',stopped:'ئەم بەستەرە ڕاگیراوە',stopped2:'ئەم ڕاپۆرتە ئیتر هاوبەش ناکرێت.',offline:'ئینتەرنێت نییە',offline2:'کاتێک ئینتەرنێتت هەبوو دووبارە هەوڵ بدەرەوە.',until:'ئەم بەستەرە تا کۆتایی ',until2:' کار دەکات.',oldBrowser:'وێبگەڕەکەت پێویستی بە نوێکردنەوە هەیە بۆ کردنەوەی ئەم ڕاپۆرتە.',
-   cur:{IQD:'دینار',USD:'دۆلار',EUR:'یۆرۆ'},vsLast:'بەراورد بە مانگی پێشوو',
+   all:'هەموو خەرجییەکان',showAll:'پیشاندانی هەمووی',sharedOn:'نێردراوە: ',worksUntil:'کار دەکات تا: ',left:' ماوە',made:'دروستکراوە بە ئەپی Orbit.',snap:'ژمارەکان هی ئەو کاتەن کە بەستەرەکە نێردرا.',
+   broken:'ئەم بەستەرە تەواو نییە',broken2:'تکایە داوای بەستەرێکی نوێ بکە.',expired:'کاتی ئەم بەستەرە تەواو بووە',expired2:'داوای بەستەرێکی نوێ بکە.',stopped:'ئەم بەستەرە ڕاگیراوە',stopped2:'ئەم ڕاپۆرتە ئیتر هاوبەش ناکرێت.',
+   offline:'ئینتەرنێت نییە',offline2:'کاتێک ئینتەرنێتت هەبوو دووبارە هەوڵ بدەرەوە.',oldBrowser:'وێبگەڕەکەت پێویستی بە نوێکردنەوەیە',
+   cur:{IQD:'دینار',USD:'دۆلار',EUR:'یۆرۆ'},vsLast:'بەراورد بە مانگی پێشوو',hr:'کاتژمێر',mn:'خولەک',dy:'ڕۆژ',lang:'زمان',
    cats:{food:'خواردن و خواردنەوە',transport:'تەکسی و هاتوچۆ',coffee:'قاوە',books:'کتێب',fun:'خۆشی و گەشت',other:'هیتر'},
    modes:{taxi:'تەکسی',bus:'پاس',friend:'ئۆتۆمبێلی هاوڕێ',walk:'بە پێ'},dirs:{to:'بۆ زانکۆ',home:'بۆ ماڵەوە'},
    withFriends:function(n){ return 'لەگەڵ '+num(n)+' هاوڕێ · تەنها بەشی خۆی'; },
    days:['یەکشەممە','دووشەممە','سێشەممە','چوارشەممە','پێنجشەممە','هەینی','شەممە'],
-   months:['کانوونی دووەم','شوبات','ئازار','نیسان','ئایار','حوزەیران','تەممووز','ئاب','ئەیلوول','تشرینی یەکەم','تشرینی دووەم','کانوونی یەکەم']},
- en:{dir:'ltr',html:'en',title:'Monthly report',titleOf:null,other:'کوردی',spent:'Spent this month',ofBudget:'of a ',more:'% more than ',less:'% less than ',same:'Same as ',
-   moneyIn:'Money in',saved:'Saved',avg:'Daily average',biggest:'Biggest spending',ofAll:' of all spending',byCat:'Spending by category',perDay:'Spending per day',
+   months:['کانوونی دووەم','شوبات','ئازار','نیسان','ئایار','حوزەیران','تەممووز','ئاب','ئەیلوول','تشرینی یەکەم','تشرینی دووەم','کانوونی یەکەم'],am:'پ.ن',pm:'د.ن'},
+ en:{dir:'ltr',html:'en',name:'English',title:'Monthly report',titleOf:null,spent:'Spent this month',ofBudget:'of a ',leftBudget:'left in the budget',overBudget:'over the budget',
+   more:'% more than ',less:'% less than ',same:'Same as ',moneyIn:'Money in',saved:'Saved',savedGoal:'of a goal of ',avg:'Daily average',count:'Expenses',bigDay:'Biggest day',daysUsed:'Days with spending',ofDays:' of ',
+   biggest:'Biggest spending',ofAll:' of all spending',items:' expenses',byCat:'Spending by category',perDay:'Spending per day',weekN:'Week ',highest:'Highest day: ',
    college:'Getting to college',trips:'trips',shared:'shared',sharedSaved:'saved by sharing',classDay:'A class day costs about ',
-   all:'Every expense',made:'Made with Orbit on ',made2:'.',snap:'The numbers are as they were when the link was sent.',
-   broken:'This link is incomplete',broken2:'Ask for a new link.',expired:'This link has expired',expired2:'Its time is up. Ask for a new link.',stopped:'This link was stopped',stopped2:'This report isn’t shared any more.',offline:'No internet',offline2:'Try again when you’re online.',until:'This link works until the end of ',until2:'.',oldBrowser:'Please update your browser to open this report.',
-   cur:{IQD:'IQD',USD:'USD',EUR:'EUR'},vsLast:'vs last month',
+   all:'Every expense',showAll:'Show all',sharedOn:'Shared ',worksUntil:'Works until ',left:' left',made:'Made with Orbit.',snap:'The numbers are as they were when the link was sent.',
+   broken:'This link is incomplete',broken2:'Ask for a new link.',expired:'This link has expired',expired2:'Ask for a new link.',stopped:'This link was stopped',stopped2:'This report isn’t shared any more.',
+   offline:'No internet',offline2:'Try again when you’re online.',oldBrowser:'Please update your browser',
+   cur:{IQD:'IQD',USD:'USD',EUR:'EUR'},vsLast:'vs last month',hr:'h',mn:'min',dy:'days',lang:'Language',
    cats:{food:'Food & drinks',transport:'Taxi / Transport',coffee:'Coffee',books:'Books',fun:'Fun',other:'Others'},
    modes:{taxi:'Taxi',bus:'Bus',friend:'Friend’s car',walk:'Walk'},dirs:{to:'to college',home:'home'},
    withFriends:function(n){ return 'Shared with '+n+(n===1?' friend':' friends')+' · own share only'; },
    days:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-   months:['January','February','March','April','May','June','July','August','September','October','November','December']}
+   months:['January','February','March','April','May','June','July','August','September','October','November','December'],am:'AM',pm:'PM'}
 };
-var SB_URL='https://hauryaiqyapiumjgedtr.supabase.co', SB_KEY='sb_publishable_rtk_DdwyFmIbw_71H4cr-w_a4PndB1r';
-var L='ku', D=null, RID=null, app=document.getElementById('app');
+var L='ku', D=null, RID=null, RAW='', app=document.getElementById('app'), tick=null, showAll=false;
 function t(k){ return T[L][k]; }
 function digits(s){ return L==='ku'?String(s).replace(/\d/g,function(d){ return '٠١٢٣٤٥٦٧٨٩'[d]; }).replace(/,/g,'٬').replace(/%/g,'٪'):String(s); }
 function num(n){ return digits(Math.round(n||0).toLocaleString('en-US')); }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function money(n){ return '<span class="num">'+num(n)+'</span> <em class="unit">'+(t('cur')[D.c]||esc(D.c))+'</em>'; }
-function moneyTxt(n){ return num(n)+' '+(t('cur')[D.c]||D.c); }
-function monthTxt(mk){ var m=+mk.slice(5,7)-1, y=mk.slice(0,4); return t('months')[m]+' '+digits(y); }
-function prevMk(mk){ var d=new Date(mk+'-01T00:00'); d.setMonth(d.getMonth()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
-function dayTxt(day){ var d=new Date(D.m+'-'+String(day).padStart(2,'0')+'T00:00'), m=t('months')[d.getMonth()]; return L==='ku'?t('days')[d.getDay()]+'، '+digits(day)+'ی '+m:t('days')[d.getDay()]+', '+m.slice(0,3)+' '+day; }
-function dayLong(x){ var d=new Date(String(x).length===10?x+'T00:00':x); return L==='ku'?digits(d.getDate())+'ی '+t('months')[d.getMonth()]+' '+digits(d.getFullYear()):t('months')[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear(); }
+function cur(){ return t('cur')[D.c]||esc(D.c); }
+function money(n){ return '<span class="num">'+num(n)+'</span> <em class="unit">'+cur()+'</em>'; }
+function moneyTxt(n){ return num(n)+' '+cur(); }
+function mName(i){ return t('months')[i]; }
+function monthTxt(mk){ return mName(+mk.slice(5,7)-1)+' '+digits(mk.slice(0,4)); }
+function clock(d){ var h=d.getHours(), m=String(d.getMinutes()).padStart(2,'0'); return digits((h%12||12)+':'+m)+' '+(h<12?t('am'):t('pm')); }
+function dateTxt(d,withDay){ return L==='ku'?(withDay?t('days')[d.getDay()]+'، ':'')+digits(d.getDate())+'ی '+mName(d.getMonth())+' '+digits(d.getFullYear()):(withDay?t('days')[d.getDay()].slice(0,3)+', ':'')+mName(d.getMonth()).slice(0,3)+' '+d.getDate()+', '+d.getFullYear(); }
+function stamp(x){ var d=new Date(String(x).length===10?x+'T23:59:59':x); return dateTxt(d,true)+' · '+clock(d); }
+function leftTxt(ms){ var m=Math.max(0,Math.round(ms/60000)); if(m<60) return digits(m)+' '+t('mn')+t('left'); var h=Math.floor(m/60); if(h<48) return digits(h)+' '+t('hr')+(m%60?' '+digits(m%60)+' '+t('mn'):'')+t('left'); return digits(Math.round(h/24))+' '+t('dy')+t('left'); }
 function catName(id,name){ return t('cats')[id]||name||id; }
+function prevMk(mk){ var d=new Date(mk+'-01T00:00'); d.setMonth(d.getMonth()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function expiresAt(){ return D&&D.x?new Date(String(D.x).length===10?D.x+'T23:59:59':D.x):null; }
+var IC={chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+ bus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 14l2.5-6h13L21 14v4h-3v-2H6v2H3z"/></svg>',
+ list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>',
+ globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/></svg>'};
+function h2(icon,color,text){ return '<h2><span class="ic" style="background:'+color+'">'+IC[icon]+'</span>'+text+'</h2>'; }
 function b64uBytes(s){ s=s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; var bin=atob(s), out=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) out[i]=bin.charCodeAt(i); return out; }
 function unpack(data){
   var kind=data.charAt(0), bytes=b64uBytes(data.slice(1));
   if(kind==='j') return Promise.resolve(JSON.parse(new TextDecoder().decode(bytes)));
   if(kind!=='z') return Promise.reject(new Error('kind'));
   if(!window.DecompressionStream) return Promise.reject(new Error('old'));
-  var st=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
-  return new Response(st).text().then(JSON.parse);
+  return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text().then(JSON.parse);
 }
 function setLang(l){
-  L=T[l]?l:'ku';
-  document.documentElement.lang=t('html'); document.documentElement.dir=t('dir');
-  try{ history.replaceState(null,'',location.pathname+location.search+(RID?'#r='+RID+'&l='+L:'#'+L+'.'+raw)); }catch(e){}
+  L=T[l]?l:'ku'; document.documentElement.lang=t('html'); document.documentElement.dir=t('dir');
+  try{ history.replaceState(null,'',location.pathname+location.search+(RID?'#r='+RID+'&l='+L:'#'+L+'.'+RAW)); }catch(e){}
 }
+function langMenu(){
+  return '<div class="lang"><button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="'+t('lang')+' · Language">'+IC.globe+'</button>'+
+    '<div class="lang-menu" id="langMenu" role="menu" hidden>'+['ku','en'].map(function(k){ return '<button type="button" role="menuitemradio" aria-checked="'+(k===L)+'" data-l="'+k+'" lang="'+T[k].html+'"><span>'+T[k].name+'</span>'+(k===L?'<span class="tick">✓</span>':'')+'</button>'; }).join('')+'</div></div>';
+}
+function wireLang(){
+  var b=document.getElementById('langBtn'), m=document.getElementById('langMenu'); if(!b) return;
+  function close(){ m.hidden=true; b.setAttribute('aria-expanded','false'); }
+  b.onclick=function(e){ e.stopPropagation(); var open=m.hidden; m.hidden=!open; b.setAttribute('aria-expanded',String(open)); if(open){ var f=m.querySelector('[aria-checked="true"]'); if(f) f.focus(); } };
+  m.onclick=function(e){ var x=e.target.closest('[data-l]'); if(!x) return; close(); if(x.dataset.l!==L){ setLang(x.dataset.l); if(D) render(); else location.reload(); } };
+  document.onclick=close; document.onkeydown=function(e){ if(e.key==='Escape'){ close(); b.focus(); } };
+}
+function brand(){ return '<div class="top"><div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="9" fill="#17807C"/><ellipse cx="20" cy="20" rx="17" ry="7" fill="none" stroke="#7FD1C3" stroke-width="2.6" transform="rotate(-25 20 20)"/><circle cx="11.4" cy="29.6" r="3.2" fill="#FF8F5A"/></svg>Orbit</div>'+langMenu()+'</div>'; }
 function render(){
+  var exp=expiresAt(); if(exp&&Date.now()>exp.getTime()){ fail('expired'); return; }
   var title=L==='ku'?(D.nm?t('titleOf')+esc(D.nm):t('title')):(D.nm?esc(D.nm)+'’s monthly report':t('title'));
   document.title=(L==='ku'?t('title'):'Monthly report')+' · '+monthTxt(D.m);
-  var pct=D.b?Math.min(100,Math.round(D.sp/D.b*100)):0, p=D.p, cmp='';
-  if(p&&p[0]>0){ var dp=Math.round((D.sp-p[0])/p[0]*100), pm=t('months')[+prevMk(D.m).slice(5,7)-1];
+  var y=+D.m.slice(0,4), mo=+D.m.slice(5,7)-1, dim=D.d.length, endDay=D.at&&D.at.slice(0,7)===D.m?+D.at.slice(8,10):dim;
+  var period=L==='ku'?digits(1)+' – '+digits(endDay)+'ی '+mName(mo)+' '+digits(y):mName(mo)+' 1 – '+endDay+', '+y;
+  var p=D.p, pct=D.b?Math.round(D.sp/D.b*100):0, rest=(D.b||0)-D.sp, rows=(D.e||[]).map(function(r){ return {d:r[0],c:r[1],a:r[2],x:r[3]||'',n:r[4]||1,tm:r[5]||''}; });
+  var cmp='';
+  if(p&&p[0]>0){ var dp=Math.round((D.sp-p[0])/p[0]*100), pm=mName(+prevMk(D.m).slice(5,7)-1);
     cmp='<span class="cmp">'+(dp===0?t('same')+pm:(dp>0?'▲ '+digits(dp)+t('more')+pm:'▼ '+digits(-dp)+t('less')+pm))+'</span>'; }
-  function delta(cur,prev,goodUp){ if(!p||!prev) return ''; var d=Math.round((cur-prev)/prev*100); if(!d) return ''; var cls=goodUp==null?'same':((d>0)===goodUp?'good':'bad'); return '<span class="d '+cls+'">'+(d>0?'▲ ':'▼ ')+digits(Math.abs(d)+'%')+' <span class="vs">'+t('vsLast')+'</span></span>'; }
-  var html='<div class="top"><div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="9" fill="#17807C"/><ellipse cx="20" cy="20" rx="17" ry="7" fill="none" stroke="#7FD1C3" stroke-width="2.6" transform="rotate(-25 20 20)"/><circle cx="11.4" cy="29.6" r="3.2" fill="#FF8F5A"/></svg>Orbit</div><button type="button" class="lang" id="langBtn" lang="'+(L==='ku'?'en':'ckb')+'">'+t('other')+'</button></div>'+
-    '<h1>'+title+'</h1><p class="sub">'+monthTxt(D.m)+'</p>'+
-    '<section class="card hero"><small>'+t('spent')+'</small><span class="big">'+money(D.sp)+'</span>'+
-      (D.b?'<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><span style="width:'+pct+'%"></span></div><span class="of">'+(L==='ku'?digits(pct+'%')+' '+t('ofBudget')+moneyTxt(D.b):digits(pct)+'% of a '+moneyTxt(D.b)+' budget')+'</span><br>':'')+cmp+'</section>'+
-    '<div class="stats"><div class="stat"><b>'+num(D.i)+'</b><small>'+t('moneyIn')+'</small>'+delta(D.i,p&&p[1],null)+'</div><div class="stat"><b>'+num(Math.max(0,D.s))+'</b><small>'+t('saved')+'</small>'+delta(D.s,p&&p[2],true)+'</div><div class="stat"><b>'+num(D.a)+'</b><small>'+t('avg')+'</small></div></div>';
-  if(D.k.length){
-    var top=D.k[0], tp=D.sp?Math.round(top[3]/D.sp*100):0;
-    html+='<section class="card callout"><span class="dot" style="background:'+esc(top[2])+'">'+digits(tp+'%')+'</span><div><small>'+t('biggest')+'</small><b>'+esc(catName(top[0],top[1]))+' · '+moneyTxt(top[3])+'</b><small>'+digits(tp+'%')+t('ofAll')+'</small></div></section>';
+  function delta(curv,prev,goodUp){ if(!p||!prev) return ''; var d=Math.round((curv-prev)/prev*100); if(!d) return ''; return '<span class="sub '+((d>0)===goodUp?'good':'bad')+'">'+(d>0?'▲ ':'▼ ')+digits(Math.abs(d)+'%')+' · '+t('vsLast')+'</span>'; }
+  var maxDay=0, maxV=0, used=0; D.d.forEach(function(v,i){ if(v>maxV){ maxV=v; maxDay=i+1; } if(v>0) used++; });
+  var html=brand()+'<h1>'+title+'</h1><p class="period">'+period+'</p><div class="chips">';
+  if(D.sa) html+='<span class="chip">'+t('sharedOn')+'<b>'+stamp(D.sa)+'</b></span>';
+  if(exp) html+='<span class="chip live"><i aria-hidden="true"></i>'+t('worksUntil')+'<b>'+stamp(exp.toISOString())+'</b> · <span id="leftTxt">'+leftTxt(exp-Date.now())+'</span></span>';
+  html+='</div>';
+  html+='<section class="card hero"><small>'+t('spent')+'</small><span class="big">'+money(D.sp)+'</span>'+
+    (D.b?'<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(100,pct)+'"><span style="width:'+Math.min(100,pct)+'%"></span></div><div class="hero-row"><span>'+(L==='ku'?digits(pct+'%')+' '+t('ofBudget')+moneyTxt(D.b):digits(pct)+'% of a '+moneyTxt(D.b)+' budget')+'</span><span>'+moneyTxt(Math.abs(rest))+' '+(rest>=0?t('leftBudget'):t('overBudget'))+'</span></div>':'')+cmp+'</section>';
+  var goal=D.g||0, gp=goal?Math.round(Math.max(0,D.s)/goal*100):0;
+  html+='<div class="grid">'+
+    '<div class="stat t1"><small>'+t('moneyIn')+'</small><b>'+moneyTxt(D.i)+'</b>'+delta(D.i,p&&p[1],true)+'</div>'+
+    '<div class="stat t2"><small>'+t('saved')+'</small><b>'+moneyTxt(Math.max(0,D.s))+'</b>'+(goal?'<span class="sub">'+digits(gp+'%')+' '+t('savedGoal')+moneyTxt(goal)+'</span>':delta(D.s,p&&p[2],true))+'</div>'+
+    '<div class="stat t3"><small>'+t('avg')+'</small><b>'+moneyTxt(D.a)+'</b></div>'+
+    '<div class="stat t4"><small>'+t('count')+'</small><b>'+num(rows.length)+'</b></div>'+
+    '<div class="stat t5"><small>'+t('bigDay')+'</small><b>'+(maxV?moneyTxt(maxV):'—')+'</b>'+(maxV?'<span class="sub">'+dateTxt(new Date(y,mo,maxDay),true)+'</span>':'')+'</div>'+
+    '<div class="stat t6"><small>'+t('daysUsed')+'</small><b>'+num(used)+'</b><span class="sub">'+(L==='ku'?digits(used)+t('ofDays')+digits(endDay):used+t('ofDays')+endDay+' days')+'</span></div></div>';
+  if(D.k&&D.k.length){
+    var top=D.k[0], tp=D.sp?Math.round(top[3]/D.sp*100):0, cnt={}; rows.forEach(function(r){ cnt[r.c]=(cnt[r.c]||0)+1; });
+    html+='<section class="card callout"><span class="dot" style="background:'+esc(top[2])+'">'+digits(tp+'%')+'</span><div><small>'+t('biggest')+'</small><b>'+esc(catName(top[0],top[1]))+'</b><small>'+moneyTxt(top[3])+' · '+digits(tp+'%')+t('ofAll')+'</small></div></section>';
     var mx=Math.max.apply(null,D.k.map(function(x){ return x[3]; }))||1;
-    html+='<section class="card"><h2>'+t('byCat')+'</h2>'+D.k.map(function(x){ var cp=D.sp?Math.round(x[3]/D.sp*100):0; return '<div class="cat"><span class="cat-n">'+esc(catName(x[0],x[1]))+'</span><span class="cat-v">'+moneyTxt(x[3])+'</span><span class="track"><span style="width:'+(x[3]/mx*100)+'%;background:'+esc(x[2])+'"></span></span><span class="cat-p">'+digits(cp+'%')+'</span></div>'; }).join('')+'</section>';
+    html+='<section class="card">'+h2('chart','#9B7BE0',t('byCat'))+D.k.map(function(x){ var cp=D.sp?Math.round(x[3]/D.sp*100):0;
+      return '<div class="cat"><div class="cat-h"><span><span class="cdot" style="background:'+esc(x[2])+'"></span>'+esc(catName(x[0],x[1]))+'</span><span class="num">'+moneyTxt(x[3])+'</span></div><div class="track"><span style="width:'+(x[3]/mx*100)+'%;background:'+esc(x[2])+'"></span></div><div class="cat-s"><span>'+digits(cp+'%')+'</span><span>'+num(cnt[x[0]]||0)+t('items')+'</span></div></div>'; }).join('')+'</section>';
   }
+  var dmx=Math.max.apply(null,D.d)||1, weeks=[];
+  for(var w=0;w*7<dim;w++){ var s=0; for(var i=w*7;i<Math.min(dim,w*7+7);i++) s+=D.d[i]; weeks.push(s); }
+  html+='<section class="card">'+h2('cal','#3E8ED0',t('perDay'))+'<div class="chart" role="img" aria-label="'+t('perDay')+'">'+D.d.map(function(v,i){ return '<i class="'+(v?(i+1===maxDay?'max':''):'z')+'" style="height:'+Math.max(3,v/dmx*100)+'%" title="'+dateTxt(new Date(y,mo,i+1),false)+': '+moneyTxt(v)+'"></i>'; }).join('')+'</div>'+
+    '<div class="axis"><span>'+digits(1)+'</span><span>'+digits(8)+'</span><span>'+digits(15)+'</span><span>'+digits(22)+'</span><span>'+digits(dim)+'</span></div>'+
+    (maxV?'<p class="note">'+t('highest')+'<b>'+dateTxt(new Date(y,mo,maxDay),true)+' · '+moneyTxt(maxV)+'</b></p>':'')+
+    '<div class="weeks">'+weeks.map(function(s,i){ return '<div class="wk"><small>'+t('weekN')+digits(i+1)+'</small><b class="num">'+moneyTxt(s)+'</b></div>'; }).join('')+'</div></section>';
   var tr=D.t||[0,0,0,0];
-  if(tr[0]){
-    html+='<section class="card"><h2>'+t('college')+'</h2><div class="stats" style="margin-top:0"><div class="stat"><b>'+num(tr[0])+'</b><small>'+t('trips')+'</small></div><div class="stat"><b>'+num(tr[1])+'</b><small>'+t('shared')+'</small></div><div class="stat"><b>'+num(tr[2])+'</b><small>'+t('sharedSaved')+'</small></div></div>'+
-      (tr[3]?'<p class="line">'+t('classDay')+'<b>'+moneyTxt(tr[3])+'</b></p>':'')+'</section>';
+  if(tr[0]) html+='<section class="card">'+h2('bus','#FF8F5A',t('college'))+'<div class="grid" style="margin-top:0;grid-template-columns:repeat(3,minmax(0,1fr))"><div class="stat t1"><b>'+num(tr[0])+'</b><small>'+t('trips')+'</small></div><div class="stat t2"><b>'+num(tr[1])+'</b><small>'+t('shared')+'</small></div><div class="stat t5"><b>'+num(tr[2])+'</b><small>'+t('sharedSaved')+'</small></div></div>'+(tr[3]?'<p class="note">'+t('classDay')+'<b>'+moneyTxt(tr[3])+'</b></p>':'')+'</section>';
+  if(rows.length){
+    var groups={}, order=[]; rows.slice().reverse().forEach(function(r){ if(!groups[r.d]){ groups[r.d]=[]; order.push(r.d); } groups[r.d].push(r); });
+    var limit=showAll?order.length:Math.min(order.length,7), kc={}; (D.k||[]).forEach(function(x){ kc[x[0]]=x[2]; });
+    html+='<section class="card">'+h2('list','#2E7D5B',t('all')+' · '+num(rows.length))+order.slice(0,limit).map(function(day){ var list=groups[day], tot=list.reduce(function(a,r){ return a+r.a; },0);
+      return '<div class="day"><div class="day-h"><span>'+dateTxt(new Date(y,mo,day),true)+'</span><span class="num">'+moneyTxt(tot)+'</span></div>'+list.map(function(r){
+        var name, sub=catName(r.c);
+        if(r.c==='transport'&&r.x.indexOf('.')>0){ var md=r.x.split('.'); name=(t('modes')[md[0]]||md[0])+(md[1]?' · '+(t('dirs')[md[1]]||md[1]):''); }
+        else name=r.x?esc(r.x):catName(r.c);
+        if(r.n>1) sub=t('withFriends')(r.n-1);
+        var tm=''; if(r.tm){ var a=r.tm.split(':'); tm=clock(new Date(y,mo,day,+a[0],+a[1])); }
+        return '<div class="row"><time>'+tm+'</time><div class="nm"><b><span class="cdot" style="background:'+esc(kc[r.c]||'#7A8A8E')+'"></span>'+name+'</b><small>'+esc(sub)+'</small></div><span class="amt num">'+(r.a?moneyTxt(r.a):'—')+'</span></div>'; }).join('')+'</div>'; }).join('')+
+      (limit<order.length?'<button type="button" class="more" id="showAll">'+t('showAll')+' · '+num(order.length)+' '+t('dy')+'</button>':'')+'</section>';
   }
-  var dmx=Math.max.apply(null,D.d)||1;
-  html+='<section class="card"><h2>'+t('perDay')+'</h2><div class="chart" role="img" aria-label="'+t('perDay')+'">'+D.d.map(function(v,i){ return '<i'+(v?'':' class="z"')+' style="height:'+Math.max(3,v/dmx*100)+'%" title="'+digits(i+1)+': '+moneyTxt(v)+'"></i>'; }).join('')+'</div><div class="axis"><span>'+digits(1)+'</span><span>'+digits(Math.ceil(D.d.length/2))+'</span><span>'+digits(D.d.length)+'</span></div></section>';
-  if(D.e&&D.e.length){
-    var groups={}, order=[];
-    D.e.forEach(function(r){ if(!groups[r[0]]){ groups[r[0]]=[]; order.push(r[0]); } groups[r[0]].push(r); });
-    html+='<section class="card"><details><summary>'+t('all')+' · '+num(D.e.length)+'</summary>'+order.map(function(day){ var rows=groups[day], tot=rows.reduce(function(a,r){ return a+r[2]; },0);
-      return '<div class="day"><div class="day-h"><span>'+dayTxt(day)+'</span><span class="day-v">'+moneyTxt(tot)+'</span></div>'+rows.map(function(r){
-        var name, sub='';
-        if(r[1]==='transport'&&r[3]&&r[3].indexOf('.')>0){ var md=r[3].split('.'); name=(t('modes')[md[0]]||md[0])+(md[1]?' · '+(t('dirs')[md[1]]||md[1]):''); }
-        else if(r[3]){ name=esc(r[3]); sub=catName(r[1]); }
-        else name=catName(r[1]);
-        if(r[4]>1) sub=t('withFriends')(r[4]-1);
-        return '<div class="row"><div class="row-n">'+name+(sub?'<small>'+esc(sub)+'</small>':'')+'</div><span class="row-a">'+(r[2]?moneyTxt(r[2]):'—')+'</span></div>'; }).join('')+'</div>'; }).join('')+'</details></section>';
-  }
-  var at=D.at?new Date(D.at+'T00:00'):null;
-  html+='<p class="foot">'+(at?t('made')+(L==='ku'?digits(at.getDate())+'ی '+t('months')[at.getMonth()]+' '+digits(at.getFullYear()):t('months')[at.getMonth()]+' '+at.getDate()+', '+at.getFullYear())+t('made2')+'<br>':'')+t('snap')+(D.x?'<br><b>'+t('until')+dayLong(D.x)+t('until2')+'</b>':'')+'</p>';
-  app.innerHTML=html;
-  document.getElementById('langBtn').onclick=function(){ setLang(L==='ku'?'en':'ku'); render(); };
+  html+='<p class="foot">'+t('made')+'<br>'+t('snap')+'</p>';
+  app.innerHTML=html; wireLang();
+  var sa=document.getElementById('showAll'); if(sa) sa.onclick=function(){ showAll=true; render(); };
+  clearInterval(tick); if(exp) tick=setInterval(function(){ var ms=exp-Date.now(); if(ms<=0){ clearInterval(tick); fail('expired'); return; } var e=document.getElementById('leftTxt'); if(e) e.textContent=leftTxt(ms); },15000);
 }
-function fail(key){ var k={old:['oldBrowser',''],expired:['expired','expired2'],stopped:['stopped','stopped2'],offline:['offline','offline2']}[key]||['broken','broken2'];
-  document.title='Orbit'; app.innerHTML='<div class="err"><b>'+t(k[0])+'</b>'+(k[1]?t(k[1]):'')+'</div>'; }
-function expiredDay(x){ if(!x) return false; var end=String(x).length===10?new Date(x+'T23:59:59'):new Date(x); return Date.now()>end.getTime(); }
+function fail(key){
+  var k={old:['oldBrowser',''],expired:['expired','expired2'],stopped:['stopped','stopped2'],offline:['offline','offline2']}[key]||['broken','broken2'];
+  var icon={expired:'⏱️',stopped:'⏹️',offline:'📶'}[key]||'🔗';
+  document.title='Orbit'; clearInterval(tick);
+  app.innerHTML=brand()+'<div class="err"><div class="ico" aria-hidden="true">'+icon+'</div><b>'+t(k[0])+'</b><p>'+(k[1]?t(k[1]):'')+'</p></div>'; wireLang();
+}
 addEventListener('hashchange',function(){ location.reload(); });
-var h=location.hash.slice(1), raw='';
+var h=location.hash.slice(1);
 if(/^r=/.test(h)){
   var q={}; h.split('&').forEach(function(kv){ var i=kv.indexOf('='); if(i>0) q[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1)); });
-  RID=/^[0-9a-f-]{36}$/i.test(q.r||'')?q.r:null; L=T[q.l]?q.l:'ku'; setLang(L);
+  RID=/^[0-9a-f-]{36}$/i.test(q.r||'')?q.r:null; setLang(T[q.l]?q.l:'ku');
   if(!RID){ fail('broken'); return; }
   fetch(SB_URL+'/rest/v1/rpc/get_report',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_id:RID})})
     .then(function(r){ if(!r.ok) throw new Error('http'); return r.json(); })
@@ -205,12 +272,11 @@ if(/^r=/.test(h)){
       var d=res.data; if(!d||!d.m||!Array.isArray(d.d)) throw new Error('shape');
       if(!q.l&&T[res.lang]&&res.lang!==L) setLang(res.lang);
       D=d; D.k=D.k||[]; D.x=res.expires_at; render(); })
-    .catch(function(e){ fail(navigator.onLine===false?'offline':(e&&e.message==='shape'?'broken':'offline')); });
+    .catch(function(e){ fail(e&&e.message==='shape'?'broken':'offline'); });
 } else {
-  var dot=h.indexOf('.'); raw=dot>0?h.slice(dot+1):'';
-  L=T[h.slice(0,dot)]?h.slice(0,dot):'ku'; setLang(L);
-  if(!raw){ fail('broken'); return; }
-  unpack(raw).then(function(d){ if(!d||!d.m||!Array.isArray(d.d)) throw new Error('shape'); if(expiredDay(d.x)){ fail('expired'); return; } D=d; D.k=D.k||[]; render(); }).catch(function(e){ fail(e&&e.message==='old'?'old':'broken'); });
+  var dot=h.indexOf('.'); RAW=dot>0?h.slice(dot+1):''; setLang(T[h.slice(0,dot)]?h.slice(0,dot):'ku');
+  if(!RAW){ fail('broken'); return; }
+  unpack(RAW).then(function(d){ if(!d||!d.m||!Array.isArray(d.d)) throw new Error('shape'); D=d; D.k=D.k||[]; render(); }).catch(function(e){ fail(e&&e.message==='old'?'old':'broken'); });
 }
 })();
 </script>

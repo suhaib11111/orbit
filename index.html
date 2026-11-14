@@ -408,7 +408,7 @@ textarea{resize:vertical}
 .bknote{margin:.3rem 0 0;font-size:.8rem;text-align:center}
 
 /* ===== App polish ===== */
-.view:not([hidden]){animation:viewIn .34s cubic-bezier(.2,.8,.2,1)}
+.view:not([hidden]){animation:viewIn .2s cubic-bezier(.2,.8,.2,1)}
 @keyframes viewIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes rise{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
 .exc,.ccard,.mk,.mailc,.srow,.logrow,.slot{animation:rise .38s cubic-bezier(.2,.8,.2,1) both}
@@ -1583,8 +1583,14 @@ h1,h2,h3{text-wrap:balance}
 :root[data-theme="dark"] .nav button[aria-current="page"][data-view="mail"]{color:#FF9AB0}
 :root[data-theme="dark"] .mday{background:color-mix(in srgb,#3E8ED0 20%,var(--surface))}
 /* Kurdish (Sorani), right to left */
-.langbtn{width:auto!important;padding:0 .55rem;border-radius:999px;display:flex!important;align-items:center;gap:.3rem;font:800 .78rem "Noto Sans Arabic","Plus Jakarta Sans",sans-serif;color:var(--ink)}
-.langbtn .ic{color:#3E8ED0}
+.langwrap{position:relative}
+.langbtn{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:#3E8ED0;display:grid;place-items:center;padding:0;cursor:pointer}
+.langbtn .ic{width:18px;height:18px;vertical-align:0}
+.langmenu{position:absolute;top:42px;inset-inline-end:0;z-index:60;min-width:160px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:0 14px 34px rgba(0,0,0,.18)}
+.langmenu[hidden]{display:none}
+.langmenu button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:44px;border:0;background:none;color:var(--ink);border-radius:10px;padding:0 .8rem;font:700 1rem "Noto Sans Arabic","Plus Jakarta Sans",sans-serif;cursor:pointer;text-align:start}
+.langmenu button:hover,.langmenu button:focus-visible{background:var(--soft);outline:none}
+.langmenu button.on::after{content:"✓";color:var(--ok-t);font-weight:800}
 html[lang="ckb"] body{font-family:"Noto Sans Arabic","Plus Jakarta Sans",sans-serif}
 :root[lang="ckb"]{--disp:"Noto Sans Arabic","Bricolage Grotesque",sans-serif}
 html[lang="ckb"] h1,html[lang="ckb"] h2,html[lang="ckb"] h3{letter-spacing:0}
@@ -1594,6 +1600,17 @@ html[dir="rtl"] .ccard.subj.cur{box-shadow:inset -5px 0 0 var(--c),0 0 0 2px col
 html[dir="rtl"] .ml-display{text-align:left}
 html[dir="rtl"] .ml-display small{text-align:right}
 html[dir="rtl"] .mback .ic,html[dir="rtl"] .mrep-arrow{transform:scaleX(-1)}
+/* v3 polish */
+.mh-dollar{display:inline-grid;place-items:center;width:1.55em;height:1.55em;border-radius:12px;background:color-mix(in srgb,#2E7D5B 16%,var(--surface));color:#2E7D5B;margin-inline-end:.4rem;vertical-align:-.2em}
+.mh-dollar .ic{width:.95em;height:.95em;vertical-align:0}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:calc(84px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 45%,color-mix(in srgb,var(--bg) 0%,transparent));pointer-events:none;z-index:25}
+.mrep-lh{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.mlink.stopall{color:#C0392B}
+.mlinkrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.4rem .7rem;align-items:center;padding:.7rem 0;border-top:1px solid var(--line)}
+.mlinkrow:first-of-type{border-top:0}
+.mlink-btns{grid-column:2;display:flex;gap:.45rem}
+.mlink-btns .mpay{flex:1}
+.mrepexp .mtchip{font-size:.82rem}
 @media (prefers-reduced-motion:reduce){.mhero,.mt-pc,.mt-bar span,.mh-bar span,.mc-track span{transition:none!important}.mrow.dotpop .mrow-ic{animation:none!important}}
 </style>
 
@@ -1635,7 +1652,7 @@ html[dir="rtl"] .mback .ic,html[dir="rtl"] .mrep-arrow{transform:scaleX(-1)}
       <span class="stat xp" title="Total XP"><span data-ic="star"></span><span id="xp">0</span></span>
       <span class="stat wk" title="Weeks done"><span data-ic="check"></span><span id="weeks">0</span></span>
       </button>
-      <button type="button" class="helpbtn langbtn" id="langBtn" aria-label="Language · زمان"><span data-ic="globe"></span><span class="lb" aria-hidden="true">کو</span></button>
+      <div class="langwrap"><button type="button" class="langbtn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="Language · زمان"><span data-ic="globe"></span></button><div class="langmenu" id="langMenu" role="menu" hidden><button type="button" role="menuitemradio" data-setlang="ku" lang="ckb">کوردی</button><button type="button" role="menuitemradio" data-setlang="en" lang="en">English</button></div></div>
       <button type="button" class="helpbtn" data-view="guide" aria-label="Profile and settings"><span data-ic="user"></span></button>
     </div>
   </div>
@@ -1835,7 +1852,7 @@ html[dir="rtl"] .mback .ic,html[dir="rtl"] .mrep-arrow{transform:scaleX(-1)}
 
   <div class="view" id="view-money" hidden>
     <div class="wrap">
-      <div class="mhead"><button type="button" class="mback" data-view="today" aria-label="Back to Today"><span data-ic="back"></span></button><div><small id="mMonth"></small><h1>Money</h1></div><button type="button" class="mshare-top" id="mShareTop" aria-label="Send a month report"><span data-ic="share"></span><span>Share</span></button></div>
+      <div class="mhead"><button type="button" class="mback" data-view="today" aria-label="Back to Today"><span data-ic="back"></span></button><div><small id="mMonth"></small><h1><span class="mh-dollar" data-ic="dollar"></span>Money</h1></div><button type="button" class="mshare-top" id="mShareTop" aria-label="Send a month report"><span data-ic="share"></span><span>Share</span></button></div>
       <div class="cols cols-money"><div class="col-a">
         <div class="mhero ms-ok" id="mHero"></div>
         <div class="card mquick" id="mQuick"></div>
@@ -1993,6 +2010,7 @@ html[dir="rtl"] .mback .ic,html[dir="rtl"] .mrep-arrow{transform:scaleX(-1)}
 
 <script>
 var P={
+dollar:'<circle cx="12" cy="12" r="9.5"/><path d="M15 8.6c-.6-.9-1.7-1.4-3-1.4-1.8 0-3 .9-3 2.3 0 3.2 6.2 1.6 6.2 4.9 0 1.4-1.3 2.4-3.2 2.4-1.4 0-2.6-.6-3.2-1.6M12 5.5v1.7M12 16.8v1.7"/>',
 share:'<circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.3M8.3 13.2l7.4 4.3"/>',
 globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/>',
 wallet:'<path d="M4 7.5V6.5A2 2 0 0 1 6 4.5h11v3"/><rect x="3" y="7.5" width="18" height="12" rx="2.5"/><path d="M15.5 13.5h2.5"/>',
@@ -3500,7 +3518,7 @@ document.addEventListener('click',function(e){
 setInterval(function(){ if(!document.getElementById('view-today').hidden) renderToday(); },30000);
 
 // ---------- Theme ----------
-function applyTheme(){ if(!meta.theme) meta.theme='light'; var t=meta.theme, r=document.documentElement; if(t==='auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme',t); var s=document.getElementById('themeSeg'); if(s) s.innerHTML=[['light','sun','Light'],['dark','moon','Dark'],['auto','auto','Auto']].map(function(x){ return '<button type="button" data-theme-set="'+x[0]+'" aria-pressed="'+(t===x[0])+'">'+ic(x[1])+x[2]+'</button>'; }).join(''); }
+function applyTheme(){ if(!meta.theme) meta.theme='auto'; var t=meta.theme, r=document.documentElement; if(t==='auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme',t); var s=document.getElementById('themeSeg'); if(s) s.innerHTML=[['light','sun','Light'],['dark','moon','Dark'],['auto','auto','Auto']].map(function(x){ return '<button type="button" data-theme-set="'+x[0]+'" aria-pressed="'+(t===x[0])+'">'+ic(x[1])+x[2]+'</button>'; }).join(''); }
 document.addEventListener('click',function(e){ var b=e.target.closest('[data-theme-set]'); if(b){ meta.theme=b.dataset.themeSet; save(); applyTheme(); } });
 applyTheme();
 
@@ -3635,7 +3653,7 @@ function moneyState(pct){ return pct>=100?'ms-over':(pct>=80?'ms-warn':'ms-ok');
 function renderTodayMoney(){
   var el=document.getElementById('mTeaser'); if(!el) return; var s=moneyStats();
   el.className='money-teaser '+moneyState(s.pct);
-  el.innerHTML='<span class="mt-row"><span class="mt-ic" aria-hidden="true">'+ic('cash')+'</span><span class="mt-tx"><b>Today · '+moneyFmt(s.today)+'</b><small>of '+moneyFmt(s.allowed)+' allowed · '+moneyFmt(s.todayLeft)+' left</small></span><span class="mt-pc">'+s.pct+'%</span></span><span class="mt-bar" role="progressbar" aria-label="Monthly budget used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(100,s.pct)+'"><span style="width:'+Math.min(100,s.pct)+'%"></span></span>';
+  el.innerHTML='<span class="mt-row"><span class="mt-ic" aria-hidden="true">'+ic('dollar')+'</span><span class="mt-tx"><b>Today · '+moneyFmt(s.today)+'</b><small>of '+moneyFmt(s.allowed)+' allowed · '+moneyFmt(s.todayLeft)+' left</small></span><span class="mt-pc">'+s.pct+'%</span></span><span class="mt-bar" role="progressbar" aria-label="Monthly budget used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(100,s.pct)+'"><span style="width:'+Math.min(100,s.pct)+'%"></span></span>';
 }
 function renderMoneyHero(){
   var s=moneyStats(), el=document.getElementById('mHero');
@@ -3793,7 +3811,7 @@ function renderMoneyDebts(){
   var open=money.debts.filter(function(d){ return !d.settled; }).sort(function(a,b){ return a.dir===b.dir?(a.date<b.date?1:-1):(a.dir==='me'?-1:1); });
   var me=0, them=0; open.forEach(function(d){ if(d.dir==='me') me+=d.amount; else them+=d.amount; });
   el.innerHTML=open.length?'<div class="mdebt-sum"><span class="pos">Owed to you<b>'+moneyFmt(me)+'</b></span><span class="neg">You owe<b>'+moneyFmt(them)+'</b></span></div>'+open.map(function(d){
-    return '<div class="mbill"><span class="mrow-ic mini" style="--cc:'+(d.dir==='me'?'#2E7D5B':'#D96F3E')+'" aria-hidden="true">'+esc((d.name||'?').trim().charAt(0).toUpperCase())+'</span><div class="mbill-b"><b>'+(d.dir==='me'?esc(d.name)+' owes you':'You owe '+esc(d.name))+'</b><small class="mw-sub">'+(d.what?esc(d.what)+' · ':'')+shortDate(d.date)+'</small></div><span class="mbill-amt">'+moneyFmt(d.amount)+'</span><button type="button" class="mpay" data-mdebt="'+d.id+'">Settled</button></div>'; }).join('')
+    return '<div class="mbill"><span class="mrow-ic mini" style="--cc:'+(d.dir==='me'?'#2E7D5B':'#D96F3E')+'" aria-hidden="true">'+esc((d.name||'?').trim().charAt(0).toUpperCase())+'</span><div class="mbill-b"><b>'+(d.dir==='me'?esc(d.name)+' owes you':'You owe '+esc(d.name))+'</b><small class="mw-sub">'+(d.what?esc(d.what)+' · ':'')+(d.at?exact(d.at):shortDate(d.date))+'</small></div><span class="mbill-amt">'+moneyFmt(d.amount)+'</span><button type="button" class="mpay" data-mdebt="'+d.id+'">Settled</button></div>'; }).join('')
     :'<div class="mempty">No one owes anyone. Split a taxi or a meal and it shows up here.</div>';
 }
 function renderDebtForm(){
@@ -3844,8 +3862,8 @@ function renderMoneySettingsPlus(){
 }
 function addDebts(dir,amount,ppl,who,what,wal){
   var names=who?who.split(/\s*[,،&]\s*|\s+and\s+|\s+w\s+/i).filter(Boolean):[];
-  if(dir==='me'&&names.length>1&&names.length===ppl-1){ var each=Math.round(amount/names.length); names.forEach(function(nm){ money.debts.push({id:mid(),name:nm,amount:each,dir:'me',what:what,date:today(),wallet:wal}); }); }
-  else money.debts.push({id:mid(),name:who||(dir==='me'&&ppl>2?'Friends':'Friend'),amount:amount,dir:dir,what:what,date:today(),wallet:wal});
+  if(dir==='me'&&names.length>1&&names.length===ppl-1){ var each=Math.round(amount/names.length); names.forEach(function(nm){ money.debts.push({at:Date.now(),id:mid(),name:nm,amount:each,dir:'me',what:what,date:today(),wallet:wal}); }); }
+  else money.debts.push({at:Date.now(),id:mid(),name:who||(dir==='me'&&ppl>2?'Friends':'Friend'),amount:amount,dir:dir,what:what,date:today(),wallet:wal});
 }
 function addSpend(list){
   var ppl=splitOn()?moneyPeople:1, pay=ppl>1?moneyPay:'each', isT=moneyCat==='transport', wal=moneyWallet||'cash', who=(moneyWho||'').trim(), total=0, owe=0;
@@ -3921,7 +3939,7 @@ function reportPayload(r){
     k:r.cats.map(function(x){ return [x.id,x.name,x.color,x.v]; }),
     p:r.prev?[r.prev.spent,r.prev.inn,r.prev.saved]:null,
     t:[r.trips,r.shared,r.ssave,r.cdAvg],
-    e:r.list.slice(-300).map(function(g){ var t=g.cat==='transport'?tInfo(g):null, x=t?(t.mode||'')+'.'+(t.dir||''):(/^Shared with/.test(g.note||'')?'':(g.note||'')), row=[+g.date.slice(8,10),g.cat,g.amount,x]; if((g.people||1)>1) row.push(g.people); return row; })};
+    e:r.list.slice(-300).map(function(g){ var t=g.cat==='transport'?tInfo(g):null, x=t?(t.mode||'')+'.'+(t.dir||''):(/^Shared with/.test(g.note||'')?'':(g.note||'')), row=[+g.date.slice(8,10),g.cat,g.amount,x,g.people||1,g.at?pad2(new Date(g.at).getHours())+':'+pad2(new Date(g.at).getMinutes()):'']; return row; })};
 }
 function b64u(bytes){ var s='', CH=0x8000; for(var i=0;i<bytes.length;i+=CH) s+=String.fromCharCode.apply(null,bytes.subarray(i,i+CH)); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
 function packReport(obj){
@@ -4041,9 +4059,8 @@ document.addEventListener('click',function(e){
   if(e.target.closest('#mDebtAdd')){ debtFormOpen=!debtFormOpen; renderDebtForm(); var ni=document.getElementById('mdName'); if(debtFormOpen&&ni) ni.focus(); return; }
   if((t=e.target.closest('[data-mddir]'))){ debtDir=t.dataset.mddir; t.parentNode.querySelectorAll('[data-mddir]').forEach(function(x){ var on=x===t; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on); }); return; }
   if(e.target.closest('#mdSave')){ var nm=document.getElementById('mdName').value.trim(), am=parseInt(document.getElementById('mdAmt').value,10); if(!nm||!(am>0)){ toast('Add a name and an amount'); return; }
-    money.debts.push({id:mid(),name:nm,amount:am,dir:debtDir,what:'',date:today(),wallet:money.lastWallet||'cash'}); debtFormOpen=false; saveMoney(); renderDebtForm(); renderMoney(); toast(debtDir==='me'?nm+' owes you '+moneyFmt(am):'You owe '+nm+' '+moneyFmt(am)); return; }
+    money.debts.push({at:Date.now(),id:mid(),name:nm,amount:am,dir:debtDir,what:'',date:today(),wallet:money.lastWallet||'cash'}); debtFormOpen=false; saveMoney(); renderDebtForm(); renderMoney(); toast(debtDir==='me'?nm+' owes you '+moneyFmt(am):'You owe '+nm+' '+moneyFmt(am)); return; }
   if((t=e.target.closest('[data-mrepgo]'))){ repMonth=shiftMonth(repMonth,+t.dataset.mrepgo); renderMoneyReport(); return; }
-  if((t=e.target.closest('[data-mreplang]'))){ repLang=t.dataset.mreplang; renderMoneyReport(); return; }
   if(e.target.closest('#mRepBanner')){ repMonth=money.reportNew; money.reportSeen=money.reportNew; saveMoney(); setTimeout(function(){ var sec=document.getElementById('mRepSec'); if(sec) sec.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); },380); }
   if(e.target.closest('#mReset')){ if(!confirm('Reset money data? This clears every expense, money in, savings and who-owes-who. Your budget, limits, categories and bills stay.')) return;
     money.log=[]; money.income=[]; money.saves=[]; money.debts=[]; money.adjust=[]; money.fares={}; money.limitWarn={}; money.walletsSince=today(); money.seenMonth=monthKey(today()); money.warned80=false; money.warned100=false; money.recurring.forEach(function(r){ r.lastPaid=null; }); saveMoney(); renderMoney(); toast('Money data reset'); return; }
@@ -4182,7 +4199,7 @@ function wireAuth(){
 // --- account card (Profile & guide)
 function acctStatus(why){
   var el=document.getElementById('acctStatus'); if(!el) return;
-  var t={off:'',syncing:'Saving…',ok:'Synced'+(SY.last?' · '+timeAgo(SY.last):''),err:why==='offline'?'Offline · it syncs when you’re back online':'Couldn’t sync · '+(why||'try again'),wait:'Waiting for your choice below'}[syState]||'';
+  var t={off:'',syncing:'Saving…',ok:'Synced'+(SY.last?' · '+exact(SY.last):''),err:why==='offline'?'Offline · it syncs when you’re back online':'Couldn’t sync · '+(why||'try again'),wait:'Waiting for your choice below'}[syState]||'';
   el.textContent=t; el.className='acct-st st-'+syState;
 }
 function timeAgo(t){ var m=Math.round((Date.now()-t)/60000); return m<1?'just now':(m<60?m+' min ago':new Date(t).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})); }
@@ -4262,66 +4279,72 @@ setInterval(function(){ if(acct.user&&document.visibilityState==='visible') syPu
 (function(){ var h=location.hash||''; var signedBefore=false; try{ signedBefore=!!localStorage.getItem('orbit-auth'); }catch(e){}
   if(signedBefore||/access_token|type=recovery|error_description/.test(h)) loadSB().catch(function(){ setSy('err','offline'); });
   renderAcct(); })();
-// ----- share a month: a link with an expiry date you choose (stored in your account when signed in) -----
-var repExp='week', repExpDate='', repMade=null, repActive=null, repActiveAt=0;
+// ----- share a month: a link with an expiry you choose (exact date + time). Stored in your account when signed in, so you can stop it with one tap. -----
+var repExp='day', repExpAt='', repMade=null, repActive=null, repActiveAt=0;
 function isoDay(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
-function repUntil(){ if(repExp==='pick'&&repExpDate) return repExpDate; var d=new Date(); d.setDate(d.getDate()+({day:1,week:7,month:30}[repExp]||7)); return isoDay(d); }
-function niceDay(ds){ return new Date(ds+'T00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
+function localDT(d){ return isoDay(d)+'T'+pad2(d.getHours())+':'+pad2(d.getMinutes()); }
+function repUntil(){ if(repExp==='custom') return repExpAt?new Date(repExpAt):null; var d=new Date(); d.setTime(d.getTime()+({hour:3600e3,day:864e5,week:7*864e5}[repExp]||864e5)); return d; }
+function exact(d){ d=new Date(d); return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
+function leftFor(d){ var m=Math.round((new Date(d)-Date.now())/60000); if(m<1) return 'ends now'; if(m<60) return m+' min left'; var h=Math.floor(m/60); if(h<48) return h+' h'+(m%60?' '+(m%60)+' min':'')+' left'; return Math.round(h/24)+' days left'; }
 function shareBox(){
-  var until=repUntil(), mn=monthOnly(repMonth), signed=!!acct.user, d1=new Date(); d1.setDate(d1.getDate()+1); var dmax=new Date(); dmax.setDate(dmax.getDate()+365);
-  var h='<div class="mrep-share" id="mRepShareBox"><h3 class="mrep-h">Send '+mn+' to someone</h3>'+
-    '<span class="mrep-lbl">Language</span>'+chipRow('mreplang',[['ku','کوردی'],['en','English']],repLang,'Language of the shared report','mreplang')+
-    '<span class="mrep-lbl">The link works until</span>'+chipRow('mrepexp',[['day','1 day'],['week','1 week'],['month','1 month'],['pick','Pick a date']],repExp,'How long the link works','mrepexp')+
-    (repExp==='pick'?'<input type="date" class="mrep-date" id="mRepDate" aria-label="Last day the link works" min="'+isoDay(d1)+'" max="'+isoDay(dmax)+'" value="'+(repExpDate||'')+'">':'')+
-    '<p class="mrep-until">'+(repExp==='pick'&&!repExpDate?'Pick the last day it should open.':'Opens until the end of <b>'+niceDay(until)+'</b>, then it stops.')+'</p>';
-  if(repMade&&repMade.month===repMonth) h+='<div class="mrep-done"><div><b>Link ready ✓</b><small>'+(repMade.lang==='ku'?'Kurdish':'English')+' · until '+niceDay(repMade.until)+'</small></div><div class="mrep-btns"><button type="button" class="btn main" id="mRepSend">Send link</button><button type="button" class="mpay" id="mRepCopy">Copy</button><button type="button" class="mpay" id="mRepView">Open</button></div></div>';
-  else h+='<div class="mrep-btns"><button type="button" class="btn main" id="mRepMake"'+(repExp==='pick'&&!repExpDate?' disabled':'')+'>Create link for '+mn+'</button></div>';
-  h+='<p class="mhint">'+(signed?'Only '+mn+' is in the link. Stop it any time under “Links you shared”.':'Only '+mn+' is in the link. <button type="button" class="mlink inl" data-gosignin="1">Sign in to Orbit</button> so you can also stop a link before its date.')+'</p></div>';
+  var until=repUntil(), mn=monthOnly(repMonth), signed=!!acct.user, now=new Date(), mx=new Date(); mx.setDate(mx.getDate()+365);
+  var h='<div class="mrep-share" id="mRepShareBox"><h3 class="mrep-h">Send '+mn+' to family</h3>'+
+    '<span class="mrep-lbl">The link stops working after</span>'+chipRow('mrepexp',[['hour','1 hour'],['day','1 day'],['week','1 week'],['custom','Custom']],repExp,'How long the link works','mrepexp')+
+    (repExp==='custom'?'<label class="mrep-lbl" for="mRepDate">Last moment it opens</label><input type="datetime-local" class="mrep-date" id="mRepDate" min="'+localDT(now)+'" max="'+localDT(mx)+'" value="'+(repExpAt||'')+'">':'')+
+    '<p class="mrep-until">'+(until&&until>now?'Works until <b>'+exact(until)+'</b> · '+leftFor(until)+'. Then it shows “expired”.':'Pick the date and time it should stop.')+'</p>';
+  if(repMade&&repMade.month===repMonth) h+='<div class="mrep-done"><div><b>Link ready ✓</b><small>Works until '+exact(repMade.until)+'</small></div><div class="mrep-btns"><button type="button" class="btn main" id="mRepSend">Send link</button><button type="button" class="mpay" id="mRepCopy">Copy</button><button type="button" class="mpay" id="mRepView">Open</button></div></div>';
+  else h+='<div class="mrep-btns"><button type="button" class="btn main" id="mRepMake"'+(until&&until>now?'':' disabled')+'>Create link for '+mn+'</button></div>';
+  h+='<p class="mhint">'+(signed?'The page opens in Kurdish; your family can switch to English. Stop a link any time below.':'The page opens in Kurdish. <button type="button" class="mlink inl" data-gosignin="1">Sign in to Orbit</button> so you can also stop a link before its time.')+'</p></div>';
   if(signed) h+='<div class="mrep-links" id="mRepLinks">'+activeHtml()+'</div>';
   return h;
 }
 function activeHtml(){
   if(repActive===null) return '<h3 class="mrep-h">Links you shared</h3><p class="mhint">Loading…</p>';
   if(!repActive.length) return '';
-  return '<h3 class="mrep-h">Links you shared</h3>'+repActive.map(function(x){ return '<div class="mbill"><span class="mrow-ic" style="--cc:#3E8ED0" aria-hidden="true">'+ic('chart')+'</span><div class="mbill-b"><b>'+monthName(x.month)+'</b><small class="mw-sub">'+(x.lang==='ku'?'Kurdish':'English')+' · until '+new Date(x.expires_at).toLocaleDateString('en-US',{month:'short',day:'numeric'})+'</small></div><button type="button" class="mpay" data-repcopy="'+x.id+'">Copy</button><button type="button" class="mpay stop" data-repstop="'+x.id+'">Stop</button></div>'; }).join('');
+  return '<div class="mrep-lh"><h3 class="mrep-h">Links you shared</h3>'+(repActive.length>1?'<button type="button" class="mlink stopall" data-repstopall="1">Stop all</button>':'')+'</div>'+repActive.map(function(x){
+    return '<div class="mlinkrow"><span class="mrow-ic" style="--cc:#3E8ED0" aria-hidden="true">'+ic('chart')+'</span><div class="mbill-b"><b>'+monthName(x.month)+'</b><small class="mw-sub">Sent '+exact(x.created_at)+'</small><small class="mw-sub">Until '+exact(x.expires_at)+' · '+leftFor(x.expires_at)+'</small></div><div class="mlink-btns"><button type="button" class="mpay" data-repcopy="'+x.id+'">Copy</button><button type="button" class="mpay stop" data-repstop="'+x.id+'">Stop</button></div></div>'; }).join('');
 }
 function loadActive(force){
   if(!SB||!acct.user) return;
   if(!force&&Date.now()-repActiveAt<30000&&repActive!==null) return;
   repActiveAt=Date.now();
-  SB.from('orbit_reports').select('id,month,lang,expires_at').eq('revoked',false).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(20)
+  SB.from('orbit_reports').select('id,month,lang,expires_at,created_at').eq('revoked',false).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(20)
     .then(function(r){ if(r.error) throw r.error; repActive=r.data||[]; var el=document.getElementById('mRepLinks'); if(el) el.innerHTML=activeHtml(); })
     .catch(function(){ repActive=repActive||[]; });
 }
 function serverLink(id){ return reportBase()+'#r='+id; }
 function createShare(btn){
-  var mk=repMonth, lang=repLang, until=repUntil(), payload=reportPayload(monthReport(mk)); payload.x=until;
+  var mk=repMonth, until=repUntil(); if(!until||until<=new Date()){ toast('Pick a time in the future'); return; }
+  var payload=reportPayload(monthReport(mk)); payload.x=until.toISOString(); payload.sa=new Date().toISOString(); payload.g=saveTarget();
   btn.disabled=true; btn.textContent='Creating…';
-  var done=function(url){ repMade={month:mk,lang:lang,until:until,url:url}; renderMoneyReport(); buzz(); var s=document.getElementById('mRepSend'); if(s) s.focus(); };
+  var done=function(url){ repMade={month:mk,until:until.toISOString(),url:url}; renderMoneyReport(); buzz(); var s=document.getElementById('mRepSend'); if(s) s.focus(); };
   var fail=function(){ btn.disabled=false; btn.textContent='Create link for '+monthOnly(mk); toast('Couldn’t create the link. Check your internet.'); };
   if(SB&&acct.user){
-    SB.from('orbit_reports').insert({month:mk,lang:lang,data:payload,expires_at:new Date(until+'T23:59:59').toISOString()}).select('id').single()
+    SB.from('orbit_reports').insert({month:mk,lang:'ku',data:payload,expires_at:until.toISOString()}).select('id').single()
       .then(function(r){ if(r.error) throw r.error; repActive=null; loadActive(true); done(serverLink(r.data.id)); }).catch(fail);
-  } else packReport(payload).then(function(z){ done(reportBase()+'#'+lang+'.'+z); }).catch(fail);
+  } else packReport(payload).then(function(z){ done(reportBase()+'#ku.'+z); }).catch(fail);
 }
-function sendLink(url,mk,lang){ var ttl=lang==='ku'?'ڕاپۆرتی مانگانەی '+kuMonthName(mk):'Monthly report · '+monthName(mk);
+function sendLink(url,mk){ var ttl='ڕاپۆرتی مانگانەی '+kuMonthName(mk);
   if(navigator.share) navigator.share({title:ttl,text:ttl,url:url}).catch(function(){});
   else copyText(url).then(function(){ toast('Link copied · paste it in WhatsApp or Telegram'); }); }
+function stopLinks(ids,btn){ if(btn) btn.disabled=true;
+  return SB.from('orbit_reports').update({revoked:true}).in('id',ids).then(function(r){ if(r.error) throw r.error; repActive=(repActive||[]).filter(function(x){ return ids.indexOf(x.id)<0; }); if(repMade&&ids.some(function(i){ return repMade.url===serverLink(i); })) repMade=null; renderMoneyReport(); toast(ids.length>1?'All links stopped':'Stopped · that link no longer opens'); })
+    .catch(function(){ if(btn) btn.disabled=false; toast('Couldn’t stop it. Check your internet.'); }); }
 document.addEventListener('click',function(e){
   var t;
-  if((t=e.target.closest('[data-mrepexp]'))){ repExp=t.dataset.mrepexp; repMade=null; renderMoneyReport(); if(repExp==='pick'){ var di=document.getElementById('mRepDate'); if(di){ try{ di.showPicker&&di.showPicker(); }catch(x){} } } return; }
-  if((t=e.target.closest('[data-mreplang]'))){ repMade=null; renderMoneyReport(); return; }
+  if((t=e.target.closest('[data-mrepexp]'))){ repExp=t.dataset.mrepexp; repMade=null; if(repExp==='custom'&&!repExpAt){ var d=new Date(); d.setHours(d.getHours()+3,0,0,0); repExpAt=localDT(d); } renderMoneyReport(); return; }
   if((t=e.target.closest('#mRepMake'))){ createShare(t); return; }
-  if(e.target.closest('#mRepSend')&&repMade){ sendLink(repMade.url,repMade.month,repMade.lang); return; }
+  if(e.target.closest('#mRepSend')&&repMade){ sendLink(repMade.url,repMade.month); return; }
   if(e.target.closest('#mRepCopy')&&repMade){ copyText(repMade.url).then(function(){ toast('Link copied'); }); return; }
   if(e.target.closest('#mRepView')&&repMade){ window.open(repMade.url,'_blank','noopener'); return; }
   if((t=e.target.closest('[data-repcopy]'))){ copyText(serverLink(t.dataset.repcopy)).then(function(){ toast('Link copied'); }); return; }
-  if((t=e.target.closest('[data-repstop]'))){ if(!confirm('Stop this link? Whoever has it won’t be able to open it any more.')) return; var id=t.dataset.repstop; t.disabled=true;
-    SB.from('orbit_reports').update({revoked:true}).eq('id',id).then(function(r){ if(r.error) throw r.error; repActive=(repActive||[]).filter(function(x){ return x.id!==id; }); if(repMade&&repMade.url===serverLink(id)) repMade=null; renderMoneyReport(); toast('Stopped · that link no longer opens'); }).catch(function(){ t.disabled=false; toast('Couldn’t stop it. Check your internet.'); }); return; }
-  if(e.target.closest('[data-gosignin]')){ var g=document.querySelector('.helpbtn'); if(g) g.click(); setTimeout(function(){ var c=document.getElementById('acctCard'); if(c) c.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); },350); return; }
+  if((t=e.target.closest('[data-repstop]'))){ stopLinks([t.dataset.repstop],t); return; }
+  if((t=e.target.closest('[data-repstopall]'))){ if(!confirm('Stop all your shared links? Nobody will be able to open them.')) return; stopLinks((repActive||[]).map(function(x){ return x.id; }),t); return; }
+  if(e.target.closest('[data-gosignin]')){ var g=document.querySelector('.helpbtn[data-view="guide"]'); if(g) g.click(); setTimeout(function(){ var c=document.getElementById('acctCard'); if(c) c.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); },350); return; }
   if(e.target.closest('#mShareTop')){ var sec=document.getElementById('mRepSec'); if(sec) sec.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); return; }
 });
-document.addEventListener('change',function(e){ if(e.target&&e.target.id==='mRepDate'){ repExpDate=e.target.value; repMade=null; renderMoneyReport(); } });
+document.addEventListener('change',function(e){ if(e.target&&e.target.id==='mRepDate'){ repExpAt=e.target.value; repMade=null; renderMoneyReport(); } });
+setInterval(function(){ var ae=document.activeElement; if(!document.getElementById('view-money').hidden&&document.getElementById('mRepShareBox')&&!(ae&&ae.id==='mRepDate')) renderMoneyReport(); },60000);
 moneyMonthCheck();
 renderMoney();
 
@@ -4414,7 +4437,7 @@ var KU={
 'Problem Solving':'چارەسەری کێشە','Computer Fund.':'بنەماکانی کۆمپیوتەر','Computer Fundamentals':'بنەماکانی کۆمپیوتەر','Public Speaking':'قسەکردن بەردەم خەڵک',
 'Saturday':'شەممە','Sunday':'یەکشەممە','Monday':'دووشەممە','Tuesday':'سێشەممە','Wednesday':'چوارشەممە','Thursday':'پێنجشەممە','Friday':'هەینی',
 'Sat':'شەممە','Sun':'یەکش','Mon':'دووش','Tue':'سێش','Wed':'چوارش','Thu':'پێنجش','Fri':'هەینی','Sa':'ش','Su':'ی','Mo':'د','Tu':'س','We':'چ','Th':'پ','Fr':'هـ',
-'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
+'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
 'what you have now. Orbit then keeps track of what’s left.':'بۆ ئەوەی ئێستا چەندت هەیە. پاشان Orbit ئەوەی ماوە بەدوادا دەچێت.','Opens until the end of':'تا کۆتایی ڕۆژی',', then it stops.':'، پاشان دەوەستێت.',
 'Sign in to Orbit':'بچۆ ژوورەوە بۆ Orbit','so you can also stop a link before its date.':'بۆ ئەوەی بتوانیت بەستەرێک پێش کاتەکەی ڕابگریت.'
 };
@@ -4473,6 +4496,10 @@ var KU_RULES=[
  [/^Your (.+) report is ready$/,function(m){ return 'ڕاپۆرتی '+kuSeg(m[1])+' ئامادەیە'; }],
  [/^Then: (.+)$/,function(m){ return 'پاشان: '+kuTime(m[1]).replace(' in room ',' لە ژووری ').replace(' at ',' لە کاتژمێر '); }],
  [/^Add (.+) to (.+)$/,function(m){ return 'زیادکردنی '+kuMoney(m[1])+' بۆ '+kuSeg(m[2]); }],
+ [/^Send (.+) to family$/,function(m){ return 'ناردنی '+kuSeg(m[1])+' بۆ خێزان'; }],
+ [/^(Sent|Until) (.+)$/,function(m){ return (m[1]==='Sent'?'نێردرا ':'تا ')+kuTime(m[2]); }],
+ [/^Works until (.+)$/,function(m){ return 'کار دەکات تا '+kuTime(m[1]); }],
+ [/^Synced · (.+)$/,function(m){ return 'هاوکاتکراوە · '+kuTime(m[1]); }],
  [/^Only (.+) is in the link\.(.*)$/,function(m){ return 'تەنها '+kuSeg(m[1])+' لە بەستەرەکەدایە.'+(/Stop it/.test(m[2])?' هەر کاتێک بتەوێت لە «ئەو بەستەرانەی هاوبەشت کردوون» ڕایبگرە.':''); }],
  [/^, last saved (.+) on a (.+)\. This (.+) has some too\. What should it use\?$/,function(m){ return '، دوایین جار '+kuTime(m[1])+' لەسەر '+m[2]+' پاشەکەوت کراوە. ئەم '+m[3]+'ـەش هەندێکی هەیە. کامیان بەکاربهێنێت؟'; }],
  [/^Save (.+ IQD)$/,function(m){ return 'پاشەکەوتکردنی '+kuMoney(m[1]); }]
@@ -4503,7 +4530,7 @@ function langNow(){ return meta&&meta.lang==='ku'?'ku':'en'; }
 function applyLang(){
   var ku=langNow()==='ku';
   document.documentElement.lang=ku?'ckb':'en'; document.documentElement.dir=ku?'rtl':'ltr';
-  var b=document.getElementById('langBtn'); if(b){ b.setAttribute('data-lang',ku?'ku':'en'); b.querySelector('.lb').textContent=ku?'EN':'کو'; }
+  document.querySelectorAll('[data-setlang]').forEach(function(x){ var on=x.dataset.setlang===(ku?'ku':'en'); x.setAttribute('aria-checked',on); x.classList.toggle('on',on); });
   if(!ku||i18nObs) return;
   trTree(document.body);
   i18nObs=new MutationObserver(function(ms){ ms.forEach(function(m){
@@ -4512,8 +4539,14 @@ function applyLang(){
     else m.addedNodes.forEach(trTree); }); });
   i18nObs.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title']});
 }
-document.addEventListener('click',function(e){ if(!e.target.closest('#langBtn')) return;
-  meta.lang=langNow()==='ku'?'en':'ku'; save(); try{ localStorage.setItem('orbit-splash-day',today()); }catch(x){} location.reload(); });
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu'), b=document.getElementById('langBtn'); if(!m||!b) return;
+  var pick=e.target.closest('[data-setlang]');
+  if(pick){ m.hidden=true; b.setAttribute('aria-expanded','false'); if(pick.dataset.setlang!==langNow()){ meta.lang=pick.dataset.setlang; save(); try{ localStorage.setItem('orbit-splash-day',today()); }catch(x){} location.reload(); } return; }
+  if(e.target.closest('#langBtn')){ var open=m.hidden; m.hidden=!open; b.setAttribute('aria-expanded',String(open)); if(open){ var f=m.querySelector('.on')||m.querySelector('button'); if(f) f.focus(); } return; }
+  if(!m.hidden&&!e.target.closest('#langMenu')){ m.hidden=true; b.setAttribute('aria-expanded','false'); }
+});
+document.addEventListener('keydown',function(e){ var m=document.getElementById('langMenu'); if(e.key==='Escape'&&m&&!m.hidden){ m.hidden=true; var b=document.getElementById('langBtn'); b.setAttribute('aria-expanded','false'); b.focus(); } });
 applyLang();
 </script>
 <script>
