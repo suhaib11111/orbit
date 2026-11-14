@@ -1611,6 +1611,41 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:calc(84px +
 .mlink-btns{grid-column:2;display:flex;gap:.45rem}
 .mlink-btns .mpay{flex:1}
 .mrepexp .mtchip{font-size:.82rem}
+/* v4: Send to family, clean spacing */
+.mshare{padding:1.15rem 1.1rem;margin-top:.9rem}
+.msh-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem}
+.msh-head > div{flex:1;min-width:0}
+.msh-head b{display:block;font:800 1.05rem/1.3 var(--disp)}
+.msh-head small{display:block;color:var(--muted);font-weight:600;font-size:.84rem;margin-top:.15rem}
+.msh-ic{flex:none;width:2.7rem;height:2.7rem;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,#3E8ED0 16%,var(--surface));color:#3E8ED0}
+.msh-ic.lk{background:color-mix(in srgb,#9B7BE0 16%,var(--surface));color:#9B7BE0}
+.msh-ic .ic,.msh-ok .ic,.msh-until > .ic{width:1.25rem;height:1.25rem;vertical-align:0}
+.msh-step{display:block;font-weight:800;font-size:.88rem;margin:0 0 .6rem}
+.msh-dt{margin-top:1rem}
+.mshare .mrepexp{gap:.5rem}
+.mshare .mrepexp .mtchip{min-height:48px;font-size:.86rem}
+.mshare .mrep-date{margin-top:0}
+.msh-until{display:flex;gap:.7rem;align-items:flex-start;margin-top:1rem;padding:.85rem .95rem;border-radius:14px;background:var(--soft)}
+.msh-until > .ic{flex:none;color:#3E8ED0;margin-top:.15rem}
+.msh-until b{display:block;font-weight:800;font-size:.95rem;line-height:1.35}
+.msh-until small{display:block;color:var(--muted);font-weight:600;font-size:.82rem;margin-top:.2rem}
+.msh-go{margin-top:1.1rem!important;min-height:52px}
+.msh-note{margin:1rem 0 0;color:var(--muted);font-weight:600;font-size:.84rem;line-height:1.55}
+.msh-done{padding:1rem;border-radius:16px;background:color-mix(in srgb,#2E7D5B 12%,var(--surface));border:1px solid color-mix(in srgb,#2E7D5B 35%,var(--line))}
+.msh-row{display:flex;gap:.7rem;align-items:center}
+.msh-row b{display:block;font-weight:800}
+.msh-row small{display:block;color:var(--muted);font-weight:600;font-size:.84rem;margin-top:.1rem}
+.msh-ok{flex:none;width:2.2rem;height:2.2rem;border-radius:50%;display:grid;place-items:center;background:#2E7D5B;color:#fff}
+.msh-btns{display:grid;grid-template-columns:2fr 1fr 1fr;gap:.5rem;margin-top:1rem}
+.msh-btns .btn{margin:0;min-height:48px}
+.msh-btns .mpay{min-height:48px}
+.msh-again{display:block;margin-top:.6rem}
+#mLinks .msh-head{margin-bottom:.4rem}
+#mLinks .mlinkrow{display:block;padding:.95rem 0;border-top:1px solid var(--line)}
+.mlink-info b{display:block;font-weight:800}
+.mlink-info small{display:block;color:var(--muted);font-weight:600;font-size:.82rem;margin-top:.15rem}
+#mLinks .mlink-btns{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem}
+#mLinks .mlink-btns .mpay{min-height:44px}
 @media (prefers-reduced-motion:reduce){.mhero,.mt-pc,.mt-bar span,.mh-bar span,.mc-track span{transition:none!important}.mrow.dotpop .mrow-ic{animation:none!important}}
 </style>
 
@@ -1857,7 +1892,7 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:calc(84px +
         <div class="mhero ms-ok" id="mHero"></div>
         <div class="card mquick" id="mQuick"></div>
       </div><div class="col-b">
-        <section class="msec" id="mRepSec"><div class="msec-h"><h2>Monthly report</h2></div><div class="card mrep" id="mReport"></div></section>
+        <section class="msec" id="mRepSec"><div class="msec-h"><h2>Monthly report</h2></div><div class="card mrep" id="mReport"></div><div class="card mshare" id="mShare" hidden></div><div class="card mshare" id="mLinks" hidden></div></section>
         <section class="msec"><div class="msec-h"><h2>Today</h2><b id="mTodayTot"></b></div><div id="mToday"></div></section>
         <section class="msec"><div class="msec-h"><h2>Savings &amp; wallets</h2></div><div id="mWallets"></div></section>
         <section class="msec"><div class="msec-h"><h2>Who owes who</h2><button type="button" class="mlink" id="mDebtAdd">+ Add</button></div><div id="mDebtForm" hidden></div><div id="mDebts"></div></section>
@@ -3973,7 +4008,8 @@ function renderMoneyReport(){
   } else body='<div class="mempty">Nothing logged in '+monthName(repMonth)+' yet.</div>';
   if(has&&acct.user) loadActive();
   el.innerHTML='<div class="mrep-nav"><button type="button" class="mrep-arrow" data-mrepgo="-1" aria-label="Previous month"'+(canPrev?'':' disabled')+'>‹</button><b>'+monthName(repMonth)+'</b><button type="button" class="mrep-arrow" data-mrepgo="1" aria-label="Next month"'+(canNext?'':' disabled')+'>›</button></div>'+body+
-    (has?shareBox():(acct.user?'<div class="mrep-links" id="mRepLinks">'+activeHtml()+'</div>':''));
+    '';
+  renderShareCards(has);
 }
 function renderRepBanner(){
   var b=document.getElementById('mRepBanner'); if(!b) return;
@@ -4286,30 +4322,39 @@ function localDT(d){ return isoDay(d)+'T'+pad2(d.getHours())+':'+pad2(d.getMinut
 function repUntil(){ if(repExp==='custom') return repExpAt?new Date(repExpAt):null; var d=new Date(); d.setTime(d.getTime()+({hour:3600e3,day:864e5,week:7*864e5}[repExp]||864e5)); return d; }
 function exact(d){ d=new Date(d); return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
 function leftFor(d){ var m=Math.round((new Date(d)-Date.now())/60000); if(m<1) return 'ends now'; if(m<60) return m+' min left'; var h=Math.floor(m/60); if(h<48) return h+' h'+(m%60?' '+(m%60)+' min':'')+' left'; return Math.round(h/24)+' days left'; }
+function renderShareCards(has){
+  var sc=document.getElementById('mShare'), lc=document.getElementById('mLinks');
+  if(sc){ sc.hidden=!has; sc.innerHTML=has?shareBox():''; }
+  if(lc){ var lh=acct.user?activeHtml():''; lc.hidden=!lh; lc.innerHTML='<div id="mRepLinks">'+lh+'</div>'; }
+}
 function shareBox(){
-  var until=repUntil(), mn=monthOnly(repMonth), signed=!!acct.user, now=new Date(), mx=new Date(); mx.setDate(mx.getDate()+365);
-  var h='<div class="mrep-share" id="mRepShareBox"><h3 class="mrep-h">Send '+mn+' to family</h3>'+
-    '<span class="mrep-lbl">The link stops working after</span>'+chipRow('mrepexp',[['hour','1 hour'],['day','1 day'],['week','1 week'],['custom','Custom']],repExp,'How long the link works','mrepexp')+
-    (repExp==='custom'?'<label class="mrep-lbl" for="mRepDate">Last moment it opens</label><input type="datetime-local" class="mrep-date" id="mRepDate" min="'+localDT(now)+'" max="'+localDT(mx)+'" value="'+(repExpAt||'')+'">':'')+
-    '<p class="mrep-until">'+(until&&until>now?'Works until <b>'+exact(until)+'</b> · '+leftFor(until)+'. Then it shows “expired”.':'Pick the date and time it should stop.')+'</p>';
-  if(repMade&&repMade.month===repMonth) h+='<div class="mrep-done"><div><b>Link ready ✓</b><small>Works until '+exact(repMade.until)+'</small></div><div class="mrep-btns"><button type="button" class="btn main" id="mRepSend">Send link</button><button type="button" class="mpay" id="mRepCopy">Copy</button><button type="button" class="mpay" id="mRepView">Open</button></div></div>';
-  else h+='<div class="mrep-btns"><button type="button" class="btn main" id="mRepMake"'+(until&&until>now?'':' disabled')+'>Create link for '+mn+'</button></div>';
-  h+='<p class="mhint">'+(signed?'The page opens in Kurdish; your family can switch to English. Stop a link any time below.':'The page opens in Kurdish. <button type="button" class="mlink inl" data-gosignin="1">Sign in to Orbit</button> so you can also stop a link before its time.')+'</p></div>';
-  if(signed) h+='<div class="mrep-links" id="mRepLinks">'+activeHtml()+'</div>';
+  var until=repUntil(), mn=monthName(repMonth), now=new Date(), mx=new Date(); mx.setDate(mx.getDate()+365); var ok=until&&until>now;
+  var h='<div class="msh-head"><span class="msh-ic" aria-hidden="true">'+ic('share')+'</span><div><b>Send to family</b><small>'+mn+' · opens in Kurdish</small></div></div>';
+  if(repMade&&repMade.month===repMonth){
+    h+='<div class="msh-done"><div class="msh-row"><span class="msh-ok" aria-hidden="true">'+ic('check')+'</span><div><b>Link ready</b><small>Works until '+exact(repMade.until)+'</small></div></div>'+
+      '<div class="msh-btns"><button type="button" class="btn main" id="mRepSend">Send link</button><button type="button" class="mpay" id="mRepCopy">Copy</button><button type="button" class="mpay" id="mRepView">Open</button></div></div>'+
+      '<button type="button" class="mlink msh-again" data-repnew="1">Make a different link</button>';
+  } else {
+    h+='<span class="msh-step">How long should the link work?</span>'+chipRow('mrepexp',[['hour','1 hour'],['day','1 day'],['week','1 week'],['custom','Custom']],repExp,'How long the link works','mrepexp')+
+      (repExp==='custom'?'<label class="msh-step msh-dt" for="mRepDate">Stops at</label><input type="datetime-local" class="mrep-date" id="mRepDate" min="'+localDT(now)+'" max="'+localDT(mx)+'" value="'+(repExpAt||'')+'">':'')+
+      '<div class="msh-until">'+ic('clock')+'<div>'+(ok?'<b>Works until '+exact(until)+'</b><small>'+leftFor(until)+' · after that it shows “expired”</small>':'<b>Pick when it should stop</b><small>Choose a date and time in the future</small>')+'</div></div>'+
+      '<button type="button" class="btn main msh-go" id="mRepMake"'+(ok?'':' disabled')+'>Create link</button>';
+  }
+  h+='<p class="msh-note">'+(acct.user?'Only '+mn+' is shared. You can stop the link any time below.':'Only '+mn+' is shared. <button type="button" class="mlink inl" data-gosignin="1">Sign in</button> to be able to stop a link early.')+'</p>';
   return h;
 }
 function activeHtml(){
-  if(repActive===null) return '<h3 class="mrep-h">Links you shared</h3><p class="mhint">Loading…</p>';
+  if(repActive===null) return '<p class="msh-note" style="margin:0">Loading your links…</p>';
   if(!repActive.length) return '';
-  return '<div class="mrep-lh"><h3 class="mrep-h">Links you shared</h3>'+(repActive.length>1?'<button type="button" class="mlink stopall" data-repstopall="1">Stop all</button>':'')+'</div>'+repActive.map(function(x){
-    return '<div class="mlinkrow"><span class="mrow-ic" style="--cc:#3E8ED0" aria-hidden="true">'+ic('chart')+'</span><div class="mbill-b"><b>'+monthName(x.month)+'</b><small class="mw-sub">Sent '+exact(x.created_at)+'</small><small class="mw-sub">Until '+exact(x.expires_at)+' · '+leftFor(x.expires_at)+'</small></div><div class="mlink-btns"><button type="button" class="mpay" data-repcopy="'+x.id+'">Copy</button><button type="button" class="mpay stop" data-repstop="'+x.id+'">Stop</button></div></div>'; }).join('');
+  return '<div class="msh-head"><span class="msh-ic lk" aria-hidden="true">'+ic('clock')+'</span><div><b>Links you shared</b><small>'+repActive.length+' working now</small></div>'+(repActive.length>1?'<button type="button" class="mlink stopall" data-repstopall="1">Stop all</button>':'')+'</div>'+
+    repActive.map(function(x){ return '<div class="mlinkrow"><div class="mlink-info"><b>'+monthName(x.month)+'</b><small>Sent '+exact(x.created_at)+'</small><small>Until '+exact(x.expires_at)+' · '+leftFor(x.expires_at)+'</small></div><div class="mlink-btns"><button type="button" class="mpay" data-repcopy="'+x.id+'">Copy</button><button type="button" class="mpay stop" data-repstop="'+x.id+'">Stop</button></div></div>'; }).join('');
 }
 function loadActive(force){
   if(!SB||!acct.user) return;
   if(!force&&Date.now()-repActiveAt<30000&&repActive!==null) return;
   repActiveAt=Date.now();
   SB.from('orbit_reports').select('id,month,lang,expires_at,created_at').eq('revoked',false).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(20)
-    .then(function(r){ if(r.error) throw r.error; repActive=r.data||[]; var el=document.getElementById('mRepLinks'); if(el) el.innerHTML=activeHtml(); })
+    .then(function(r){ if(r.error) throw r.error; repActive=r.data||[]; var el=document.getElementById('mRepLinks'), lc=document.getElementById('mLinks'); if(el) el.innerHTML=activeHtml(); if(lc) lc.hidden=!activeHtml(); })
     .catch(function(){ repActive=repActive||[]; });
 }
 function serverLink(id){ return reportBase()+'#r='+id; }
@@ -4334,6 +4379,7 @@ document.addEventListener('click',function(e){
   var t;
   if((t=e.target.closest('[data-mrepexp]'))){ repExp=t.dataset.mrepexp; repMade=null; if(repExp==='custom'&&!repExpAt){ var d=new Date(); d.setHours(d.getHours()+3,0,0,0); repExpAt=localDT(d); } renderMoneyReport(); return; }
   if((t=e.target.closest('#mRepMake'))){ createShare(t); return; }
+  if(e.target.closest('[data-repnew]')){ repMade=null; renderMoneyReport(); return; }
   if(e.target.closest('#mRepSend')&&repMade){ sendLink(repMade.url,repMade.month); return; }
   if(e.target.closest('#mRepCopy')&&repMade){ copyText(repMade.url).then(function(){ toast('Link copied'); }); return; }
   if(e.target.closest('#mRepView')&&repMade){ window.open(repMade.url,'_blank','noopener'); return; }
@@ -4344,7 +4390,7 @@ document.addEventListener('click',function(e){
   if(e.target.closest('#mShareTop')){ var sec=document.getElementById('mRepSec'); if(sec) sec.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); return; }
 });
 document.addEventListener('change',function(e){ if(e.target&&e.target.id==='mRepDate'){ repExpAt=e.target.value; repMade=null; renderMoneyReport(); } });
-setInterval(function(){ var ae=document.activeElement; if(!document.getElementById('view-money').hidden&&document.getElementById('mRepShareBox')&&!(ae&&ae.id==='mRepDate')) renderMoneyReport(); },60000);
+setInterval(function(){ var ae=document.activeElement; if(!document.getElementById('view-money').hidden&&!document.getElementById('mShare').hidden&&!(ae&&ae.id==='mRepDate')) renderMoneyReport(); },60000);
 moneyMonthCheck();
 renderMoney();
 
@@ -4437,7 +4483,7 @@ var KU={
 'Problem Solving':'چارەسەری کێشە','Computer Fund.':'بنەماکانی کۆمپیوتەر','Computer Fundamentals':'بنەماکانی کۆمپیوتەر','Public Speaking':'قسەکردن بەردەم خەڵک',
 'Saturday':'شەممە','Sunday':'یەکشەممە','Monday':'دووشەممە','Tuesday':'سێشەممە','Wednesday':'چوارشەممە','Thursday':'پێنجشەممە','Friday':'هەینی',
 'Sat':'شەممە','Sun':'یەکش','Mon':'دووش','Tue':'سێش','Wed':'چوارش','Thu':'پێنجش','Fri':'هەینی','Sa':'ش','Su':'ی','Mo':'د','Tu':'س','We':'چ','Th':'پ','Fr':'هـ',
-'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
+'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','Send to family':'ناردن بۆ خێزان','How long should the link work?':'بەستەرەکە تا کەی کار بکات؟','Stops at':'دەوەستێت لە','Pick when it should stop':'کاتی وەستانەکەی هەڵبژێرە','Choose a date and time in the future':'بەروار و کاتێکی داهاتوو هەڵبژێرە','Create link':'دروستکردنی بەستەر','Link ready':'بەستەر ئامادەیە','Make a different link':'بەستەرێکی تر دروست بکە','Loading your links…':'بەستەرەکانت بار دەکرێن…','to be able to stop a link early.':'بۆ ئەوەی بتوانیت بەستەرێک زووتر ڕابگریت.','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
 'what you have now. Orbit then keeps track of what’s left.':'بۆ ئەوەی ئێستا چەندت هەیە. پاشان Orbit ئەوەی ماوە بەدوادا دەچێت.','Opens until the end of':'تا کۆتایی ڕۆژی',', then it stops.':'، پاشان دەوەستێت.',
 'Sign in to Orbit':'بچۆ ژوورەوە بۆ Orbit','so you can also stop a link before its date.':'بۆ ئەوەی بتوانیت بەستەرێک پێش کاتەکەی ڕابگریت.'
 };
@@ -4496,6 +4542,13 @@ var KU_RULES=[
  [/^Your (.+) report is ready$/,function(m){ return 'ڕاپۆرتی '+kuSeg(m[1])+' ئامادەیە'; }],
  [/^Then: (.+)$/,function(m){ return 'پاشان: '+kuTime(m[1]).replace(' in room ',' لە ژووری ').replace(' at ',' لە کاتژمێر '); }],
  [/^Add (.+) to (.+)$/,function(m){ return 'زیادکردنی '+kuMoney(m[1])+' بۆ '+kuSeg(m[2]); }],
+ [/^(.+) · opens in Kurdish$/,function(m){ return kuMonthTxt(m[1])+' · بە کوردی دەکرێتەوە'; }],
+ [/^(\d+) working now$/,function(m){ return m[1]+' کار دەکەن'; }],
+ [/^(.+) · after that it shows “expired”$/,function(m){ return kuSeg(m[1])+' · دواتر دەڵێت «بەسەرچووە»'; }],
+ [/^Only (.+) is shared\.(.*)$/,function(m){ return 'تەنها '+kuMonthTxt(m[1])+' هاوبەش دەکرێت.'+(m[2]?' هەر کاتێک بتەوێت دەتوانیت بیوەستێنیت.':''); }],
+ [/^(\d+) min left$/,function(m){ return m[1]+' خولەک ماوە'; }],
+ [/^(\d+) h(?: (\d+) min)? left$/,function(m){ return m[1]+' کاتژمێر'+(m[2]?' و '+m[2]+' خولەک':'')+' ماوە'; }],
+ [/^(\d+) days left$/,function(m){ return m[1]+' ڕۆژ ماوە'; }],
  [/^Send (.+) to family$/,function(m){ return 'ناردنی '+kuSeg(m[1])+' بۆ خێزان'; }],
  [/^(Sent|Until) (.+)$/,function(m){ return (m[1]==='Sent'?'نێردرا ':'تا ')+kuTime(m[2]); }],
  [/^Works until (.+)$/,function(m){ return 'کار دەکات تا '+kuTime(m[1]); }],
