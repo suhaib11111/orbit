@@ -2271,7 +2271,14 @@ function TT(){ return meta.tt[meta.group]||(meta.tt[meta.group]={}); }
 function teacher(code){ return (meta.teachers||{})[code]||''; }
 var SHORTN={CSE102:"Problem Solving",CSE109:"Computer Fundamentals",MAT119:"Math for AI",ENG103:"Public Speaking"};
 var UKH_G1=JSON.parse(JSON.stringify(CLASSES));
+// Group 2 timetable (UKH CS-AI UGI, Group 2): no classes on Sunday
+var UKH_G2={
+ sat:[{id:"g2a",s:660,e:750,code:"CSE109",name:"Computer Fundamentals & Digital Logic",room:"T24"},{id:"g2b",s:780,e:870,code:"ENG103",name:"Public Speaking",room:"S15"}],
+ mon:[{id:"g2c",s:540,e:630,code:"CSE109",name:"Computer Fundamentals & Digital Logic",room:"F11"},{id:"g2d",s:660,e:750,code:"MAT119",name:"Mathematics for AI",room:"F16"},{id:"g2e",s:780,e:870,code:"CSE102",name:"Problem Solving Techniques",room:"F23"},{id:"g2f",s:900,e:990,code:"ENG103",name:"Public Speaking",room:"S15"}],
+ tue:[{id:"g2g",s:660,e:750,code:"MAT119",name:"Mathematics for AI",room:"W8"},{id:"g2h",s:780,e:870,code:"CSE102",name:"Problem Solving Techniques",room:"G15"}]
+};
 if(!meta.tt) meta.tt={G1:{},G2:{},MY:{}};
+if(!meta.g2Filled){ var g2now=meta.tt.G2||{}; if(!Object.keys(g2now).some(function(k){ return (g2now[k]||[]).length; })) meta.tt.G2=JSON.parse(JSON.stringify(UKH_G2)); meta.g2Filled=1; }
 if(!meta.group) meta.group='G1';
 if(!meta.teachers) meta.teachers={};
 CLASSES=null;
@@ -2352,7 +2359,8 @@ function renderSchedule(){
   document.getElementById('days').innerHTML=DAYS.map(function(x){
     var bl=blocksFor(x), done=(meta.sessions[dateOf(x)]||[]).filter(function(k){return bl.some(function(b){return b.key===k;});}).length;
     var full=bl.length&&done===bl.length;
-    return '<button type="button" role="tab" class="dchip '+x.type+(full?' full':'')+'" data-day="'+x.k+'" aria-selected="'+(x.k===d.k)+'">'+(x.k===td.k?'<span class="td" aria-label="today"></span>':'')+'<b>'+x.s+'</b><small>'+(x.type==='class'?'Class':'Free')+'</small></button>';
+    var xt=(TT()[x.k]||[]).length?'class':'free';
+    return '<button type="button" role="tab" class="dchip '+xt+(full?' full':'')+'" data-day="'+x.k+'" aria-selected="'+(x.k===d.k)+'">'+(x.k===td.k?'<span class="td" aria-label="today"></span>':'')+'<b>'+x.s+'</b><small>'+(xt==='class'?'Class':'Free')+'</small></button>';
   }).join('');
   var P=placeDay(d), date=dateOf(d), done=meta.sessions[date]||[];
   var total=P.blocks.reduce(function(a,b){return a+b.min;},0);
@@ -2380,7 +2388,7 @@ function renderSchedule(){
   if(!P.items.length) html='<div class="empty">Everything is paused. Unpause a subject below to build your day.</div>';
   document.getElementById('timeline').innerHTML=html;
   var md=modeOf(d), cn=(TT()[d.k]||[]).length;
-  document.getElementById('daycard').innerHTML='<div class="daycard"><div class="dc-main"><div class="ring" style="--p:'+p+'"><span>'+nDone+'/'+P.blocks.length+'</span></div><div><h2>'+d.n+(d.k===td.k?' · Today':'')+'</h2><span class="badge '+d.type+'">'+(cn?cn+' classes':'Free day · deep work')+'</span><p>'+fmt(total)+' of study'+(first!==null?' · '+clk(first)+' to '+clk(last):'')+'</p></div></div>'+
+  document.getElementById('daycard').innerHTML='<div class="daycard"><div class="dc-main"><div class="ring" style="--p:'+p+'"><span>'+nDone+'/'+P.blocks.length+'</span></div><div><h2>'+d.n+(d.k===td.k?' · Today':'')+'</h2><span class="badge '+((TT()[d.k]||[]).length?'class':'free')+'">'+(cn?cn+' classes':'Free day · deep work')+'</span><p>'+fmt(total)+' of study'+(first!==null?' · '+clk(first)+' to '+clk(last):'')+'</p></div></div>'+
     '<div class="modes" role="group" aria-label="Study mode">'+Object.keys(MODES).map(function(k){ return '<button type="button" class="mode '+k+'" data-mode="'+k+'" aria-pressed="'+(md===k)+'"><b>'+MODES[k].label+'</b><small>'+MODES[k].sub+'</small></button>'; }).join('')+'</div></div>';
   document.getElementById('dayStart').value=meta.dayStart;
   document.getElementById('pauses').innerHTML=LANES.map(function(L){
@@ -3132,7 +3140,7 @@ function renderOnb(){
   else if(id==='tt'){
     var o=[];
     if(hasClasses()) o.push(['keep',ic('pin'),'Keep my current timetable','Your classes stay as they are']);
-    if(draft.major==='csai'&&draft.group==='G1') o.push(['ukh',ic('college'),'Use the UKH CS & AI Group 1 timetable','Fall semester classes, rooms included']);
+    if(draft.major==='csai'&&(draft.group==='G1'||draft.group==='G2')) o.push(['ukh',ic('college'),'Use the UKH CS & AI Group '+draft.group.slice(1)+' timetable','Fall semester classes, rooms included']);
     o.push(['empty',ic('sparkle'),'Start empty','Add your own classes in College']);
     if(!o.some(function(x){return x[0]===draft.tt;})) draft.tt=o[0][0];
     html='<h2 id="onbTitle">Your timetable</h2><p class="lead2">Your plan and class alerts are built around it.</p><div class="opts">'+o.map(function(x){ return opt('data-ott',x[0],x[1],x[2],x[3],draft.tt===x[0]); }).join('')+'</div>'; nx.textContent='Continue'; }
@@ -3146,7 +3154,7 @@ function finishOnb(){
   var d=draft;
   meta.profile={name:d.name.trim(),major:d.major,majorOther:d.majorOther.trim(),group:d.group};
   LANES.forEach(function(L){ meta.paused[L.id]=!d.paths[L.id]; });
-  if(d.tt==='ukh'){ meta.tt.G1=JSON.parse(JSON.stringify(UKH_G1)); }
+  if(d.tt==='ukh'){ meta.tt[d.group]=JSON.parse(JSON.stringify(d.group==='G2'?UKH_G2:UKH_G1)); }
   else if(d.tt==='empty'){ meta.tt[d.group]={}; }
   meta.group=d.group;
   if(!meta.tt[meta.group]) meta.tt[meta.group]={};
