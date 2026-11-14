@@ -1482,6 +1482,51 @@ h1,h2,h3{text-wrap:balance}
 .mrep-btns .btn{flex:1;margin:0;min-height:50px}
 .mrep-btns .btn:disabled{opacity:.55}
 .mrep-btns .mpay{flex:none;min-height:50px;padding:0 1rem}
+/* Account + sharing */
+.acct .acct-p{margin:.2rem 0 .7rem;line-height:1.45}
+.onb-signin{margin:1.4rem auto 0;max-width:22rem}
+.acct-l{display:block;font-weight:800;font-size:.82rem;color:var(--muted);margin:.55rem 0 .25rem}
+.acct-in{font:700 1rem "Plus Jakarta Sans",sans-serif;color:var(--ink);background:var(--soft);border:2px solid var(--line);border-radius:12px;padding:.6rem .75rem;min-height:48px;width:100%}
+.acct-in:focus{border-color:var(--brand);outline:none}
+.acct-btns{display:flex;gap:.5rem;margin-top:.8rem}
+.acct-btns .btn{flex:1;margin:0;min-height:50px}
+.acct-btns.col{flex-direction:column}
+.acct-links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem;margin-top:.4rem}
+.acct-who{display:flex;align-items:center;gap:.7rem}
+.acct-who > div{min-width:0}
+.acct-who b{display:block;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct-av{flex:none;width:2.6rem;height:2.6rem;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:#fff;font:800 1.1rem var(--disp)}
+.acct-st{display:block;font-weight:700;font-size:.82rem;color:var(--muted)}
+.acct-st.st-ok{color:var(--ok-t)}
+.acct-st.st-err{color:#C0392B}
+.acct-st.st-syncing,.acct-st.st-wait{color:#A36A00}
+.acct-msg{margin:.6rem 0 0;font-weight:700;font-size:.88rem;color:var(--warm-t)}
+.acct-msg:empty{display:none}
+.acct-undo{display:block;margin-top:.5rem}
+.helpbtn{position:relative}
+.helpbtn[data-sync]::after{content:"";position:absolute;right:-3px;top:-3px;width:11px;height:11px;border-radius:50%;border:2px solid var(--bg);display:none}
+.helpbtn[data-sync="ok"]::after{display:block;background:#2BAE94}
+.helpbtn[data-sync="syncing"]::after,.helpbtn[data-sync="wait"]::after{display:block;background:#E5A93D}
+.helpbtn[data-sync="err"]::after{display:block;background:#E0485A}
+.mhead{position:relative}
+.mshare-top{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:.35rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:0 .9rem;min-height:44px;font-weight:800;font-size:.9rem;cursor:pointer;box-shadow:0 3px 0 var(--line-d)}
+.mshare-top .ic{width:1.05rem;height:1.05rem;vertical-align:0;color:#3E8ED0}
+.mshare-top:active{transform:translateY(calc(-50% + 3px));box-shadow:none}
+.mrep-h{font-size:1rem;margin:0 0 .5rem}
+.mrepexp{grid-template-columns:repeat(4,minmax(0,1fr))}
+.mrepexp .mtchip.on{border-color:#3E8ED0;background:color-mix(in srgb,#3E8ED0 15%,var(--surface));box-shadow:0 2px 0 #2C6FA8}
+.mrep-share .mrep-lbl{margin-top:.7rem}
+.mrep-date{margin-top:.45rem}
+.mrep-until{margin:.5rem 0 0;font-weight:600;font-size:.86rem;color:var(--muted)}
+.mrep-until b{color:var(--ink)}
+.mrep-done{margin-top:.8rem;background:color-mix(in srgb,#2E7D5B 10%,var(--surface));border:1px solid color-mix(in srgb,#2E7D5B 35%,var(--line));border-radius:16px;padding:.8rem}
+.mrep-done b{display:block;font-weight:800}
+.mrep-done small{display:block;color:var(--muted);font-weight:700;font-size:.8rem}
+.mrep-links{margin-top:1rem;border-top:1px solid var(--line);padding-top:.85rem}
+.mrep-links:empty{display:none}
+.mpay.stop{color:#C0392B}
+.mlink.inl{display:inline;min-height:0;padding:0;font-size:inherit;text-decoration:underline}
+@media (max-width:360px){.mrepexp{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:reduce){.mhero,.mt-pc,.mt-bar span,.mh-bar span,.mc-track span{transition:none!important}.mrow.dotpop .mrow-ic{animation:none!important}}
 </style>
 
@@ -1722,16 +1767,16 @@ h1,h2,h3{text-wrap:balance}
 
   <div class="view" id="view-money" hidden>
     <div class="wrap">
-      <div class="mhead"><button type="button" class="mback" data-view="today" aria-label="Back to Today"><span data-ic="back"></span></button><div><small id="mMonth"></small><h1>Money</h1></div></div>
+      <div class="mhead"><button type="button" class="mback" data-view="today" aria-label="Back to Today"><span data-ic="back"></span></button><div><small id="mMonth"></small><h1>Money</h1></div><button type="button" class="mshare-top" id="mShareTop" aria-label="Send a month report"><span data-ic="share"></span><span>Share</span></button></div>
       <div class="cols cols-money"><div class="col-a">
         <div class="mhero ms-ok" id="mHero"></div>
         <div class="card mquick" id="mQuick"></div>
       </div><div class="col-b">
+        <section class="msec" id="mRepSec"><div class="msec-h"><h2>Monthly report</h2></div><div class="card mrep" id="mReport"></div></section>
         <section class="msec"><div class="msec-h"><h2>Today</h2><b id="mTodayTot"></b></div><div id="mToday"></div></section>
         <section class="msec"><div class="msec-h"><h2>Savings &amp; wallets</h2></div><div id="mWallets"></div></section>
         <section class="msec"><div class="msec-h"><h2>Who owes who</h2><button type="button" class="mlink" id="mDebtAdd">+ Add</button></div><div id="mDebtForm" hidden></div><div id="mDebts"></div></section>
         <section class="msec" id="mTripSec" hidden><div class="msec-h"><h2>Getting to college</h2></div><div id="mTrips"></div></section>
-        <section class="msec" id="mRepSec"><div class="msec-h"><h2>Monthly report</h2></div><div class="card mrep" id="mReport"></div></section>
         <section class="msec"><div class="msec-h"><h2>Last 7 days</h2></div><div class="mweek2" id="mWeek"></div></section>
         <section class="msec"><div class="msec-h"><h2>Categories this month</h2></div><div id="mCats"></div></section>
         <section class="msec"><div class="msec-h"><h2>Recurring bills</h2></div><div id="mBills"></div></section>
@@ -1817,9 +1862,13 @@ h1,h2,h3{text-wrap:balance}
         <button type="button" class="btn ghost" id="profEdit">Edit profile and setup</button>
         <button type="button" class="btn ghost" data-view="money" style="margin-top:.6rem">Money &amp; budget</button>
       </div>
+      <div class="card acct" id="acctCard">
+        <h2><i aria-hidden="true" data-ic="user"></i> Orbit account</h2>
+        <div id="acctBody"></div>
+      </div>
       <div class="card">
         <h2><i aria-hidden="true" data-ic="save"></i> Your data</h2>
-        <p>Everything lives on this phone. Back it up so you never lose your progress, timer history, exams and mistakes. Photos stay on the phone.</p>
+        <p>Signed in to your Orbit account? Everything is saved there automatically. You can also keep a backup file. Photos stay on the device you took them on.</p>
         <div class="bk" id="bkCloud" hidden>
           <button type="button" class="btn main" id="bkSave">Back up to my account</button>
           <button type="button" class="btn ghost" id="bkLoad">Restore from my account</button>
@@ -1876,6 +1925,8 @@ h1,h2,h3{text-wrap:balance}
 
 <script>
 var P={
+share:'<circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.3M8.3 13.2l7.4 4.3"/>',
+globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/>',
 wallet:'<path d="M4 7.5V6.5A2 2 0 0 1 6 4.5h11v3"/><rect x="3" y="7.5" width="18" height="12" rx="2.5"/><path d="M15.5 13.5h2.5"/>',
 inarrow:'<path d="M12 3.5v12M6.5 10l5.5 5.5 5.5-5.5"/><path d="M4.5 20h15"/>',
 jar:'<path d="M8 3.5h8M9 3.5v2.2C6.6 7 5.5 8.9 5.5 11.5v6.5a2.5 2.5 0 0 0 2.5 2.5h8a2.5 2.5 0 0 0 2.5-2.5v-6.5c0-2.6-1.1-4.5-3.5-5.8V3.5"/><path d="M9.5 13.5h5"/>',
@@ -3243,7 +3294,7 @@ function renderOnb(){
   document.getElementById('onbDots').innerHTML=steps.map(function(s,i){ return '<i class="'+(i===onbStep?'on':(i<onbStep?'done':''))+'"></i>'; }).join('');
   document.getElementById('onbBack').hidden=onbStep===0||(draft.edit&&onbStep===1)||id==='done';
   var nx=document.getElementById('onbNext');
-  if(id==='hi'){ html='<div class="hero">'+ORBIT_LOGO+'<h2 id="onbTitle">Welcome to Orbit</h2><p class="lead2">Your whole university life in one place: study path, focus timer, classes, exams and mail.</p></div>'; nx.textContent='Let’s set it up'; }
+  if(id==='hi'){ html='<div class="hero">'+ORBIT_LOGO+'<h2 id="onbTitle">Welcome to Orbit</h2><p class="lead2">Your whole university life in one place: study path, focus timer, classes, exams and mail.</p><button type="button" class="btn ghost onb-signin" data-onbsignin="1">I already use Orbit · Sign in</button></div>'; nx.textContent='Let’s set it up'; }
   else if(id==='name'){ html='<h2 id="onbTitle">What should we call you?</h2><p class="lead2">Your first name is enough.</p><input class="big" id="onbName" autocomplete="given-name" placeholder="Your name" value="'+esc(draft.name).replace(/"/g,'&quot;')+'">'; nx.textContent='Continue'; }
   else if(id==='major'){ html='<h2 id="onbTitle">What do you study?</h2><p class="lead2">Your path is built for computing majors. Everyone can use the timer, plan and college tools.</p><div class="opts">'+MAJORS.map(function(m){ return opt('data-omaj',m[0],m[1],m[2],'',draft.major===m[0]); }).join('')+'</div>'+(draft.major==='other'?'<input class="big other" id="onbMajor" placeholder="Your major" value="'+esc(draft.majorOther).replace(/"/g,'&quot;')+'">':''); nx.textContent='Continue'; }
   else if(id==='group'){ html='<h2 id="onbTitle">Which group are you in?</h2><p class="lead2">You can switch groups later in College.</p><div class="opts">'+GROUPS.map(function(g){ return opt('data-ogrp',g[0],g[1],g[2],'',draft.group===g[0]); }).join('')+'</div>'; nx.textContent='Continue'; }
@@ -3829,11 +3880,9 @@ function renderMoneyReport(){
       (top?'<p class="mline">Biggest: <b>'+esc(top.name)+'</b> · '+moneyFmt(top.v)+' ('+tp+'%)</p>':'')+
       (r.ssave>0?'<p class="mline">Sharing saved you '+moneyFmt(r.ssave)+'</p>':'');
   } else body='<div class="mempty">Nothing logged in '+monthName(repMonth)+' yet.</div>';
-  var url=has?ensureLink(repMonth,repLang):null;
+  if(has&&acct.user) loadActive();
   el.innerHTML='<div class="mrep-nav"><button type="button" class="mrep-arrow" data-mrepgo="-1" aria-label="Previous month"'+(canPrev?'':' disabled')+'>‹</button><b>'+monthName(repMonth)+'</b><button type="button" class="mrep-arrow" data-mrepgo="1" aria-label="Next month"'+(canNext?'':' disabled')+'>›</button></div>'+body+
-    (has?'<div class="mrep-share"><span class="mrep-lbl">Language of the shared report</span>'+chipRow('mreplang',[['ku','کوردی'],['en','English']],repLang,'Language of the shared report','mreplang')+
-      '<div class="mrep-btns"><button type="button" class="btn main" id="mRepShare"'+(url?'':' disabled')+'>Share this month</button><button type="button" class="mpay" id="mRepOpen"'+(url?'':' disabled')+'>Open</button></div>'+
-      '<p class="mhint">The link carries only '+monthOnly(repMonth)+'’s numbers, inside the link itself. Whoever you send it to can open it; nothing is stored online. Added more later? Share again.</p></div>':'');
+    (has?shareBox():(acct.user?'<div class="mrep-links" id="mRepLinks">'+activeHtml()+'</div>':''));
 }
 function renderRepBanner(){
   var b=document.getElementById('mRepBanner'); if(!b) return;
@@ -3922,9 +3971,6 @@ document.addEventListener('click',function(e){
     money.debts.push({id:mid(),name:nm,amount:am,dir:debtDir,what:'',date:today(),wallet:money.lastWallet||'cash'}); debtFormOpen=false; saveMoney(); renderDebtForm(); renderMoney(); toast(debtDir==='me'?nm+' owes you '+moneyFmt(am):'You owe '+nm+' '+moneyFmt(am)); return; }
   if((t=e.target.closest('[data-mrepgo]'))){ repMonth=shiftMonth(repMonth,+t.dataset.mrepgo); renderMoneyReport(); return; }
   if((t=e.target.closest('[data-mreplang]'))){ repLang=t.dataset.mreplang; renderMoneyReport(); return; }
-  if(e.target.closest('#mRepShare')){ var RL=repLinks[repMonth+'|'+repLang]; if(!RL||!RL.url) return; var ttl=repLang==='ku'?'ڕاپۆرتی مانگانەی '+kuMonthName(repMonth):'Monthly report · '+monthName(repMonth);
-    if(navigator.share) navigator.share({title:ttl,text:ttl,url:RL.url}).catch(function(){}); else copyText(RL.url).then(function(){ toast('Link copied · paste it in WhatsApp or Telegram'); }); return; }
-  if(e.target.closest('#mRepOpen')){ var RL2=repLinks[repMonth+'|'+repLang]; if(RL2&&RL2.url) window.open(RL2.url,'_blank','noopener'); return; }
   if(e.target.closest('#mRepBanner')){ repMonth=money.reportNew; money.reportSeen=money.reportNew; saveMoney(); setTimeout(function(){ var sec=document.getElementById('mRepSec'); if(sec) sec.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); },380); }
   if(e.target.closest('#mReset')){ if(!confirm('Reset money data? This clears every expense, money in, savings and who-owes-who. Your budget, limits, categories and bills stay.')) return;
     money.log=[]; money.income=[]; money.saves=[]; money.debts=[]; money.adjust=[]; money.fares={}; money.limitWarn={}; money.walletsSince=today(); money.seenMonth=monthKey(today()); money.warned80=false; money.warned100=false; money.recurring.forEach(function(r){ r.lastPaid=null; }); saveMoney(); renderMoney(); toast('Money data reset'); return; }
@@ -3938,6 +3984,271 @@ document.getElementById('mSaveGoal').addEventListener('change',function(){ var v
 document.getElementById('mBudget').addEventListener('change',function(){ var n=parseInt(this.value,10); if(n>0){ money.budget=n; var s=moneyStats(); if(s.pct<80){ money.warned80=false; money.warned100=false; } else if(s.pct<100){ money.warned100=false; } saveMoney(); renderMoney(); moneyThresholds(); } else this.value=money.budget; });
 document.getElementById('mCurrency').addEventListener('change',function(){ money.currency=this.value; saveMoney(); renderMoney(); });
 var _renderToday=renderToday; renderToday=function(){ _renderToday.apply(this,arguments); renderTodayMoney(); };
+// ===== Orbit account: one login (email + an Orbit-only password), the same data on every device =====
+var SB_URL='https://hauryaiqyapiumjgedtr.supabase.co', SB_KEY='sb_publishable_rtk_DdwyFmIbw_71H4cr-w_a4PndB1r';
+var SB_LIB='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js';
+var APP_URL=/github\.io$/.test(location.hostname)?location.origin+location.pathname.replace(/[^\/]*$/,''):'https://suhaib11111.github.io/orbit/';
+var SB=null, sbLoading=null, acct={user:null,mode:'signin',msg:'',email:'',choice:null,ready:false};
+var SYNC_KEY='orbit-sync-v1', SNAP_KEY='orbit-before-sync', SY=null, syBusy=false, syAgain=false, syTimer=null, syState='off', syApplying=false, syTries=0;
+try{ SY=JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){}
+if(!SY) SY={uid:null,rev:0,base:null,last:null};
+function sySave(){ try{ localStorage.setItem(SYNC_KEY,JSON.stringify(SY)); }catch(e){} }
+function deviceName(){ var u=navigator.userAgent||''; if(/iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1)) return 'iPad'; if(/iPhone/.test(u)) return 'iPhone'; if(/Android/.test(u)) return /Mobile/.test(u)?'Android phone':'Android tablet'; if(/Mac/.test(u)) return 'Mac'; if(/Windows/.test(u)) return 'Windows laptop'; return 'computer'; }
+function loadSB(){
+  if(SB) return Promise.resolve(SB);
+  if(sbLoading) return sbLoading;
+  sbLoading=new Promise(function(res,rej){
+    function make(){ try{ SB=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'orbit-auth'}}); wireAuth(); res(SB); }catch(e){ sbLoading=null; rej(e); } }
+    if(window.supabase&&window.supabase.createClient) return make();
+    var s=document.createElement('script'); s.src=SB_LIB; s.async=true; s.crossOrigin='anonymous'; s.onload=make; s.onerror=function(){ sbLoading=null; s.remove(); rej(new Error('offline')); }; document.head.appendChild(s);
+  });
+  return sbLoading;
+}
+// --- the synced state: everything except per-device photos
+function J(x){ return JSON.stringify(x===undefined?null:x); }
+function isObj(x){ return !!x&&typeof x==='object'&&!Array.isArray(x); }
+function stateCore(){ var o=JSON.parse(payload()); return {data:o.data||{},meta:o.meta||{},exams:o.exams||[],logs:o.logs||[],mistakes:o.mistakes||[],money:o.money||null}; }
+function coreOf(o){ o=o||{}; return {data:o.data||{},meta:o.meta||{},exams:o.exams||[],logs:o.logs||[],mistakes:o.mistakes||[],money:o.money||null}; }
+function localEmpty(c){ return !(c.meta&&c.meta.profile)&&!(c.money&&c.money.log&&c.money.log.length)&&!(c.money&&c.money.income&&c.money.income.length)&&!c.exams.length&&!c.logs.length&&!c.mistakes.length&&!Object.keys(c.data||{}).length; }
+function keyOf(x){ if(isObj(x)){ if(x.id!=null) return 'id:'+x.id; if(x.at!=null) return 'at:'+x.at+':'+(x.ms||'')+':'+(x.l||''); if(x.in!=null) return 'in:'+x.in; } return 'v:'+J(x); }
+// 3-way merge: base = what this device last synced. New items from both sides stay; an item deleted on one side goes;
+// when the same value changed on both sides, this device wins.
+function mergeArr(b,l,r){
+  var B={}, L={}, R={}, out=[], seen={};
+  (b||[]).forEach(function(x){ B[keyOf(x)]=x; }); (l||[]).forEach(function(x){ L[keyOf(x)]=x; }); (r||[]).forEach(function(x){ R[keyOf(x)]=x; });
+  function take(k){ if(seen[k]) return; seen[k]=1; var inB=k in B, inL=k in L, inR=k in R;
+    if(inL&&inR) out.push(mergeVal(inB?B[k]:undefined,L[k],R[k]));
+    else if(inL){ if(!inB||J(L[k])!==J(B[k])) out.push(L[k]); }
+    else if(inR){ if(!inB||J(R[k])!==J(B[k])) out.push(R[k]); } }
+  (r||[]).forEach(function(x){ take(keyOf(x)); }); (l||[]).forEach(function(x){ take(keyOf(x)); });
+  return out;
+}
+function mergeVal(b,l,r){
+  if(J(l)===J(r)) return l;
+  if(b!==undefined&&J(l)===J(b)) return r;
+  if(b!==undefined&&J(r)===J(b)) return l;
+  if(Array.isArray(l)&&Array.isArray(r)) return mergeArr(Array.isArray(b)?b:null,l,r);
+  if(!isObj(l)||!isObj(r)) return l;
+  var out={}, bb=isObj(b)?b:{}, done={};
+  Object.keys(r).concat(Object.keys(l)).forEach(function(k){ if(done[k]) return; done[k]=1;
+    var inL=k in l, inR=k in r, inB=k in bb;
+    if(inL&&inR) out[k]=mergeVal(inB?bb[k]:undefined,l[k],r[k]);
+    else if(inL){ if(!inB||J(l[k])!==J(bb[k])) out[k]=l[k]; }
+    else { if(!inB||J(r[k])!==J(bb[k])) out[k]=r[k]; } });
+  return out;
+}
+function applyCore(c){
+  syApplying=true;
+  try{
+    data=c.data||{}; Object.assign(meta,c.meta||{}); exams=c.exams||[]; logs=c.logs||[]; mistakes=c.mistakes||[];
+    if(c.money&&c.money.categories) money=c.money;
+    save(); saveEx(); saveLogs(); saveMk(); saveMoney();
+  } finally { syApplying=false; }
+  try{ all(); renderBanner(); renderPill(); renderMoney(); renderToday(); if(typeof applyTheme==='function') applyTheme(); if(typeof applyLang==='function') applyLang(); }catch(e){}
+  if(document.getElementById('onb')&&!document.getElementById('onb').hidden&&profile()) document.getElementById('onb').hidden=true;
+}
+function snapshot(){ try{ var c=stateCore(); if(!localEmpty(c)) localStorage.setItem(SNAP_KEY,JSON.stringify({at:Date.now(),json:payload()})); }catch(e){} }
+function hasSnap(){ try{ return !!localStorage.getItem(SNAP_KEY); }catch(e){ return false; } }
+// --- talking to the account
+function setSy(s,why){ syState=s; var b=document.querySelector('.helpbtn'); if(b) b.setAttribute('data-sync',acct.user?s:'off'); acctStatus(why); }
+function syFail(e){ var m=String(e&&(e.message||e.msg)||e||''); setSy('err',/fetch|network|offline|Failed/i.test(m)?'offline':m); }
+function pushNow(c,baseRev){
+  return SB.rpc('save_state',{p_data:c,p_base_rev:baseRev,p_device:deviceName()}).then(function(res){
+    if(res.error) throw res.error;
+    var r=res.data||{};
+    if(r.ok){ SY.rev=r.rev; SY.base=c; SY.last=Date.now(); sySave(); syTries=0; return; }
+    if(r.conflict&&syTries<3){ syTries++; syBusy=false; return syPull(); }
+    throw new Error('Could not save to your account');
+  });
+}
+function syPull(){
+  if(!SB||!acct.user||acct.choice) return Promise.resolve();
+  if(syBusy){ syAgain=true; return Promise.resolve(); }
+  syBusy=true; setSy('syncing');
+  return SB.from('orbit_state').select('data,rev,updated_at,device').maybeSingle().then(function(res){
+    if(res.error) throw res.error;
+    if(SY.uid!==acct.user.id){ SY={uid:acct.user.id,rev:0,base:null,last:null}; sySave(); }
+    var row=res.data, local=stateCore();
+    if(!row){ if(localEmpty(local)) return; return pushNow(local,0); }
+    var remote=coreOf(row.data);
+    if(row.rev===SY.rev&&SY.base){ if(J(local)!==J(SY.base)) return pushNow(local,SY.rev); return; }
+    if(!SY.base){
+      if(localEmpty(local)||J(local)===J(remote)){ applyCore(remote); SY.rev=row.rev; SY.base=remote; SY.last=Date.now(); sySave(); toast('Your Orbit is here ✓'); return; }
+      acct.choice={remote:remote,rev:row.rev,device:row.device,at:row.updated_at}; syBusy=false; renderAcct(); setSy('wait'); return 'wait';
+    }
+    var merged=mergeVal(SY.base,local,remote);
+    if(J(merged)!==J(local)) applyCore(merged);
+    SY.rev=row.rev; SY.base=remote; sySave();
+    if(J(merged)!==J(remote)) return pushNow(merged,row.rev);
+    SY.last=Date.now(); sySave();
+  }).then(function(w){ syBusy=false; if(w!=='wait'&&!acct.choice) setSy('ok'); if(syAgain){ syAgain=false; syKick(0); } })
+    .catch(function(e){ syBusy=false; syFail(e); });
+}
+function syKick(delay){
+  if(!acct.user||acct.choice||!SB) return;
+  clearTimeout(syTimer);
+  syTimer=setTimeout(function(){
+    if(syBusy){ syAgain=true; return; }
+    var c=stateCore(); if(SY.base&&SY.uid===acct.user.id&&J(c)===J(SY.base)) return;
+    if(!SY.base||SY.uid!==acct.user.id){ syPull(); return; }
+    syBusy=true; setSy('syncing');
+    pushNow(c,SY.rev).then(function(){ syBusy=false; if(!acct.choice) setSy('ok'); if(syAgain){ syAgain=false; syKick(0); } }).catch(function(e){ syBusy=false; syFail(e); });
+  },delay==null?1500:delay);
+}
+['save','saveEx','saveLogs','saveMk','saveMoney'].forEach(function(n){ var f=window[n]; if(typeof f!=='function') return; window[n]=function(){ var r=f.apply(this,arguments); if(!syApplying) syKick(); return r; }; });
+function wireAuth(){
+  SB.auth.onAuthStateChange(function(ev,session){
+    var was=acct.user&&acct.user.id;
+    acct.user=session&&session.user||null; acct.ready=true;
+    if(ev==='PASSWORD_RECOVERY'){ acct.mode='newpass'; acct.msg=''; setTimeout(function(){ var g=document.querySelector('.helpbtn'); if(g) g.click(); },300); }
+    if(acct.user&&acct.user.id!==was){ acct.msg=''; setTimeout(syPull,50); }
+    if(!acct.user){ setSy('off'); }
+    renderAcct(); if(typeof renderMoneyReport==='function') renderMoneyReport();
+  });
+}
+// --- account card (Profile & guide)
+function acctStatus(why){
+  var el=document.getElementById('acctStatus'); if(!el) return;
+  var t={off:'',syncing:'Saving…',ok:'Synced'+(SY.last?' · '+timeAgo(SY.last):''),err:why==='offline'?'Offline · it syncs when you’re back online':'Couldn’t sync · '+(why||'try again'),wait:'Waiting for your choice below'}[syState]||'';
+  el.textContent=t; el.className='acct-st st-'+syState;
+}
+function timeAgo(t){ var m=Math.round((Date.now()-t)/60000); return m<1?'just now':(m<60?m+' min ago':new Date(t).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})); }
+function renderAcct(){
+  var el=document.getElementById('acctBody'); if(!el) return;
+  var u=acct.user, h='';
+  if(!acct.ready&&!SB){ h='<p class="acct-p">Sign in to have the same Orbit on your phone, laptop and iPad.</p><div class="acct-btns"><button type="button" class="btn main" data-acct="start">Sign in or create an account</button></div>'; }
+  else if(u&&acct.choice){ var c=acct.choice;
+    h='<p class="acct-p"><b>Your account already has Orbit data</b>, last saved '+(c.at?new Date(c.at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'')+(c.device?' on a '+esc(c.device):'')+'. This '+esc(deviceName())+' has some too. What should it use?</p>'+
+      '<div class="acct-btns col"><button type="button" class="btn main" data-acct="useAccount">Use my account’s data</button><button type="button" class="btn ghost" data-acct="combine">Combine both</button></div><p class="mhint">Either way, what’s on this device now is kept as a backup you can bring back from here.</p>'; }
+  else if(u){
+    h='<div class="acct-who"><span class="acct-av" aria-hidden="true">'+esc((u.email||'?').charAt(0).toUpperCase())+'</span><div><b>'+esc(u.email||'')+'</b><small id="acctStatus" class="acct-st"></small></div></div>'+
+      '<div class="acct-btns"><button type="button" class="btn main" data-acct="sync">Sync now</button><button type="button" class="btn ghost" data-acct="signout">Sign out</button></div>'+
+      '<p class="mhint">On your laptop or iPad, open Orbit, sign in with this email and your Orbit password, and everything shows up there. Photos stay on the device you took them on.</p>'; }
+  else if(acct.mode==='newpass'){
+    h='<p class="acct-p">Choose a new Orbit password.</p><label class="acct-l" for="acctPass">New Orbit password</label><input class="acct-in" id="acctPass" type="password" autocomplete="new-password" placeholder="8 or more characters"><div class="acct-btns"><button type="button" class="btn main" data-acct="setpass">Save new password</button></div>'; }
+  else { var up=acct.mode==='signup', rs=acct.mode==='reset';
+    h='<p class="acct-p">'+(up?'Make your Orbit account with your email and a <b>new password just for Orbit</b>. Don’t use your email’s password.':(rs?'Type your email. Orbit sends you a link to choose a new Orbit password.':'Sign in to have the same Orbit on your phone, laptop and iPad.'))+'</p>'+
+      '<label class="acct-l" for="acctEmail">Email</label><input class="acct-in" id="acctEmail" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="you@example.com" value="'+esc(acct.email).replace(/"/g,'&quot;')+'">'+
+      (rs?'':'<label class="acct-l" for="acctPass">'+(up?'New Orbit password':'Orbit password')+'</label><input class="acct-in" id="acctPass" type="password" autocomplete="'+(up?'new-password':'current-password')+'" placeholder="'+(up?'8 or more characters':'Your Orbit password')+'">')+
+      '<div class="acct-btns"><button type="button" class="btn main" data-acct="'+(up?'signup':(rs?'reset':'signin'))+'">'+(up?'Create account':(rs?'Send me the link':'Sign in'))+'</button></div>'+
+      '<div class="acct-links">'+(up||rs?'<button type="button" class="mlink" data-acctmode="signin">I already have an account</button>':'<button type="button" class="mlink" data-acctmode="signup">New here? Create an account</button><button type="button" class="mlink" data-acctmode="reset">Forgot your Orbit password?</button>')+'</div>'; }
+  if(hasSnap()) h+='<button type="button" class="mlink acct-undo" data-acct="undo">Bring back this device’s data from before syncing</button>';
+  h+='<p class="acct-msg" id="acctMsg" role="status" aria-live="polite">'+esc(acct.msg||'')+'</p>';
+  el.innerHTML=h; acctStatus();
+}
+function acctSay(m){ acct.msg=m; var e=document.getElementById('acctMsg'); if(e) e.textContent=m; }
+function friendlyAuth(e){ var m=String(e&&e.message||e||'');
+  if(/invalid login/i.test(m)) return 'That email or Orbit password isn’t right.';
+  if(/not confirmed/i.test(m)) return 'Confirm your email first: open the link Orbit sent you, then sign in.';
+  if(/already registered|already exists/i.test(m)) return 'That email already has an Orbit account. Sign in instead.';
+  if(/rate limit|too many/i.test(m)) return 'Too many tries. Wait a few minutes and try again.';
+  if(/password/i.test(m)&&/(short|least|weak)/i.test(m)) return 'Use a longer password: 8 or more characters.';
+  if(/fetch|network|offline|Failed/i.test(m)) return 'No internet right now. Try again when you’re online.';
+  return m||'Something went wrong. Try again.'; }
+document.addEventListener('input',function(e){ if(e.target&&e.target.id==='acctEmail') acct.email=e.target.value.trim(); });
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-acctmode]');
+  if(t){ acct.mode=t.dataset.acctmode; acct.msg=''; renderAcct(); var i=document.getElementById('acctEmail'); if(i&&!i.value) i.focus(); return; }
+  t=e.target.closest('[data-acct]'); if(!t) return;
+  var a=t.dataset.acct, em=(document.getElementById('acctEmail')||{}).value, pw=(document.getElementById('acctPass')||{}).value;
+  em=(em||'').trim(); if(em) acct.email=em;
+  if(a==='start'){ t.disabled=true; loadSB().then(function(){ acct.ready=true; renderAcct(); }).catch(function(){ t.disabled=false; toast('No internet right now'); }); return; }
+  if(a==='undo'){ var s=null; try{ s=JSON.parse(localStorage.getItem(SNAP_KEY)||'null'); }catch(x){} if(!s) return;
+    if(!confirm('Bring back this device’s data from '+new Date(s.at).toLocaleString()+'? It replaces what’s on this device now'+(acct.user?' and syncs to your account':'')+'.')) return;
+    restore(s.json); localStorage.removeItem(SNAP_KEY); renderAcct(); toast('Brought back ✓'); if(acct.user){ SY.base=SY.base||null; syKick(0); } return; }
+  if(!SB) return;
+  if(a==='signin'){ if(!em||!pw){ acctSay('Type your email and Orbit password.'); return; } t.disabled=true; acctSay('Signing in…');
+    SB.auth.signInWithPassword({email:em,password:pw}).then(function(r){ t.disabled=false; if(r.error) throw r.error; acctSay(''); toast('Signed in ✓'); }).catch(function(x){ t.disabled=false; acctSay(friendlyAuth(x)); }); return; }
+  if(a==='signup'){ if(!em||!/^\S+@\S+\.\S+$/.test(em)){ acctSay('Type a real email address.'); return; } if(!pw||pw.length<8){ acctSay('Use 8 or more characters for your Orbit password.'); return; }
+    t.disabled=true; acctSay('Creating your account…');
+    SB.auth.signUp({email:em,password:pw,options:{emailRedirectTo:APP_URL}}).then(function(r){ t.disabled=false; if(r.error) throw r.error;
+      if(r.data&&r.data.session){ acctSay(''); toast('Account created ✓'); }
+      else { acct.mode='signin'; renderAcct(); acctSay('Almost done: open the email from Orbit (Supabase) and tap the link to confirm. Then sign in here.'); } })
+      .catch(function(x){ t.disabled=false; acctSay(friendlyAuth(x)); }); return; }
+  if(a==='reset'){ if(!em){ acctSay('Type your email first.'); return; } t.disabled=true;
+    SB.auth.resetPasswordForEmail(em,{redirectTo:APP_URL}).then(function(r){ t.disabled=false; if(r.error) throw r.error; acctSay('Check your email for the link to choose a new Orbit password.'); }).catch(function(x){ t.disabled=false; acctSay(friendlyAuth(x)); }); return; }
+  if(a==='setpass'){ if(!pw||pw.length<8){ acctSay('Use 8 or more characters.'); return; } t.disabled=true;
+    SB.auth.updateUser({password:pw}).then(function(r){ t.disabled=false; if(r.error) throw r.error; acct.mode='signin'; acct.msg=''; renderAcct(); toast('New password saved ✓'); }).catch(function(x){ t.disabled=false; acctSay(friendlyAuth(x)); }); return; }
+  if(a==='sync'){ syPull(); return; }
+  if(a==='signout'){ if(!confirm('Sign out of Orbit on this device? Your data stays on this device and in your account.')) return;
+    SB.auth.signOut().then(function(){ SY={uid:null,rev:0,base:null,last:null}; sySave(); acct.choice=null; acct.mode='signin'; renderAcct(); toast('Signed out'); }); return; }
+  if(a==='useAccount'||a==='combine'){ var c=acct.choice; if(!c) return; snapshot(); var local=stateCore();
+    var next=a==='useAccount'?c.remote:mergeVal(undefined,c.remote,local);
+    acct.choice=null; applyCore(next); SY.uid=acct.user.id; SY.rev=c.rev; SY.base=c.remote; sySave(); renderAcct();
+    if(J(next)!==J(c.remote)){ syBusy=true; setSy('syncing'); pushNow(next,c.rev).then(function(){ syBusy=false; setSy('ok'); }).catch(function(x){ syBusy=false; syFail(x); }); } else setSy('ok');
+    toast(a==='useAccount'?'Your account’s data is on this device ✓':'Combined ✓'); return; }
+});
+document.addEventListener('click',function(e){ if(!e.target.closest('[data-onbsignin]')) return;
+  document.getElementById('onb').hidden=true; var g=document.querySelector('.helpbtn'); if(g) g.click();
+  loadSB().then(function(){ acct.ready=true; acct.mode='signin'; renderAcct(); setTimeout(function(){ var c=document.getElementById('acctCard'); if(c) c.scrollIntoView({block:'start'}); var i=document.getElementById('acctEmail'); if(i) i.focus(); },300); })
+    .catch(function(){ toast('No internet right now. Set up Orbit and sign in later from your profile.'); document.getElementById('onb').hidden=false; });
+});
+document.addEventListener('visibilitychange',function(){ if(!acct.user) return; if(document.visibilityState==='visible') syPull(); else syKick(0); });
+addEventListener('online',function(){ if(acct.user) syPull(); });
+setInterval(function(){ if(acct.user&&document.visibilityState==='visible') syPull(); },60000);
+(function(){ var h=location.hash||''; var signedBefore=false; try{ signedBefore=!!localStorage.getItem('orbit-auth'); }catch(e){}
+  if(signedBefore||/access_token|type=recovery|error_description/.test(h)) loadSB().catch(function(){ setSy('err','offline'); });
+  renderAcct(); })();
+// ----- share a month: a link with an expiry date you choose (stored in your account when signed in) -----
+var repExp='week', repExpDate='', repMade=null, repActive=null, repActiveAt=0;
+function isoDay(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+function repUntil(){ if(repExp==='pick'&&repExpDate) return repExpDate; var d=new Date(); d.setDate(d.getDate()+({day:1,week:7,month:30}[repExp]||7)); return isoDay(d); }
+function niceDay(ds){ return new Date(ds+'T00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
+function shareBox(){
+  var until=repUntil(), mn=monthOnly(repMonth), signed=!!acct.user, d1=new Date(); d1.setDate(d1.getDate()+1); var dmax=new Date(); dmax.setDate(dmax.getDate()+365);
+  var h='<div class="mrep-share" id="mRepShareBox"><h3 class="mrep-h">Send '+mn+' to someone</h3>'+
+    '<span class="mrep-lbl">Language</span>'+chipRow('mreplang',[['ku','کوردی'],['en','English']],repLang,'Language of the shared report','mreplang')+
+    '<span class="mrep-lbl">The link works until</span>'+chipRow('mrepexp',[['day','1 day'],['week','1 week'],['month','1 month'],['pick','Pick a date']],repExp,'How long the link works','mrepexp')+
+    (repExp==='pick'?'<input type="date" class="mrep-date" id="mRepDate" aria-label="Last day the link works" min="'+isoDay(d1)+'" max="'+isoDay(dmax)+'" value="'+(repExpDate||'')+'">':'')+
+    '<p class="mrep-until">'+(repExp==='pick'&&!repExpDate?'Pick the last day it should open.':'Opens until the end of <b>'+niceDay(until)+'</b>, then it stops.')+'</p>';
+  if(repMade&&repMade.month===repMonth) h+='<div class="mrep-done"><div><b>Link ready ✓</b><small>'+(repMade.lang==='ku'?'Kurdish':'English')+' · until '+niceDay(repMade.until)+'</small></div><div class="mrep-btns"><button type="button" class="btn main" id="mRepSend">Send link</button><button type="button" class="mpay" id="mRepCopy">Copy</button><button type="button" class="mpay" id="mRepView">Open</button></div></div>';
+  else h+='<div class="mrep-btns"><button type="button" class="btn main" id="mRepMake"'+(repExp==='pick'&&!repExpDate?' disabled':'')+'>Create link for '+mn+'</button></div>';
+  h+='<p class="mhint">'+(signed?'Only '+mn+' is in the link. Stop it any time under “Links you shared”.':'Only '+mn+' is in the link. <button type="button" class="mlink inl" data-gosignin="1">Sign in to Orbit</button> so you can also stop a link before its date.')+'</p></div>';
+  if(signed) h+='<div class="mrep-links" id="mRepLinks">'+activeHtml()+'</div>';
+  return h;
+}
+function activeHtml(){
+  if(repActive===null) return '<h3 class="mrep-h">Links you shared</h3><p class="mhint">Loading…</p>';
+  if(!repActive.length) return '';
+  return '<h3 class="mrep-h">Links you shared</h3>'+repActive.map(function(x){ return '<div class="mbill"><span class="mrow-ic" style="--cc:#3E8ED0" aria-hidden="true">'+ic('chart')+'</span><div class="mbill-b"><b>'+monthName(x.month)+'</b><small class="mw-sub">'+(x.lang==='ku'?'Kurdish':'English')+' · until '+new Date(x.expires_at).toLocaleDateString('en-US',{month:'short',day:'numeric'})+'</small></div><button type="button" class="mpay" data-repcopy="'+x.id+'">Copy</button><button type="button" class="mpay stop" data-repstop="'+x.id+'">Stop</button></div>'; }).join('');
+}
+function loadActive(force){
+  if(!SB||!acct.user) return;
+  if(!force&&Date.now()-repActiveAt<30000&&repActive!==null) return;
+  repActiveAt=Date.now();
+  SB.from('orbit_reports').select('id,month,lang,expires_at').eq('revoked',false).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(20)
+    .then(function(r){ if(r.error) throw r.error; repActive=r.data||[]; var el=document.getElementById('mRepLinks'); if(el) el.innerHTML=activeHtml(); })
+    .catch(function(){ repActive=repActive||[]; });
+}
+function serverLink(id){ return reportBase()+'#r='+id; }
+function createShare(btn){
+  var mk=repMonth, lang=repLang, until=repUntil(), payload=reportPayload(monthReport(mk)); payload.x=until;
+  btn.disabled=true; btn.textContent='Creating…';
+  var done=function(url){ repMade={month:mk,lang:lang,until:until,url:url}; renderMoneyReport(); buzz(); var s=document.getElementById('mRepSend'); if(s) s.focus(); };
+  var fail=function(){ btn.disabled=false; btn.textContent='Create link for '+monthOnly(mk); toast('Couldn’t create the link. Check your internet.'); };
+  if(SB&&acct.user){
+    SB.from('orbit_reports').insert({month:mk,lang:lang,data:payload,expires_at:new Date(until+'T23:59:59').toISOString()}).select('id').single()
+      .then(function(r){ if(r.error) throw r.error; repActive=null; loadActive(true); done(serverLink(r.data.id)); }).catch(fail);
+  } else packReport(payload).then(function(z){ done(reportBase()+'#'+lang+'.'+z); }).catch(fail);
+}
+function sendLink(url,mk,lang){ var ttl=lang==='ku'?'ڕاپۆرتی مانگانەی '+kuMonthName(mk):'Monthly report · '+monthName(mk);
+  if(navigator.share) navigator.share({title:ttl,text:ttl,url:url}).catch(function(){});
+  else copyText(url).then(function(){ toast('Link copied · paste it in WhatsApp or Telegram'); }); }
+document.addEventListener('click',function(e){
+  var t;
+  if((t=e.target.closest('[data-mrepexp]'))){ repExp=t.dataset.mrepexp; repMade=null; renderMoneyReport(); if(repExp==='pick'){ var di=document.getElementById('mRepDate'); if(di){ try{ di.showPicker&&di.showPicker(); }catch(x){} } } return; }
+  if((t=e.target.closest('[data-mreplang]'))){ repMade=null; renderMoneyReport(); return; }
+  if((t=e.target.closest('#mRepMake'))){ createShare(t); return; }
+  if(e.target.closest('#mRepSend')&&repMade){ sendLink(repMade.url,repMade.month,repMade.lang); return; }
+  if(e.target.closest('#mRepCopy')&&repMade){ copyText(repMade.url).then(function(){ toast('Link copied'); }); return; }
+  if(e.target.closest('#mRepView')&&repMade){ window.open(repMade.url,'_blank','noopener'); return; }
+  if((t=e.target.closest('[data-repcopy]'))){ copyText(serverLink(t.dataset.repcopy)).then(function(){ toast('Link copied'); }); return; }
+  if((t=e.target.closest('[data-repstop]'))){ if(!confirm('Stop this link? Whoever has it won’t be able to open it any more.')) return; var id=t.dataset.repstop; t.disabled=true;
+    SB.from('orbit_reports').update({revoked:true}).eq('id',id).then(function(r){ if(r.error) throw r.error; repActive=(repActive||[]).filter(function(x){ return x.id!==id; }); if(repMade&&repMade.url===serverLink(id)) repMade=null; renderMoneyReport(); toast('Stopped · that link no longer opens'); }).catch(function(){ t.disabled=false; toast('Couldn’t stop it. Check your internet.'); }); return; }
+  if(e.target.closest('[data-gosignin]')){ var g=document.querySelector('.helpbtn'); if(g) g.click(); setTimeout(function(){ var c=document.getElementById('acctCard'); if(c) c.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); },350); return; }
+  if(e.target.closest('#mShareTop')){ var sec=document.getElementById('mRepSec'); if(sec) sec.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); return; }
+});
+document.addEventListener('change',function(e){ if(e.target&&e.target.id==='mRepDate'){ repExpDate=e.target.value; repMade=null; renderMoneyReport(); } });
 moneyMonthCheck();
 renderMoney();
 

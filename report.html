@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#0B2A30" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
   --bg:#F6F8F9; --surface:#FFFFFF; --soft:#EDF1F3; --ink:#0E3B43; --muted:#5F6E72; --line:#E3E8EB; --line-d:#D3DBDF;
@@ -102,7 +102,7 @@ var T={
    moneyIn:'پارەی هاتوو',saved:'پاشەکەوت',avg:'تێکڕای ڕۆژانە',biggest:'زۆرترین خەرجی',ofAll:' لە کۆی خەرجی',byCat:'خەرجی بەپێی بەش',perDay:'خەرجی ڕۆژانە',
    college:'چوون بۆ زانکۆ',trips:'جار هاتوچۆ',shared:'بە هاوبەشی',sharedSaved:'پاشەکەوت بە هاوبەشی',classDay:'تێچووی ڕۆژێکی خوێندن نزیکەی ',
    all:'هەموو خەرجییەکان',made:'ئەم ڕاپۆرتە لە ',made2:' دروستکراوە بە ئەپی Orbit.',snap:'ژمارەکان هی ئەو کاتەن کە بەستەرەکە نێردراوە.',
-   broken:'ئەم بەستەرە تەواو نییە',broken2:'تکایە داوای بەستەرێکی نوێ بکە.',oldBrowser:'وێبگەڕەکەت پێویستی بە نوێکردنەوە هەیە بۆ کردنەوەی ئەم ڕاپۆرتە.',
+   broken:'ئەم بەستەرە تەواو نییە',broken2:'تکایە داوای بەستەرێکی نوێ بکە.',expired:'ئەم بەستەرە بەسەرچووە',expired2:'کاتی ئەم ڕاپۆرتە تەواو بووە. داوای بەستەرێکی نوێ بکە.',stopped:'ئەم بەستەرە ڕاگیراوە',stopped2:'ئەم ڕاپۆرتە ئیتر هاوبەش ناکرێت.',offline:'ئینتەرنێت نییە',offline2:'کاتێک ئینتەرنێتت هەبوو دووبارە هەوڵ بدەرەوە.',until:'ئەم بەستەرە تا کۆتایی ',until2:' کار دەکات.',oldBrowser:'وێبگەڕەکەت پێویستی بە نوێکردنەوە هەیە بۆ کردنەوەی ئەم ڕاپۆرتە.',
    cur:{IQD:'دینار',USD:'دۆلار',EUR:'یۆرۆ'},vsLast:'بەراورد بە مانگی پێشوو',
    cats:{food:'خواردن و خواردنەوە',transport:'تەکسی و هاتوچۆ',coffee:'قاوە',books:'کتێب',fun:'خۆشی و گەشت',other:'هیتر'},
    modes:{taxi:'تەکسی',bus:'پاس',friend:'ئۆتۆمبێلی هاوڕێ',walk:'بە پێ'},dirs:{to:'بۆ زانکۆ',home:'بۆ ماڵەوە'},
@@ -113,7 +113,7 @@ var T={
    moneyIn:'Money in',saved:'Saved',avg:'Daily average',biggest:'Biggest spending',ofAll:' of all spending',byCat:'Spending by category',perDay:'Spending per day',
    college:'Getting to college',trips:'trips',shared:'shared',sharedSaved:'saved by sharing',classDay:'A class day costs about ',
    all:'Every expense',made:'Made with Orbit on ',made2:'.',snap:'The numbers are as they were when the link was sent.',
-   broken:'This link is incomplete',broken2:'Ask for a new link.',oldBrowser:'Please update your browser to open this report.',
+   broken:'This link is incomplete',broken2:'Ask for a new link.',expired:'This link has expired',expired2:'Its time is up. Ask for a new link.',stopped:'This link was stopped',stopped2:'This report isn’t shared any more.',offline:'No internet',offline2:'Try again when you’re online.',until:'This link works until the end of ',until2:'.',oldBrowser:'Please update your browser to open this report.',
    cur:{IQD:'IQD',USD:'USD',EUR:'EUR'},vsLast:'vs last month',
    cats:{food:'Food & drinks',transport:'Taxi / Transport',coffee:'Coffee',books:'Books',fun:'Fun',other:'Others'},
    modes:{taxi:'Taxi',bus:'Bus',friend:'Friend’s car',walk:'Walk'},dirs:{to:'to college',home:'home'},
@@ -121,7 +121,8 @@ var T={
    days:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
    months:['January','February','March','April','May','June','July','August','September','October','November','December']}
 };
-var L='ku', D=null, app=document.getElementById('app');
+var SB_URL='https://hauryaiqyapiumjgedtr.supabase.co', SB_KEY='sb_publishable_rtk_DdwyFmIbw_71H4cr-w_a4PndB1r';
+var L='ku', D=null, RID=null, app=document.getElementById('app');
 function t(k){ return T[L][k]; }
 function digits(s){ return L==='ku'?String(s).replace(/\d/g,function(d){ return '٠١٢٣٤٥٦٧٨٩'[d]; }).replace(/,/g,'٬').replace(/%/g,'٪'):String(s); }
 function num(n){ return digits(Math.round(n||0).toLocaleString('en-US')); }
@@ -131,6 +132,7 @@ function moneyTxt(n){ return num(n)+' '+(t('cur')[D.c]||D.c); }
 function monthTxt(mk){ var m=+mk.slice(5,7)-1, y=mk.slice(0,4); return t('months')[m]+' '+digits(y); }
 function prevMk(mk){ var d=new Date(mk+'-01T00:00'); d.setMonth(d.getMonth()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
 function dayTxt(day){ var d=new Date(D.m+'-'+String(day).padStart(2,'0')+'T00:00'), m=t('months')[d.getMonth()]; return L==='ku'?t('days')[d.getDay()]+'، '+digits(day)+'ی '+m:t('days')[d.getDay()]+', '+m.slice(0,3)+' '+day; }
+function dayLong(x){ var d=new Date(String(x).length===10?x+'T00:00':x); return L==='ku'?digits(d.getDate())+'ی '+t('months')[d.getMonth()]+' '+digits(d.getFullYear()):t('months')[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear(); }
 function catName(id,name){ return t('cats')[id]||name||id; }
 function b64uBytes(s){ s=s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; var bin=atob(s), out=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) out[i]=bin.charCodeAt(i); return out; }
 function unpack(data){
@@ -144,7 +146,7 @@ function unpack(data){
 function setLang(l){
   L=T[l]?l:'ku';
   document.documentElement.lang=t('html'); document.documentElement.dir=t('dir');
-  try{ history.replaceState(null,'',location.pathname+location.search+'#'+L+'.'+raw); }catch(e){}
+  try{ history.replaceState(null,'',location.pathname+location.search+(RID?'#r='+RID+'&l='+L:'#'+L+'.'+raw)); }catch(e){}
 }
 function render(){
   var title=L==='ku'?(D.nm?t('titleOf')+esc(D.nm):t('title')):(D.nm?esc(D.nm)+'’s monthly report':t('title'));
@@ -184,16 +186,32 @@ function render(){
         return '<div class="row"><div class="row-n">'+name+(sub?'<small>'+esc(sub)+'</small>':'')+'</div><span class="row-a">'+(r[2]?moneyTxt(r[2]):'—')+'</span></div>'; }).join('')+'</div>'; }).join('')+'</details></section>';
   }
   var at=D.at?new Date(D.at+'T00:00'):null;
-  html+='<p class="foot">'+(at?t('made')+(L==='ku'?digits(at.getDate())+'ی '+t('months')[at.getMonth()]+' '+digits(at.getFullYear()):t('months')[at.getMonth()]+' '+at.getDate()+', '+at.getFullYear())+t('made2')+'<br>':'')+t('snap')+'</p>';
+  html+='<p class="foot">'+(at?t('made')+(L==='ku'?digits(at.getDate())+'ی '+t('months')[at.getMonth()]+' '+digits(at.getFullYear()):t('months')[at.getMonth()]+' '+at.getDate()+', '+at.getFullYear())+t('made2')+'<br>':'')+t('snap')+(D.x?'<br><b>'+t('until')+dayLong(D.x)+t('until2')+'</b>':'')+'</p>';
   app.innerHTML=html;
   document.getElementById('langBtn').onclick=function(){ setLang(L==='ku'?'en':'ku'); render(); };
 }
-function fail(key){ app.innerHTML='<div class="err"><b>'+t(key==='old'?'oldBrowser':'broken')+'</b>'+(key==='old'?'':t('broken2'))+'</div>'; }
+function fail(key){ var k={old:['oldBrowser',''],expired:['expired','expired2'],stopped:['stopped','stopped2'],offline:['offline','offline2']}[key]||['broken','broken2'];
+  document.title='Orbit'; app.innerHTML='<div class="err"><b>'+t(k[0])+'</b>'+(k[1]?t(k[1]):'')+'</div>'; }
+function expiredDay(x){ if(!x) return false; var end=String(x).length===10?new Date(x+'T23:59:59'):new Date(x); return Date.now()>end.getTime(); }
 addEventListener('hashchange',function(){ location.reload(); });
-var h=location.hash.slice(1), dot=h.indexOf('.'), raw=dot>0?h.slice(dot+1):'';
-L=T[h.slice(0,dot)]?h.slice(0,dot):'ku'; setLang(L);
-if(!raw){ fail('broken'); return; }
-unpack(raw).then(function(d){ if(!d||!d.m||!Array.isArray(d.d)) throw new Error('shape'); D=d; D.k=D.k||[]; render(); }).catch(function(e){ fail(e&&e.message==='old'?'old':'broken'); });
+var h=location.hash.slice(1), raw='';
+if(/^r=/.test(h)){
+  var q={}; h.split('&').forEach(function(kv){ var i=kv.indexOf('='); if(i>0) q[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1)); });
+  RID=/^[0-9a-f-]{36}$/i.test(q.r||'')?q.r:null; L=T[q.l]?q.l:'ku'; setLang(L);
+  if(!RID){ fail('broken'); return; }
+  fetch(SB_URL+'/rest/v1/rpc/get_report',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_id:RID})})
+    .then(function(r){ if(!r.ok) throw new Error('http'); return r.json(); })
+    .then(function(res){ if(!res||res.status!=='ok'){ fail(res&&res.status||'broken'); return; }
+      var d=res.data; if(!d||!d.m||!Array.isArray(d.d)) throw new Error('shape');
+      if(!q.l&&T[res.lang]&&res.lang!==L) setLang(res.lang);
+      D=d; D.k=D.k||[]; D.x=res.expires_at; render(); })
+    .catch(function(e){ fail(navigator.onLine===false?'offline':(e&&e.message==='shape'?'broken':'offline')); });
+} else {
+  var dot=h.indexOf('.'); raw=dot>0?h.slice(dot+1):'';
+  L=T[h.slice(0,dot)]?h.slice(0,dot):'ku'; setLang(L);
+  if(!raw){ fail('broken'); return; }
+  unpack(raw).then(function(d){ if(!d||!d.m||!Array.isArray(d.d)) throw new Error('shape'); if(expiredDay(d.x)){ fail('expired'); return; } D=d; D.k=D.k||[]; render(); }).catch(function(e){ fail(e&&e.message==='old'?'old':'broken'); });
+}
 })();
 </script>
 </body>
