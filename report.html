@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>ڕاپۆرتی مانگانە · Orbit</title>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#F6F8F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B2A30" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F8F9; --surface:#FFFFFF; --soft:#EDF1F3; --ink:#0E3B43; --muted:#5F6E72; --line:#E3E8EB; --line-d:#D3DBDF;
+  --brand:#17807C; --ok:#2E7D5B; --ok-t:#13786A; --warm:#FF8F5A; --warm-t:#C2531F; --track:#E6EBEE;
+  --r:22px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0B2A30; --surface:#12363D; --soft:#173F47; --ink:#EAF4F3; --muted:#9DB4B6; --line:#1F4A52; --line-d:#08252B;
+  --ok:#6FCFA2; --ok-t:#5FD3C3; --warm-t:#FF8F5A; --track:#1F4A52; color-scheme:dark;
+}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.55 "Noto Sans Arabic","Plus Jakarta Sans",system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+html[lang="en"] body{font-family:"Plus Jakarta Sans","Noto Sans Arabic",system-ui,sans-serif}
+.num,.big,.stat b,.cat-v,.day-v,.row-a{font-variant-numeric:tabular-nums}
+html[lang="en"] .big,html[lang="en"] .stat b,html[lang="en"] h1{font-family:"Bricolage Grotesque","Plus Jakarta Sans",sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 14px}
+.brand{display:flex;align-items:center;gap:8px;font:800 1.05rem "Plus Jakarta Sans",sans-serif;direction:ltr}
+.brand svg{width:30px;height:30px}
+.lang{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:0 14px;min-height:44px;font:700 .9rem inherit;font-family:"Noto Sans Arabic","Plus Jakarta Sans",sans-serif;cursor:pointer;box-shadow:0 2px 0 var(--line-d)}
+.lang:active{transform:translateY(2px);box-shadow:none}
+h1{font-size:1.65rem;line-height:1.25;margin:4px 0 2px;font-weight:800;letter-spacing:-.01em}
+.sub{color:var(--muted);font-weight:600;margin:0 0 16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-top:12px;box-shadow:0 3px 0 var(--line-d)}
+.hero{background:var(--ok);color:#fff;border:0;box-shadow:0 5px 0 color-mix(in srgb,var(--ok) 65%,#000)}
+@media (prefers-color-scheme: dark){.hero{color:#0B2A30}}
+.hero small{display:block;font-weight:700;opacity:.92}
+.big{display:block;font-weight:800;font-size:clamp(2.1rem,10vw,2.9rem);line-height:1.1;margin:6px 0 2px;letter-spacing:-.01em}
+.big em,.unit{font-style:normal;font-size:.45em;font-weight:700;opacity:.85}
+.bar{height:12px;border-radius:12px;background:rgba(255,255,255,.3);overflow:hidden;margin:12px 0 8px}
+.bar span{display:block;height:100%;border-radius:12px;background:#fff}
+@media (prefers-color-scheme: dark){.bar{background:rgba(11,42,48,.25)}.bar span{background:#0B2A30}}
+.hero .of{font-weight:600;opacity:.92}
+.cmp{display:inline-block;margin-top:10px;font-weight:800;font-size:.9rem;border-radius:999px;padding:3px 12px;background:rgba(255,255,255,.22)}
+@media (prefers-color-scheme: dark){.cmp{background:rgba(11,42,48,.18)}}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 8px;text-align:center;box-shadow:0 3px 0 var(--line-d)}
+.stat b{display:block;font-weight:800;font-size:1.2rem;line-height:1.2;word-break:break-word}
+.stat small{display:block;color:var(--muted);font-weight:700;font-size:.8rem;line-height:1.3;margin-top:2px}
+.stat .d{display:block;font-size:.74rem;font-weight:800;margin-top:4px;line-height:1.3}
+.stat .vs{display:block;font-weight:600;color:var(--muted)}
+.bad{color:var(--warm-t)} .good{color:var(--ok-t)} .same{color:var(--muted)}
+h2{font-size:1.1rem;margin:0 0 10px;font-weight:800}
+.callout{display:flex;align-items:center;gap:12px}
+.dot{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800}
+.callout b{display:block;font-size:1.05rem}
+.callout small{display:block;color:var(--muted);font-weight:600}
+.cat{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:9px 0;border-top:1px solid var(--line)}
+.cat:first-of-type{border-top:0}
+.cat-n{font-weight:700}
+.cat-v{font-weight:800;text-align:end}
+.track{grid-column:1 / -1;height:9px;border-radius:9px;background:var(--track);overflow:hidden}
+.track span{display:block;height:100%;border-radius:9px}
+.cat-p{grid-column:1 / -1;color:var(--muted);font-size:.8rem;font-weight:700}
+.chart{display:flex;align-items:flex-end;gap:2px;height:120px;margin-top:6px}
+.chart i{flex:1;min-width:0;border-radius:4px 4px 2px 2px;background:color-mix(in srgb,var(--ok) 45%,var(--track));min-height:3px}
+.chart i.z{background:var(--track)}
+.axis{display:flex;justify-content:space-between;color:var(--muted);font-size:.75rem;font-weight:700;margin-top:6px}
+.line{margin:10px 0 0;color:var(--muted);font-weight:600}
+.line b{color:var(--ink)}
+details{margin-top:12px}
+summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font-weight:800;font-size:1.05rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";font-weight:800;color:var(--muted)}
+details[open] summary::after{content:"－"}
+.day{margin-top:12px}
+.day-h{display:flex;justify-content:space-between;color:var(--muted);font-weight:800;font-size:.85rem;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:0}
+.row-n{min-width:0}
+.row-n small{display:block;color:var(--muted);font-size:.78rem;font-weight:600}
+.row-a{flex:none;font-weight:800}
+.foot{color:var(--muted);font-size:.82rem;font-weight:600;text-align:center;margin-top:22px;line-height:1.6}
+.err{text-align:center;padding:40px 10px}
+.err b{display:block;font-size:1.2rem;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="err" id="loading"><b>…</b></div></div>
+<script>
+(function(){
+'use strict';
+var T={
+ ku:{dir:'rtl',html:'ckb',title:'ڕاپۆرتی مانگانە',titleOf:'ڕاپۆرتی مانگانەی ',other:'English',spent:'خەرجی ئەم مانگە',ofBudget:'لە بودجەی ',more:'٪ زیاتر لە ',less:'٪ کەمتر لە ',same:'وەک ',prevSuffix:'',noData:'',
+   moneyIn:'پارەی هاتوو',saved:'پاشەکەوت',avg:'تێکڕای ڕۆژانە',biggest:'زۆرترین خەرجی',ofAll:' لە کۆی خەرجی',byCat:'خەرجی بەپێی بەش',perDay:'خەرجی ڕۆژانە',
+   college:'چوون بۆ زانکۆ',trips:'جار هاتوچۆ',shared:'بە هاوبەشی',sharedSaved:'پاشەکەوت بە هاوبەشی',classDay:'تێچووی ڕۆژێکی خوێندن نزیکەی ',
+   all:'هەموو خەرجییەکان',made:'ئەم ڕاپۆرتە لە ',made2:' دروستکراوە بە ئەپی Orbit.',snap:'ژمارەکان هی ئەو کاتەن کە بەستەرەکە نێردراوە.',
+   broken:'ئەم بەستەرە تەواو نییە',broken2:'تکایە داوای بەستەرێکی نوێ بکە.',oldBrowser:'وێبگەڕەکەت پێویستی بە نوێکردنەوە هەیە بۆ کردنەوەی ئەم ڕاپۆرتە.',
+   cur:{IQD:'دینار',USD:'دۆلار',EUR:'یۆرۆ'},vsLast:'بەراورد بە مانگی پێشوو',
+   cats:{food:'خواردن و خواردنەوە',transport:'تەکسی و هاتوچۆ',coffee:'قاوە',books:'کتێب',fun:'خۆشی و گەشت',other:'هیتر'},
+   modes:{taxi:'تەکسی',bus:'پاس',friend:'ئۆتۆمبێلی هاوڕێ',walk:'بە پێ'},dirs:{to:'بۆ زانکۆ',home:'بۆ ماڵەوە'},
+   withFriends:function(n){ return 'لەگەڵ '+num(n)+' هاوڕێ · تەنها بەشی خۆی'; },
+   days:['یەکشەممە','دووشەممە','سێشەممە','چوارشەممە','پێنجشەممە','هەینی','شەممە'],
+   months:['کانوونی دووەم','شوبات','ئازار','نیسان','ئایار','حوزەیران','تەممووز','ئاب','ئەیلوول','تشرینی یەکەم','تشرینی دووەم','کانوونی یەکەم']},
+ en:{dir:'ltr',html:'en',title:'Monthly report',titleOf:null,other:'کوردی',spent:'Spent this month',ofBudget:'of a ',more:'% more than ',less:'% less than ',same:'Same as ',
+   moneyIn:'Money in',saved:'Saved',avg:'Daily average',biggest:'Biggest spending',ofAll:' of all spending',byCat:'Spending by category',perDay:'Spending per day',
+   college:'Getting to college',trips:'trips',shared:'shared',sharedSaved:'saved by sharing',classDay:'A class day costs about ',
+   all:'Every expense',made:'Made with Orbit on ',made2:'.',snap:'The numbers are as they were when the link was sent.',
+   broken:'This link is incomplete',broken2:'Ask for a new link.',oldBrowser:'Please update your browser to open this report.',
+   cur:{IQD:'IQD',USD:'USD',EUR:'EUR'},vsLast:'vs last month',
+   cats:{food:'Food & drinks',transport:'Taxi / Transport',coffee:'Coffee',books:'Books',fun:'Fun',other:'Others'},
+   modes:{taxi:'Taxi',bus:'Bus',friend:'Friend’s car',walk:'Walk'},dirs:{to:'to college',home:'home'},
+   withFriends:function(n){ return 'Shared with '+n+(n===1?' friend':' friends')+' · own share only'; },
+   days:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+   months:['January','February','March','April','May','June','July','August','September','October','November','December']}
+};
+var L='ku', D=null, app=document.getElementById('app');
+function t(k){ return T[L][k]; }
+function digits(s){ return L==='ku'?String(s).replace(/\d/g,function(d){ return '٠١٢٣٤٥٦٧٨٩'[d]; }).replace(/,/g,'٬').replace(/%/g,'٪'):String(s); }
+function num(n){ return digits(Math.round(n||0).toLocaleString('en-US')); }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function money(n){ return '<span class="num">'+num(n)+'</span> <em class="unit">'+(t('cur')[D.c]||esc(D.c))+'</em>'; }
+function moneyTxt(n){ return num(n)+' '+(t('cur')[D.c]||D.c); }
+function monthTxt(mk){ var m=+mk.slice(5,7)-1, y=mk.slice(0,4); return t('months')[m]+' '+digits(y); }
+function prevMk(mk){ var d=new Date(mk+'-01T00:00'); d.setMonth(d.getMonth()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function dayTxt(day){ var d=new Date(D.m+'-'+String(day).padStart(2,'0')+'T00:00'), m=t('months')[d.getMonth()]; return L==='ku'?t('days')[d.getDay()]+'، '+digits(day)+'ی '+m:t('days')[d.getDay()]+', '+m.slice(0,3)+' '+day; }
+function catName(id,name){ return t('cats')[id]||name||id; }
+function b64uBytes(s){ s=s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; var bin=atob(s), out=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) out[i]=bin.charCodeAt(i); return out; }
+function unpack(data){
+  var kind=data.charAt(0), bytes=b64uBytes(data.slice(1));
+  if(kind==='j') return Promise.resolve(JSON.parse(new TextDecoder().decode(bytes)));
+  if(kind!=='z') return Promise.reject(new Error('kind'));
+  if(!window.DecompressionStream) return Promise.reject(new Error('old'));
+  var st=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return new Response(st).text().then(JSON.parse);
+}
+function setLang(l){
+  L=T[l]?l:'ku';
+  document.documentElement.lang=t('html'); document.documentElement.dir=t('dir');
+  try{ history.replaceState(null,'',location.pathname+location.search+'#'+L+'.'+raw); }catch(e){}
+}
+function render(){
+  var title=L==='ku'?(D.nm?t('titleOf')+esc(D.nm):t('title')):(D.nm?esc(D.nm)+'’s monthly report':t('title'));
+  document.title=(L==='ku'?t('title'):'Monthly report')+' · '+monthTxt(D.m);
+  var pct=D.b?Math.min(100,Math.round(D.sp/D.b*100)):0, p=D.p, cmp='';
+  if(p&&p[0]>0){ var dp=Math.round((D.sp-p[0])/p[0]*100), pm=t('months')[+prevMk(D.m).slice(5,7)-1];
+    cmp='<span class="cmp">'+(dp===0?t('same')+pm:(dp>0?'▲ '+digits(dp)+t('more')+pm:'▼ '+digits(-dp)+t('less')+pm))+'</span>'; }
+  function delta(cur,prev,goodUp){ if(!p||!prev) return ''; var d=Math.round((cur-prev)/prev*100); if(!d) return ''; var cls=goodUp==null?'same':((d>0)===goodUp?'good':'bad'); return '<span class="d '+cls+'">'+(d>0?'▲ ':'▼ ')+digits(Math.abs(d)+'%')+' <span class="vs">'+t('vsLast')+'</span></span>'; }
+  var html='<div class="top"><div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="9" fill="#17807C"/><ellipse cx="20" cy="20" rx="17" ry="7" fill="none" stroke="#7FD1C3" stroke-width="2.6" transform="rotate(-25 20 20)"/><circle cx="11.4" cy="29.6" r="3.2" fill="#FF8F5A"/></svg>Orbit</div><button type="button" class="lang" id="langBtn" lang="'+(L==='ku'?'en':'ckb')+'">'+t('other')+'</button></div>'+
+    '<h1>'+title+'</h1><p class="sub">'+monthTxt(D.m)+'</p>'+
+    '<section class="card hero"><small>'+t('spent')+'</small><span class="big">'+money(D.sp)+'</span>'+
+      (D.b?'<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><span style="width:'+pct+'%"></span></div><span class="of">'+(L==='ku'?digits(pct+'%')+' '+t('ofBudget')+moneyTxt(D.b):digits(pct)+'% of a '+moneyTxt(D.b)+' budget')+'</span><br>':'')+cmp+'</section>'+
+    '<div class="stats"><div class="stat"><b>'+num(D.i)+'</b><small>'+t('moneyIn')+'</small>'+delta(D.i,p&&p[1],null)+'</div><div class="stat"><b>'+num(Math.max(0,D.s))+'</b><small>'+t('saved')+'</small>'+delta(D.s,p&&p[2],true)+'</div><div class="stat"><b>'+num(D.a)+'</b><small>'+t('avg')+'</small></div></div>';
+  if(D.k.length){
+    var top=D.k[0], tp=D.sp?Math.round(top[3]/D.sp*100):0;
+    html+='<section class="card callout"><span class="dot" style="background:'+esc(top[2])+'">'+digits(tp+'%')+'</span><div><small>'+t('biggest')+'</small><b>'+esc(catName(top[0],top[1]))+' · '+moneyTxt(top[3])+'</b><small>'+digits(tp+'%')+t('ofAll')+'</small></div></section>';
+    var mx=Math.max.apply(null,D.k.map(function(x){ return x[3]; }))||1;
+    html+='<section class="card"><h2>'+t('byCat')+'</h2>'+D.k.map(function(x){ var cp=D.sp?Math.round(x[3]/D.sp*100):0; return '<div class="cat"><span class="cat-n">'+esc(catName(x[0],x[1]))+'</span><span class="cat-v">'+moneyTxt(x[3])+'</span><span class="track"><span style="width:'+(x[3]/mx*100)+'%;background:'+esc(x[2])+'"></span></span><span class="cat-p">'+digits(cp+'%')+'</span></div>'; }).join('')+'</section>';
+  }
+  var tr=D.t||[0,0,0,0];
+  if(tr[0]){
+    html+='<section class="card"><h2>'+t('college')+'</h2><div class="stats" style="margin-top:0"><div class="stat"><b>'+num(tr[0])+'</b><small>'+t('trips')+'</small></div><div class="stat"><b>'+num(tr[1])+'</b><small>'+t('shared')+'</small></div><div class="stat"><b>'+num(tr[2])+'</b><small>'+t('sharedSaved')+'</small></div></div>'+
+      (tr[3]?'<p class="line">'+t('classDay')+'<b>'+moneyTxt(tr[3])+'</b></p>':'')+'</section>';
+  }
+  var dmx=Math.max.apply(null,D.d)||1;
+  html+='<section class="card"><h2>'+t('perDay')+'</h2><div class="chart" role="img" aria-label="'+t('perDay')+'">'+D.d.map(function(v,i){ return '<i'+(v?'':' class="z"')+' style="height:'+Math.max(3,v/dmx*100)+'%" title="'+digits(i+1)+': '+moneyTxt(v)+'"></i>'; }).join('')+'</div><div class="axis"><span>'+digits(1)+'</span><span>'+digits(Math.ceil(D.d.length/2))+'</span><span>'+digits(D.d.length)+'</span></div></section>';
+  if(D.e&&D.e.length){
+    var groups={}, order=[];
+    D.e.forEach(function(r){ if(!groups[r[0]]){ groups[r[0]]=[]; order.push(r[0]); } groups[r[0]].push(r); });
+    html+='<section class="card"><details><summary>'+t('all')+' · '+num(D.e.length)+'</summary>'+order.map(function(day){ var rows=groups[day], tot=rows.reduce(function(a,r){ return a+r[2]; },0);
+      return '<div class="day"><div class="day-h"><span>'+dayTxt(day)+'</span><span class="day-v">'+moneyTxt(tot)+'</span></div>'+rows.map(function(r){
+        var name, sub='';
+        if(r[1]==='transport'&&r[3]&&r[3].indexOf('.')>0){ var md=r[3].split('.'); name=(t('modes')[md[0]]||md[0])+(md[1]?' · '+(t('dirs')[md[1]]||md[1]):''); }
+        else if(r[3]){ name=esc(r[3]); sub=catName(r[1]); }
+        else name=catName(r[1]);
+        if(r[4]>1) sub=t('withFriends')(r[4]-1);
+        return '<div class="row"><div class="row-n">'+name+(sub?'<small>'+esc(sub)+'</small>':'')+'</div><span class="row-a">'+(r[2]?moneyTxt(r[2]):'—')+'</span></div>'; }).join('')+'</div>'; }).join('')+'</details></section>';
+  }
+  var at=D.at?new Date(D.at+'T00:00'):null;
+  html+='<p class="foot">'+(at?t('made')+(L==='ku'?digits(at.getDate())+'ی '+t('months')[at.getMonth()]+' '+digits(at.getFullYear()):t('months')[at.getMonth()]+' '+at.getDate()+', '+at.getFullYear())+t('made2')+'<br>':'')+t('snap')+'</p>';
+  app.innerHTML=html;
+  document.getElementById('langBtn').onclick=function(){ setLang(L==='ku'?'en':'ku'); render(); };
+}
+function fail(key){ app.innerHTML='<div class="err"><b>'+t(key==='old'?'oldBrowser':'broken')+'</b>'+(key==='old'?'':t('broken2'))+'</div>'; }
+addEventListener('hashchange',function(){ location.reload(); });
+var h=location.hash.slice(1), dot=h.indexOf('.'), raw=dot>0?h.slice(dot+1):'';
+L=T[h.slice(0,dot)]?h.slice(0,dot):'ku'; setLang(L);
+if(!raw){ fail('broken'); return; }
+unpack(raw).then(function(d){ if(!d||!d.m||!Array.isArray(d.d)) throw new Error('shape'); D=d; D.k=D.k||[]; render(); }).catch(function(e){ fail(e&&e.message==='old'?'old':'broken'); });
+})();
+</script>
+</body>
+</html>

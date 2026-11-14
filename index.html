@@ -1458,6 +1458,30 @@ h1,h2,h3{text-wrap:balance}
 .mset-h{font-size:.98rem;margin:1.1rem 0 .1rem}
 .mset-sub{color:var(--muted);font-weight:600;font-size:.78rem;margin:.1rem 0 .2rem}
 @media (max-width:360px){.mtaxi-mode,.mwal,.msrc,.mppl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Monthly report */
+.mrep-banner{margin-top:.6rem}
+.mrep-banner[hidden]{display:none}
+.mrep{padding:1rem}
+.mrep-nav{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.7rem}
+.mrep-nav b{font:800 1.05rem var(--disp);text-align:center}
+.mrep-arrow{flex:none;width:44px;height:44px;border:1px solid var(--line);background:var(--surface);border-radius:12px;font:800 1.35rem/1 var(--disp);color:var(--ink);cursor:pointer;box-shadow:0 2px 0 var(--line-d)}
+.mrep-arrow:active{transform:translateY(2px);box-shadow:none}
+.mrep-arrow:disabled{opacity:.35;cursor:default;box-shadow:none;transform:none}
+.mrep-hero{background:var(--soft);border-radius:16px;padding:.8rem .9rem;margin-bottom:.5rem}
+.mrep-hero small{display:block;color:var(--muted);font-weight:700;font-size:.8rem}
+.mrep-hero b{display:block;font:800 1.75rem/1.15 var(--disp);font-variant-numeric:tabular-nums}
+.mrep-cmp{display:inline-block;margin-top:.35rem;font-weight:800;font-size:.8rem;border-radius:999px;padding:.15rem .6rem;background:var(--lock);color:var(--muted)}
+.mrep-cmp.up{background:color-mix(in srgb,#FF8F5A 18%,transparent);color:var(--warm-t)}
+.mrep-cmp.down{background:color-mix(in srgb,#2E7D5B 16%,transparent);color:var(--ok-t)}
+.mrep-share{margin-top:.9rem;border-top:1px solid var(--line);padding-top:.85rem}
+.mrep-lbl{display:block;color:var(--muted);font-weight:700;font-size:.8rem;margin-bottom:.35rem}
+.mreplang{grid-template-columns:1fr 1fr}
+.mreplang .mtchip[data-mreplang="ku"]{font-family:"Noto Naskh Arabic","Plus Jakarta Sans",sans-serif;font-size:.9rem}
+.mreplang .mtchip.on{border-color:#2E7D5B;background:color-mix(in srgb,#2E7D5B 14%,var(--surface));box-shadow:0 2px 0 #1F5C42}
+.mrep-btns{display:flex;gap:.45rem;margin-top:.65rem}
+.mrep-btns .btn{flex:1;margin:0;min-height:50px}
+.mrep-btns .btn:disabled{opacity:.55}
+.mrep-btns .mpay{flex:none;min-height:50px;padding:0 1rem}
 @media (prefers-reduced-motion:reduce){.mhero,.mt-pc,.mt-bar span,.mh-bar span,.mc-track span{transition:none!important}.mrow.dotpop .mrow-ic{animation:none!important}}
 </style>
 
@@ -1519,6 +1543,7 @@ h1,h2,h3{text-wrap:balance}
       <div class="tsec tsec-paths"><div class="tsech"><h2>Your paths</h2><button type="button" class="tlink" data-view="path">Open path</button></div><div class="tdpaths" id="tdPaths"></div></div>
       </div></div>
       <button type="button" class="money-teaser ms-ok" id="mTeaser" data-view="money" aria-label="Open Money"></button>
+      <button type="button" class="money-teaser ms-ok mrep-banner" id="mRepBanner" data-view="money" hidden></button>
     </div>
   </div>
 
@@ -1706,6 +1731,7 @@ h1,h2,h3{text-wrap:balance}
         <section class="msec"><div class="msec-h"><h2>Savings &amp; wallets</h2></div><div id="mWallets"></div></section>
         <section class="msec"><div class="msec-h"><h2>Who owes who</h2><button type="button" class="mlink" id="mDebtAdd">+ Add</button></div><div id="mDebtForm" hidden></div><div id="mDebts"></div></section>
         <section class="msec" id="mTripSec" hidden><div class="msec-h"><h2>Getting to college</h2></div><div id="mTrips"></div></section>
+        <section class="msec" id="mRepSec"><div class="msec-h"><h2>Monthly report</h2></div><div class="card mrep" id="mReport"></div></section>
         <section class="msec"><div class="msec-h"><h2>Last 7 days</h2></div><div class="mweek2" id="mWeek"></div></section>
         <section class="msec"><div class="msec-h"><h2>Categories this month</h2></div><div id="mCats"></div></section>
         <section class="msec"><div class="msec-h"><h2>Recurring bills</h2></div><div id="mBills"></div></section>
@@ -3739,8 +3765,86 @@ function renderMoneyBills(){
     if(paid) badge='<span class="mbadge paid">Paid ✓</span>'; else if(dnum<b.day) badge='<span class="mbadge">Due '+ordinal(b.day)+'</span>'; else if(dnum===b.day) badge='<span class="mbadge today">Due today</span>'; else badge='<span class="mbadge over">Overdue</span>';
     return '<div class="mbill"><span class="mrow-ic" style="--cc:'+catOf(b.cat).color+'" aria-hidden="true">'+ic(catOf(b.cat).icon)+'</span><div class="mbill-b"><b>'+esc(b.name)+'</b>'+badge+'</div><span class="mbill-amt">'+moneyFmt(b.amount)+'</span>'+(paid?'':'<button type="button" class="mpay" data-mpay="'+b.id+'">Mark paid</button>')+'</div>'; }).join(''):'<div class="mempty">No recurring bills.</div>';
 }
+// ===== Monthly report + one-month share link (Kurdish Sorani or English). The numbers travel inside the link (#…), never to a server. =====
+var REPORT_HOME='https://suhaib11111.github.io/orbit/report.html';
+var KU_MONTHS=['کانوونی دووەم','شوبات','ئازار','نیسان','ئایار','حوزەیران','تەممووز','ئاب','ئەیلوول','تشرینی یەکەم','تشرینی دووەم','کانوونی یەکەم'];
+var repMonth=null, repLang='ku', repLinks={};
+function pad2(n){ return String(n).padStart(2,'0'); }
+function shiftMonth(mk,d){ var x=new Date(mk+'-01T00:00'); x.setMonth(x.getMonth()+d); return x.getFullYear()+'-'+pad2(x.getMonth()+1); }
+function prevMonth(mk){ return shiftMonth(mk,-1); }
+function monthName(mk){ return new Date(mk+'-01T00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'}); }
+function monthOnly(mk){ return new Date(mk+'-01T00:00').toLocaleDateString('en-US',{month:'long'}); }
+function kuDigits(s){ return String(s).replace(/\d/g,function(d){ return '٠١٢٣٤٥٦٧٨٩'[d]; }); }
+function kuMonthName(mk){ return KU_MONTHS[+mk.slice(5,7)-1]+' '+kuDigits(mk.slice(0,4)); }
+function monthHas(mk){ var f=function(g){ return monthKey(g.date)===mk; }; return money.log.some(f)||money.income.some(f)||money.saves.some(f); }
+function firstMonth(){ var all=money.log.concat(money.income,money.saves).map(function(g){ return monthKey(g.date); }).filter(Boolean).sort(); return all[0]||monthKey(today()); }
+function monthReport(mk){
+  var dim=new Date(+mk.slice(0,4),+mk.slice(5,7),0).getDate(), days=[], cats={}, trips=0, shared=0, ssave=0, list=[], td=today();
+  for(var i=0;i<dim;i++) days.push(0);
+  money.log.forEach(function(g){ if(monthKey(g.date)!==mk) return; days[+g.date.slice(8,10)-1]+=g.amount; cats[g.cat]=(cats[g.cat]||0)+g.amount; list.push(g);
+    if(g.cat==='transport'){ trips++; if((g.people||1)>1){ shared++; ssave+=(g.full||0)-(g.amount||0); } } });
+  var tt=TT(), cd={};
+  list.forEach(function(g){ if(g.date>td||['transport','food','coffee'].indexOf(g.cat)<0||!(tt[dayKeyOf(g.date)]||[]).length) return; cd[g.date]=(cd[g.date]||0)+g.amount; });
+  var cdl=Object.keys(cd), cdAvg=cdl.length?cdl.reduce(function(a,k){ return a+cd[k]; },0)/cdl.length:0;
+  var sp=monthSpend(mk), pm=prevMonth(mk), cm=monthKey(td), elapsed=mk===cm?+td.slice(8,10):(mk<cm?dim:0);
+  var cl=money.categories.map(function(c){ return {id:c.id,name:c.name,color:c.color,v:cats[c.id]||0}; }).filter(function(x){ return x.v>0; }).sort(function(a,b){ return b.v-a.v; });
+  list.sort(function(a,b){ return a.date<b.date?-1:(a.date>b.date?1:(a.at||0)-(b.at||0)); });
+  return {mk:mk,dim:dim,days:days,spent:sp,inn:monthIn(mk),saved:savedIn(mk),cats:cl,trips:trips,shared:shared,ssave:ssave,cdAvg:Math.round(cdAvg),avg:elapsed?Math.round(sp/elapsed):0,list:list,
+    prev:monthHas(pm)?{mk:pm,spent:monthSpend(pm),inn:monthIn(pm),saved:savedIn(pm)}:null};
+}
+function reportPayload(r){
+  return {v:1,m:r.mk,c:money.currency,nm:(meta.profile&&meta.profile.name)||'',b:money.budget,at:today(),sp:r.spent,i:r.inn,s:r.saved,a:r.avg,d:r.days,
+    k:r.cats.map(function(x){ return [x.id,x.name,x.color,x.v]; }),
+    p:r.prev?[r.prev.spent,r.prev.inn,r.prev.saved]:null,
+    t:[r.trips,r.shared,r.ssave,r.cdAvg],
+    e:r.list.slice(-300).map(function(g){ var t=g.cat==='transport'?tInfo(g):null, x=t?(t.mode||'')+'.'+(t.dir||''):(/^Shared with/.test(g.note||'')?'':(g.note||'')), row=[+g.date.slice(8,10),g.cat,g.amount,x]; if((g.people||1)>1) row.push(g.people); return row; })};
+}
+function b64u(bytes){ var s='', CH=0x8000; for(var i=0;i<bytes.length;i+=CH) s+=String.fromCharCode.apply(null,bytes.subarray(i,i+CH)); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+function packReport(obj){
+  var raw=new TextEncoder().encode(JSON.stringify(obj));
+  if(window.CompressionStream){ try{ var st=new Blob([raw]).stream().pipeThrough(new CompressionStream('deflate-raw')); return new Response(st).arrayBuffer().then(function(b){ return 'z'+b64u(new Uint8Array(b)); },function(){ return 'j'+b64u(raw); }); }catch(e){} }
+  return Promise.resolve('j'+b64u(raw));
+}
+function reportBase(){ return /github\.io$/.test(location.hostname)?location.href.split('#')[0].split('?')[0].replace(/[^\/]*$/,'')+'report.html':REPORT_HOME; }
+function ensureLink(mk,lang){
+  var key=mk+'|'+lang, sig=JSON.stringify(reportPayload(monthReport(mk))), c=repLinks[key];
+  if(c&&c.sig===sig) return c.url;
+  repLinks[key]={sig:sig,url:null};
+  packReport(JSON.parse(sig)).then(function(z){ if(repLinks[key].sig!==sig) return; repLinks[key].url=reportBase()+'#'+lang+'.'+z;
+    if(repMonth===mk&&repLang===lang){ ['mRepShare','mRepOpen'].forEach(function(id){ var b=document.getElementById(id); if(b) b.disabled=false; }); } });
+  return null;
+}
+function renderMoneyReport(){
+  var el=document.getElementById('mReport'); if(!el) return;
+  var cur=monthKey(today());
+  if(!repMonth){ var pm=prevMonth(cur); repMonth=(+today().slice(8,10)<=3&&monthHas(pm))?pm:cur; }
+  var r=monthReport(repMonth), canPrev=repMonth>firstMonth(), canNext=repMonth<cur, has=monthHas(repMonth), body='';
+  if(has){
+    var cmp='';
+    if(r.prev&&r.prev.spent>0){ var dp=Math.round((r.spent-r.prev.spent)/r.prev.spent*100); cmp=dp===0?'<span class="mrep-cmp">Same as '+monthOnly(r.prev.mk)+'</span>':'<span class="mrep-cmp '+(dp>0?'up':'down')+'">'+(dp>0?'▲ '+dp+'% more':'▼ '+(-dp)+'% less')+' than '+monthOnly(r.prev.mk)+'</span>'; }
+    var top=r.cats[0], tp=top&&r.spent?Math.round(top.v/r.spent*100):0;
+    function stat(v,l){ return '<div class="mstat"><b>'+v+'</b><small>'+l+'</small></div>'; }
+    body='<div class="mrep-hero"><small>Spent in '+monthOnly(repMonth)+'</small><b>'+moneyFmt(r.spent)+'</b>'+cmp+'</div>'+
+      '<div class="mstats">'+stat(moneyShort(r.inn),'money in')+stat(moneyShort(Math.max(0,r.saved)),'saved')+stat(r.trips?r.shared+' of '+r.trips:'0','trips shared')+'</div>'+
+      (top?'<p class="mline">Biggest: <b>'+esc(top.name)+'</b> · '+moneyFmt(top.v)+' ('+tp+'%)</p>':'')+
+      (r.ssave>0?'<p class="mline">Sharing saved you '+moneyFmt(r.ssave)+'</p>':'');
+  } else body='<div class="mempty">Nothing logged in '+monthName(repMonth)+' yet.</div>';
+  var url=has?ensureLink(repMonth,repLang):null;
+  el.innerHTML='<div class="mrep-nav"><button type="button" class="mrep-arrow" data-mrepgo="-1" aria-label="Previous month"'+(canPrev?'':' disabled')+'>‹</button><b>'+monthName(repMonth)+'</b><button type="button" class="mrep-arrow" data-mrepgo="1" aria-label="Next month"'+(canNext?'':' disabled')+'>›</button></div>'+body+
+    (has?'<div class="mrep-share"><span class="mrep-lbl">Language of the shared report</span>'+chipRow('mreplang',[['ku','کوردی'],['en','English']],repLang,'Language of the shared report','mreplang')+
+      '<div class="mrep-btns"><button type="button" class="btn main" id="mRepShare"'+(url?'':' disabled')+'>Share this month</button><button type="button" class="mpay" id="mRepOpen"'+(url?'':' disabled')+'>Open</button></div>'+
+      '<p class="mhint">The link carries only '+monthOnly(repMonth)+'’s numbers, inside the link itself. Whoever you send it to can open it; nothing is stored online. Added more later? Share again.</p></div>':'');
+}
+function renderRepBanner(){
+  var b=document.getElementById('mRepBanner'); if(!b) return;
+  var mk=money.reportNew, show=!!mk&&money.reportSeen!==mk;
+  b.hidden=!show; if(!show) return;
+  b.innerHTML='<span class="mt-row"><span class="mt-ic" aria-hidden="true">'+ic('chart')+'</span><span class="mt-tx"><b>Your '+monthOnly(mk)+' report is ready</b><small>What you spent, saved and shared · tap to see it</small></span></span>';
+}
+var _rtmBase=renderTodayMoney; renderTodayMoney=function(){ _rtmBase(); renderRepBanner(); };
+function copyText(t){ if(navigator.clipboard&&navigator.clipboard.writeText) return navigator.clipboard.writeText(t); var a=document.createElement('textarea'); a.value=t; a.style.position='fixed'; a.style.opacity='0'; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); }catch(e){} a.remove(); return Promise.resolve(); }
 function renderMoneySettings(){ var bi=document.getElementById('mBudget'); if(document.activeElement!==bi) bi.value=money.budget; document.getElementById('mCurrency').value=money.currency; renderMoneySettingsPlus(); }
-function renderMoney(){ moneyEnsure(); renderMoneyHero(); renderMoneyQuick(); renderMoneyToday(); renderMoneyWallets(); renderMoneyDebts(); renderMoneyTrips(); renderMoneyWeek(); renderMoneyCats(); renderMoneyBills(); renderMoneySettings(); renderTodayMoney(); }
+function renderMoney(){ moneyEnsure(); renderMoneyHero(); renderMoneyQuick(); renderMoneyToday(); renderMoneyWallets(); renderMoneyDebts(); renderMoneyTrips(); renderMoneyReport(); renderMoneyWeek(); renderMoneyCats(); renderMoneyBills(); renderMoneySettings(); renderTodayMoney(); }
 function moneyThresholds(){
   var s=moneyStats();
   if(s.pct>=100&&!money.warned100){ money.warned100=true; money.warned80=true; saveMoney(); setTimeout(function(){ toast('Monthly budget used up'); },500); }
@@ -3771,6 +3875,7 @@ function moneyMonthCheck(){
   if(money.seenMonth&&money.seenMonth!==cur){
     var prev=money.seenMonth, had=money.log.some(function(g){return monthKey(g.date)===prev;}), sp=monthSpend(prev);
     if(had&&sp<=money.budget){ setTimeout(function(){ var t=document.getElementById('mTeaser'); if(t&&!document.getElementById('view-today').hidden) confetti(t); toast(new Date(prev+'-01T00:00').toLocaleDateString('en-US',{month:'long'})+' under budget 🎉'); },400); }
+    if(had) money.reportNew=prev;
     money.warned80=false; money.warned100=false;
   }
   if(money.seenMonth!==cur){ money.seenMonth=cur; saveMoney(); }
@@ -3815,6 +3920,12 @@ document.addEventListener('click',function(e){
   if((t=e.target.closest('[data-mddir]'))){ debtDir=t.dataset.mddir; t.parentNode.querySelectorAll('[data-mddir]').forEach(function(x){ var on=x===t; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on); }); return; }
   if(e.target.closest('#mdSave')){ var nm=document.getElementById('mdName').value.trim(), am=parseInt(document.getElementById('mdAmt').value,10); if(!nm||!(am>0)){ toast('Add a name and an amount'); return; }
     money.debts.push({id:mid(),name:nm,amount:am,dir:debtDir,what:'',date:today(),wallet:money.lastWallet||'cash'}); debtFormOpen=false; saveMoney(); renderDebtForm(); renderMoney(); toast(debtDir==='me'?nm+' owes you '+moneyFmt(am):'You owe '+nm+' '+moneyFmt(am)); return; }
+  if((t=e.target.closest('[data-mrepgo]'))){ repMonth=shiftMonth(repMonth,+t.dataset.mrepgo); renderMoneyReport(); return; }
+  if((t=e.target.closest('[data-mreplang]'))){ repLang=t.dataset.mreplang; renderMoneyReport(); return; }
+  if(e.target.closest('#mRepShare')){ var RL=repLinks[repMonth+'|'+repLang]; if(!RL||!RL.url) return; var ttl=repLang==='ku'?'ڕاپۆرتی مانگانەی '+kuMonthName(repMonth):'Monthly report · '+monthName(repMonth);
+    if(navigator.share) navigator.share({title:ttl,text:ttl,url:RL.url}).catch(function(){}); else copyText(RL.url).then(function(){ toast('Link copied · paste it in WhatsApp or Telegram'); }); return; }
+  if(e.target.closest('#mRepOpen')){ var RL2=repLinks[repMonth+'|'+repLang]; if(RL2&&RL2.url) window.open(RL2.url,'_blank','noopener'); return; }
+  if(e.target.closest('#mRepBanner')){ repMonth=money.reportNew; money.reportSeen=money.reportNew; saveMoney(); setTimeout(function(){ var sec=document.getElementById('mRepSec'); if(sec) sec.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); },380); }
   if(e.target.closest('#mReset')){ if(!confirm('Reset money data? This clears every expense, money in, savings and who-owes-who. Your budget, limits, categories and bills stay.')) return;
     money.log=[]; money.income=[]; money.saves=[]; money.debts=[]; money.adjust=[]; money.fares={}; money.limitWarn={}; money.walletsSince=today(); money.seenMonth=monthKey(today()); money.warned80=false; money.warned100=false; money.recurring.forEach(function(r){ r.lastPaid=null; }); saveMoney(); renderMoney(); toast('Money data reset'); return; }
   var v=e.target.closest('[data-view="money"]'); if(v){ renderMoney(); setTimeout(function(){ enterOnce('#mToday'); enterOnce('#mWallets'); enterOnce('#mDebts'); enterOnce('#mCats'); enterOnce('#mBills'); },10); }
