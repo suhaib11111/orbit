@@ -1612,6 +1612,7 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:calc(84px +
 .mlink-btns .mpay{flex:1}
 .mrepexp .mtchip{font-size:.82rem}
 /* v4: Send to family, clean spacing */
+.appver{text-align:center;color:var(--muted);font-size:.78rem;font-weight:700;margin:1.2rem 0 0}
 .mshare{padding:1.15rem 1.1rem;margin-top:.9rem}
 .msh-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem}
 .msh-head > div{flex:1;min-width:0}
@@ -4396,6 +4397,21 @@ renderMoney();
 
 all();
 renderToday();
+
+// ===== Always the newest Orbit: when you open the app, it checks for a new version and reloads itself =====
+var APP_VERSION='2026.11.14-7';
+function checkUpdate(){
+  if(!/^https:/.test(location.protocol)||/claude/.test(location.hostname)) return;
+  if(checkUpdate.at&&Date.now()-checkUpdate.at<60000) return; checkUpdate.at=Date.now();
+  fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(function(r){ return r.ok?r.text():''; }).then(function(t){
+    var m=t.match(/var APP_VERSION='([^']+)'/); if(!m||m[1]===APP_VERSION) return;
+    var ae=document.activeElement; if(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)) return;
+    toast('Updating Orbit…'); setTimeout(function(){ location.reload(); },700);
+  }).catch(function(){});
+}
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') checkUpdate(); });
+setTimeout(checkUpdate,2500);
+(function(){ var g=document.getElementById('reset'); if(g){ var v=document.createElement('p'); v.className='appver'; v.textContent='Orbit · version '+APP_VERSION; g.insertAdjacentElement('afterend',v); } })();
 // ===== Language: English / کوردی (Sorani). Translates what's on screen; course and topic names stay in English. =====
 var KU={
 'Today':'ئەمڕۆ','Path':'ڕێگا','College':'کۆلێژ','Mail':'ئیمەیڵ','Plan':'پلان','Schedule':'خشتە','Money':'پارە','Focus':'سەرنجدان',

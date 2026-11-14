@@ -1,6 +1,6 @@
 // Orbit offline support: always try the internet first (so updates show up right away),
 // and fall back to the saved copy when the phone is offline.
-const CACHE = 'orbit-v2';
+const CACHE = 'orbit-v3';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 
 self.addEventListener('install', (e) => {
@@ -22,8 +22,10 @@ self.addEventListener('fetch', (e) => {
   const fonts = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
   const lib = url.hostname === 'cdn.jsdelivr.net'; // the sign-in library, so Orbit still opens offline
   if (url.origin !== location.origin && !fonts && !lib) return; // account data (supabase.co) is never cached
+  // pages always ask GitHub for the newest copy (no stale 10-minute cache)
+  const live = req.mode === 'navigate' ? fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' }) : fetch(req);
   e.respondWith(
-    fetch(req)
+    live
       .then((res) => {
         if (res.ok || res.type === 'opaque') {
           const copy = res.clone();
