@@ -1291,6 +1291,8 @@ h1,h2,h3{text-wrap:balance}
 .mtabs button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--brand)!important}
 .mhero{box-shadow:0 14px 28px -18px rgba(0,0,0,.55)!important}
 #view-money [data-mtab]:not(.mt-show){display:none!important}
+html{scroll-padding-bottom:calc(124px + env(safe-area-inset-bottom,0px))}
+@media (max-width:1023px){body{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}}
 .ml-pad,.ml-num,.mrep-date,input[type=number],input[type=email],input[type=password]{direction:ltr}
 html[dir="rtl"] .acct-in{text-align:right}
 #view-money .col-b > .msec:first-child,#view-money .col-b > section.mt-show:first-of-type{margin-top:1rem}
@@ -4423,6 +4425,13 @@ all();
 renderToday();
 
 
+// ===== Keep the keypad and the Add button above the floating bottom bar =====
+function moneyKeepVisible(){
+  var a=document.getElementById('mlAdd'), nav=document.querySelector('.nav'); if(!a||document.getElementById('view-money').hidden) return;
+  var limit=nav&&getComputedStyle(nav).position==='fixed'?nav.getBoundingClientRect().top-10:innerHeight;
+  if(a.getBoundingClientRect().bottom>limit) a.scrollIntoView({block:'end',behavior:RM?'auto':'smooth'});
+}
+document.addEventListener('click',function(e){ if(e.target.closest('[data-mcat],[data-mdir],[data-mmode],[data-mppl],[data-mwho],[data-mkind],[data-mtabbtn="add"]')) setTimeout(moneyKeepVisible,30); });
 // ===== Money tabs: Add · Report · Savings · Settings =====
 var moneyTab='add';
 function setMoneyTab(t){ moneyTab=t; document.querySelectorAll('#view-money [data-mtab]').forEach(function(el){ el.classList.toggle('mt-show',el.getAttribute('data-mtab')===t); });
@@ -4433,7 +4442,7 @@ document.addEventListener('click',function(e){ var b=e.target.closest('[data-mta
   if(e.target.closest('[data-mgo]')) setMoneyTab('add');
 }, true);
 // ===== Always the newest Orbit: when you open the app, it checks for a new version and reloads itself =====
-var APP_VERSION='2026.11.15-2';
+var APP_VERSION='2026.11.25-1';
 function checkUpdate(){
   if(!/^https:/.test(location.protocol)||/claude/.test(location.hostname)) return;
   if(checkUpdate.at&&Date.now()-checkUpdate.at<60000) return; checkUpdate.at=Date.now();
