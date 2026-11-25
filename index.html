@@ -1583,7 +1583,7 @@ html[dir="rtl"] .acct-in{text-align:right}
 :root:not([data-theme="light"]) .nav button[aria-current="page"][data-view="today"]{color:#FFB08A}
 :root:not([data-theme="light"]) .nav button[aria-current="page"][data-view="path"]{color:#C2A8FF}
 :root:not([data-theme="light"]) .nav button[aria-current="page"][data-view="college"]{color:#8EC5FF}
-:root:not([data-theme="light"]) .nav button[aria-current="page"][data-view="mail"]{color:#FF9AB0}
+:root:not([data-theme="light"]) .nav button[aria-current="page"][data-view="calendar"]{color:#FF9AB0}
 :root:not([data-theme="light"]) .mday{background:color-mix(in srgb,#3E8ED0 20%,var(--surface))}}
 :root[data-theme="dark"]{--bg:#0A1A1F;--surface:#11262D;--soft:#173139;--line:#21404A;--line-d:#06141A}
 :root[data-theme="dark"] .ccard.subj{background:color-mix(in srgb,var(--c) 16%,var(--surface));border-color:color-mix(in srgb,var(--c) 45%,var(--line))}
@@ -1605,7 +1605,7 @@ html[dir="rtl"] .acct-in{text-align:right}
 :root[data-theme="dark"] .nav button[aria-current="page"][data-view="today"]{color:#FFB08A}
 :root[data-theme="dark"] .nav button[aria-current="page"][data-view="path"]{color:#C2A8FF}
 :root[data-theme="dark"] .nav button[aria-current="page"][data-view="college"]{color:#8EC5FF}
-:root[data-theme="dark"] .nav button[aria-current="page"][data-view="mail"]{color:#FF9AB0}
+:root[data-theme="dark"] .nav button[aria-current="page"][data-view="calendar"]{color:#FF9AB0}
 :root[data-theme="dark"] .mday{background:color-mix(in srgb,#3E8ED0 20%,var(--surface))}
 /* Kurdish (Sorani), right to left */
 .langwrap{position:relative}
@@ -1636,6 +1636,50 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:calc(84px +
 .mlink-btns{grid-column:2;display:flex;gap:.45rem}
 .mlink-btns .mpay{flex:1}
 .mrepexp .mtchip{font-size:.82rem}
+
+/* ===== Calendar ===== */
+.nav button[data-view="mail"]{display:none!important}
+.cal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin:.6rem 0 1rem}
+.cal-head h1{margin:0}
+.cal-head p{margin:.2rem 0 0;color:var(--muted);font-weight:500;font-size:.92rem}
+.cal-add{width:auto!important;flex:none;display:flex!important;align-items:center;gap:.35rem;padding:0 1.1rem!important;min-height:46px}
+.cal-bell{display:flex;gap:.75rem;align-items:center;width:100%;text-align:start;border:1px solid color-mix(in srgb,#E8B44C 45%,var(--line));background:color-mix(in srgb,#E8B44C 12%,var(--surface));color:var(--ink);border-radius:16px;padding:.8rem .9rem;margin-bottom:1rem;cursor:pointer;font:inherit}
+.cal-bell .ic{flex:none;width:1.4rem;height:1.4rem;color:#B8860B}
+.cal-bell b{display:block;font-weight:800}
+.cal-bell small{display:block;color:var(--muted);font-weight:500;font-size:.84rem}
+.cal-card{padding:1rem .8rem}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin:0 .2rem .8rem}
+.cal-nav b{font:800 1.05rem var(--disp)}
+.cal-wd,.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.25rem}
+.cal-wd span{text-align:center;color:var(--muted);font-weight:700;font-size:.74rem;padding-bottom:.3rem}
+.calc{aspect-ratio:1/1.05;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;border:0;background:none;border-radius:12px;color:var(--ink);cursor:pointer;font:inherit;padding:0}
+.calc.empty{cursor:default}
+.caln{font-weight:700;font-size:.95rem;font-variant-numeric:tabular-nums;width:2rem;height:2rem;display:grid;place-items:center;border-radius:50%}
+.calc.today .caln{color:var(--brand);box-shadow:inset 0 0 0 2px var(--brand)}
+.calc.sel .caln{background:var(--brand);color:#fff;box-shadow:none}
+.calc:hover:not(.empty){background:var(--soft)}
+.cald{display:flex;gap:2px;height:6px}
+.cald i{width:6px;height:6px;border-radius:50%}
+.cal-legend{display:flex;flex-wrap:wrap;gap:.35rem .8rem;margin:.8rem .2rem 0;color:var(--muted);font-size:.76rem;font-weight:600}
+.cal-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-end:.3rem}
+.cal-list{display:flex;flex-direction:column;gap:.5rem}
+.calev{display:flex;gap:.8rem;align-items:center;width:100%;text-align:start;border:1px solid color-mix(in srgb,var(--line) 70%,transparent);background:var(--surface);border-radius:14px;padding:.75rem .85rem;cursor:pointer;font:inherit;color:var(--ink);box-shadow:inset 4px 0 0 var(--ec)}
+html[dir="rtl"] .calev{box-shadow:inset -4px 0 0 var(--ec)}
+.calev-t{flex:none;min-width:4.2rem;color:var(--muted);font-weight:700;font-size:.84rem;font-variant-numeric:tabular-nums}
+.calev-b{min-width:0}
+.calev-b b{display:block;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.calev-b small{display:block;color:var(--muted);font-weight:500;font-size:.8rem}
+.cal-soonday{color:var(--muted);font-weight:800;font-size:.8rem;margin:.5rem 0 -.1rem}
+.cal-soonday:first-child{margin-top:0}
+.evsheet{max-height:88vh;overflow-y:auto}
+.evsheet .cs-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+.evsheet .cs-h h2{margin:0}
+.evsheet .msh-step{margin-top:.9rem}
+.evsheet select,.evsheet input[type=date],.evsheet input[type=time]{width:100%}
+.cal-types{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cal-types .mtchip.on{border-color:var(--ec);background:color-mix(in srgb,var(--ec) 16%,var(--surface));box-shadow:none}
+.cal-two{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.evsheet .btn.ghost{margin-top:.6rem}
 /* v4: Send to family, clean spacing */
 .appver{text-align:center;color:var(--muted);font-size:.78rem;font-weight:700;margin:1.2rem 0 0}
 .mshare{padding:1.15rem 1.1rem;margin-top:.9rem}
@@ -1911,6 +1955,10 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:calc(84px +
     </div>
   </div>
 
+  <div class="view" id="view-calendar" hidden>
+    <div class="wrap"><div id="calApp"></div></div>
+  </div>
+  <div class="csheet-back" id="evBack"></div><div class="csheet evsheet" id="evSheet" role="dialog" aria-modal="true" aria-label="Calendar item"></div>
   <div class="view" id="view-money" hidden>
     <div class="wrap">
       <div class="mhead"><button type="button" class="mback" data-view="today" aria-label="Back to Today"><span data-ic="back"></span></button><div><small id="mMonth"></small><h1><span class="mh-dollar" data-ic="dollar"></span>Money</h1></div><button type="button" class="mshare-top" id="mShareTop" aria-label="Send a month report"><span data-ic="share"></span><span>Share</span></button></div>
@@ -2041,7 +2089,8 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:calc(84px +
   <button type="button" data-view="timer" class="navfab" aria-label="Focus"><span class="ni" data-ic="timer"></span><span class="nl2">Focus</span></button>
   <button type="button" data-view="schedule" class="navplan"><span class="ni" data-ic="calendar"></span><span class="nl2">Plan</span></button>
   <button type="button" data-view="college"><span class="ni" data-ic="college"></span><span class="nl2">College</span></button>
-  <button type="button" data-view="mail"><span class="ni" data-ic="mail"></span><span class="nl2">Mail</span><span class="nbadge" id="mailBadge" hidden></span></button>
+  <button type="button" data-view="calendar"><span class="ni" data-ic="calendar"></span><span class="nl2">Calendar</span><span class="nbadge" id="calBadge" hidden></span></button>
+  <button type="button" data-view="mail" hidden aria-hidden="true" tabindex="-1"><span class="ni" data-ic="mail"></span><span class="nl2">Mail</span><span class="nbadge" id="mailBadge" hidden></span></button>
 </nav>
 
 <div class="backdrop" id="backdrop"></div>
@@ -2791,7 +2840,7 @@ function renderExams(){
     var M=META[x.sub], df=ddiff(t,x.date);
     var hrs=(new Date(x.date+'T'+(x.time||'23:59'))-Date.now())/3600000;
     var cd=isPast?'':('<span class="cd'+(df<=1?' hot':'')+(hrs>0&&hrs<=1?' soon1':(hrs>0&&hrs<=24?' soon24':''))+'">'+(df===0?'Today':(df===1?'Tomorrow':'in '+df+' days'))+'</span>');
-    return '<div class="exc '+M.t+'"><div class="eh">'+pdot(x.sub)+'<div class="et"><b>'+subName(x.sub)+' · '+TYPES[x.type].replace(/^./,function(c){return c.toUpperCase();})+'</b><small>'+fmtDate(x)+'</small></div>'+cd+'</div>'+
+    return '<div class="exc '+M.t+'"><div class="eh">'+pdot(x.sub)+'<div class="et"><b>'+(x.title?esc(x.title):subName(x.sub)+' · '+TYPES[x.type].replace(/^./,function(c){return c.toUpperCase();}))+'</b><small>'+(x.title?subName(x.sub)+' · '+TYPES[x.type]+' · ':'')+fmtDate(x)+'</small></div>'+cd+'</div>'+
       (x.topics?'<p>'+x.topics.replace(/</g,'&lt;')+'</p>':'')+
       (x.photos&&x.photos.length?'<div class="thumbs">'+x.photos.map(function(k){return '<button type="button" data-photo="'+k+'" aria-label="Open photo"><img data-key="'+k+'" alt=""></button>';}).join('')+'</div>':'')+
       (isPast?'<div class="score"><label for="sc-'+x.id+'">Your score</label><input id="sc-'+x.id+'" data-score="'+x.id+'" value="'+(x.score||'').replace(/"/g,'')+'" placeholder="e.g. 17/20"></div>':'')+
@@ -3424,7 +3473,7 @@ var GROUPS=[['G1','<b>1</b>','Group 1'],['G2','<b>2</b>','Group 2'],['MY',ic('us
 var onbStep=0, onbDir=1, draft=null;
 function profile(){ return meta.profile||null; }
 function hasClasses(){ return ['G1','G2','MY'].some(function(g){ var t=meta.tt[g]||{}; return Object.keys(t).some(function(k){ return (t[k]||[]).length; }); }); }
-function onbSteps(){ return ['hi','name','major','group','paths','tt','mail','done']; }
+function onbSteps(){ return ['hi','name','major','group','paths','tt','done']; }
 function openOnb(edit){
   var p=profile()||{};
   draft={name:p.name||'',major:p.major||'',majorOther:p.majorOther||'',group:p.group||meta.group||'',paths:{},tt:'',mail:meta.mailOn===undefined?null:!!meta.mailOn,edit:!!edit};
@@ -3447,7 +3496,7 @@ function renderOnb(){
   document.getElementById('onbDots').innerHTML=steps.map(function(s,i){ return '<i class="'+(i===onbStep?'on':(i<onbStep?'done':''))+'"></i>'; }).join('');
   document.getElementById('onbBack').hidden=onbStep===0||(draft.edit&&onbStep===1)||id==='done';
   var nx=document.getElementById('onbNext');
-  if(id==='hi'){ html='<div class="hero">'+ORBIT_LOGO+'<h2 id="onbTitle">Welcome to Orbit</h2><p class="lead2">Your whole university life in one place: study path, focus timer, classes, exams and mail.</p><button type="button" class="btn ghost onb-signin" data-onbsignin="1">I already use Orbit · Sign in</button></div>'; nx.textContent='Let’s set it up'; }
+  if(id==='hi'){ html='<div class="hero">'+ORBIT_LOGO+'<h2 id="onbTitle">Welcome to Orbit</h2><p class="lead2">Your whole university life in one place: study path, focus timer, classes, calendar and money.</p><button type="button" class="btn ghost onb-signin" data-onbsignin="1">I already use Orbit · Sign in</button></div>'; nx.textContent='Let’s set it up'; }
   else if(id==='name'){ html='<h2 id="onbTitle">What should we call you?</h2><p class="lead2">Your first name is enough.</p><input class="big" id="onbName" autocomplete="given-name" placeholder="Your name" value="'+esc(draft.name).replace(/"/g,'&quot;')+'">'; nx.textContent='Continue'; }
   else if(id==='major'){ html='<h2 id="onbTitle">What do you study?</h2><p class="lead2">Your path is built for computing majors. Everyone can use the timer, plan and college tools.</p><div class="opts">'+MAJORS.map(function(m){ return opt('data-omaj',m[0],m[1],m[2],'',draft.major===m[0]); }).join('')+'</div>'+(draft.major==='other'?'<input class="big other" id="onbMajor" placeholder="Your major" value="'+esc(draft.majorOther).replace(/"/g,'&quot;')+'">':''); nx.textContent='Continue'; }
   else if(id==='group'){ html='<h2 id="onbTitle">Which group are you in?</h2><p class="lead2">You can switch groups later in College.</p><div class="opts">'+GROUPS.map(function(g){ return opt('data-ogrp',g[0],g[1],g[2],'',draft.group===g[0]); }).join('')+'</div>'; nx.textContent='Continue'; }
@@ -3505,7 +3554,7 @@ function renderHello(){
   var hr=new Date().getHours(), g=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
   var grp=p.group==='MY'?'':' · Group '+p.group.slice(1);
   document.getElementById('hello').innerHTML='<div class="hello"><small>'+g+'</small><h1>'+esc(p.name)+'</h1><div class="chips"><span>'+esc(majorName(p))+'</span>'+(grp?'<span>'+grp.slice(3)+'</span>':'')+'</div></div>';
-  document.getElementById('profCard').innerHTML='<div class="prof"><span class="pav" aria-hidden="true">'+esc(p.name.charAt(0).toUpperCase())+'</span><div><b>'+esc(p.name)+'</b><small>'+esc(majorName(p))+(grp)+' · Mail '+(meta.mailOn?'on':'off')+'</small></div></div>';
+  document.getElementById('profCard').innerHTML='<div class="prof"><span class="pav" aria-hidden="true">'+esc(p.name.charAt(0).toUpperCase())+'</span><div><b>'+esc(p.name)+'</b><small>'+esc(majorName(p))+(grp)+'</small></div></div>';
 }
 document.getElementById('profEdit').addEventListener('click',function(){ openOnb(true); });
 renderHello();
@@ -3622,7 +3671,7 @@ setTimeout(moveInd,60);
 // ================= Motion helpers (visual only) =================
 var RM=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 var pendingPop=null, lastView='today', ruleShown=false;
-var NAVORDER=['today','path','timer','college','mail','schedule','money','guide'];
+var NAVORDER=['today','path','timer','college','calendar','schedule','money','guide'];
 function retrigger(el,cls,ms){ if(!el||RM) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); clearTimeout(el['_t'+cls]); el['_t'+cls]=setTimeout(function(){ el.classList.remove(cls); },ms||600); }
 function countTo(el,to){
   if(!el) return; var from=el.dataset.v===undefined?to:+el.dataset.v; el.dataset.v=to;
@@ -4425,6 +4474,101 @@ all();
 renderToday();
 
 
+// ===== Calendar: quizzes, exams, assignments, presentations — with reminders. Uses the same list as College's "Quizzes & exams". =====
+TYPES.presentation='presentation'; TYPES.other='event'; WINDOW.presentation=3;
+var CAL_TYPES=[['quiz','Quiz','#3E8ED0'],['midterm','Midterm','#FF8F5A'],['final','Final exam','#E0485A'],['assignment','Assignment','#9B7BE0'],['presentation','Presentation','#E57BB5'],['other','Other','#7A8A8E']];
+var CAL_REMIND=[[-1,'No reminder'],[0,'At the time'],[15,'15 min before'],[60,'1 hour before'],[1440,'1 day before'],[2880,'2 days before']];
+var calMonth=null, calSel=null, calEdit=null, calType='quiz', calRemind=1440;
+if(!meta.calSeen) meta.calSeen={};
+function calColor(t){ var x=CAL_TYPES.filter(function(c){ return c[0]===t; })[0]; return x?x[2]:'#7A8A8E'; }
+function calTypeName(t){ var x=CAL_TYPES.filter(function(c){ return c[0]===t; })[0]; return x?x[1]:'Event'; }
+function calTitle(x){ return x.title||(subName(x.sub)+' '+(TYPES[x.type]||'event')); }
+function calWhen(x){ return new Date(x.date+'T'+(x.time||'09:00')); }
+function calRemindAt(x){ var r=x.remind==null?1440:x.remind; return r<0?null:new Date(calWhen(x).getTime()-r*60000); }
+function calTime(x){ return x.time?new Date('2000-01-01T'+x.time).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):'All day'; }
+function calDayName(ds){ var d=new Date(ds+'T00:00'), t=today(), tm=new Date(); tm.setDate(tm.getDate()+1);
+  if(ds===t) return 'Today'; if(ds===isoDay(tm)) return 'Tomorrow'; return d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'}); }
+function calBy(ds){ return exams.filter(function(x){ return x.date===ds; }).sort(function(a,b){ return (a.time||'99').localeCompare(b.time||'99'); }); }
+function calRow(x){
+  return '<button type="button" class="calev" data-calev="'+x.id+'" style="--ec:'+calColor(x.type)+'"><span class="calev-t">'+calTime(x)+'</span><span class="calev-b"><b>'+esc(calTitle(x))+'</b><small>'+calTypeName(x.type)+(x.title?' · '+esc(subName(x.sub)):'')+(x.remind!=null&&x.remind>=0||x.remind==null?' · 🔔 '+CAL_REMIND.filter(function(r){ return r[0]===(x.remind==null?1440:x.remind); })[0][1].toLowerCase():'')+'</small></span></button>';
+}
+function renderCal(){
+  var el=document.getElementById('calApp'); if(!el) return;
+  var t=today(); if(!calMonth) calMonth=t.slice(0,7); if(!calSel) calSel=t;
+  var y=+calMonth.slice(0,4), m=+calMonth.slice(5,7)-1, first=new Date(y,m,1), dim=new Date(y,m+1,0).getDate(), lead=(first.getDay()+1)%7; // weeks start on Saturday
+  var cells='';
+  for(var i=0;i<lead;i++) cells+='<span class="calc empty"></span>';
+  for(var d=1;d<=dim;d++){ var ds=y+'-'+pad2(m+1)+'-'+pad2(d), evs=calBy(ds);
+    cells+='<button type="button" class="calc'+(ds===t?' today':'')+(ds===calSel?' sel':'')+'" data-calday="'+ds+'" aria-label="'+new Date(ds+'T00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+(evs.length?', '+evs.length+' event'+(evs.length>1?'s':''):'')+'"><span class="caln">'+d+'</span><span class="cald">'+evs.slice(0,3).map(function(x){ return '<i style="background:'+calColor(x.type)+'"></i>'; }).join('')+'</span></button>'; }
+  var sel=calBy(calSel), soon=exams.filter(function(x){ return x.date>=t&&calWhen(x)>=new Date(Date.now()-3600e3); }).sort(function(a,b){ return calWhen(a)-calWhen(b); }).slice(0,8);
+  var notif=('Notification' in window)?Notification.permission:'unsupported';
+  el.innerHTML='<div class="cal-head"><div><h1>Calendar</h1><p>Quizzes, exams, assignments and presentations.</p></div><button type="button" class="btn main cal-add" data-caladd="1">'+ic('plus')+'<span>Add</span></button></div>'+
+    (notif==='default'?'<button type="button" class="cal-bell" data-calbell="1">'+ic('bell')+'<span><b>Turn on reminders</b><small>Orbit can remind you before each quiz, exam or deadline.</small></span></button>':'')+
+    '<div class="card cal-card"><div class="cal-nav"><button type="button" class="mrep-arrow" data-calgo="-1" aria-label="Previous month">‹</button><b>'+first.toLocaleDateString('en-US',{month:'long',year:'numeric'})+'</b><button type="button" class="mrep-arrow" data-calgo="1" aria-label="Next month">›</button></div>'+
+    '<div class="cal-wd">'+['Sat','Sun','Mon','Tue','Wed','Thu','Fri'].map(function(w){ return '<span>'+w+'</span>'; }).join('')+'</div><div class="cal-grid">'+cells+'</div>'+
+    '<div class="cal-legend">'+CAL_TYPES.slice(0,5).map(function(c){ return '<span><i style="background:'+c[2]+'"></i>'+c[1]+'</span>'; }).join('')+'</div></div>'+
+    '<section class="msec"><div class="msec-h"><h2>'+calDayName(calSel)+'</h2><button type="button" class="mlink" data-caladd="'+calSel+'">+ Add</button></div>'+(sel.length?'<div class="cal-list">'+sel.map(calRow).join('')+'</div>':'<div class="mempty">Nothing on this day.</div>')+'</section>'+
+    '<section class="msec"><div class="msec-h"><h2>Coming up</h2></div>'+(soon.length?'<div class="cal-list">'+soon.map(function(x){ return '<div class="cal-soonday">'+calDayName(x.date)+'</div>'+calRow(x); }).join('')+'</div>':'<div class="mempty">Nothing coming up. Add your next quiz or deadline when your teacher announces it.</div>')+'</section>';
+  calBadge();
+}
+function calBadge(){ var b=document.getElementById('calBadge'); if(!b) return; var lim=new Date(); lim.setDate(lim.getDate()+3); var n=exams.filter(function(x){ var w=calWhen(x); return w>=new Date(Date.now()-3600e3)&&w<=lim; }).length; b.hidden=!n; b.textContent=n>9?'9+':n; }
+function calOpen(id,ds){
+  var x=id?exams.filter(function(e){ return e.id===id; })[0]:null; calEdit=x?x.id:null;
+  calType=x?x.type:'quiz'; calRemind=x?(x.remind==null?1440:x.remind):1440;
+  var s=document.getElementById('evSheet');
+  s.innerHTML='<div class="cs-h"><h2>'+(x?'Edit':'Add to calendar')+'</h2><button type="button" class="mdel" data-calclose="1" aria-label="Close">'+ic('xcircle')+'</button></div>'+
+    '<span class="msh-step">What is it?</span><div class="mrowchips cal-types" role="group" aria-label="Type">'+CAL_TYPES.map(function(c){ return '<button type="button" class="mtchip'+(calType===c[0]?' on':'')+'" data-caltype="'+c[0]+'" style="--ec:'+c[2]+'">'+c[1]+'</button>'; }).join('')+'</div>'+
+    '<label class="msh-step" for="evTitle">Title</label><input type="text" class="mname" id="evTitle" maxlength="60" placeholder="e.g. Chapter 3 quiz" value="'+esc(x&&x.title||'').replace(/"/g,'&quot;')+'">'+
+    '<label class="msh-step" for="evSub">Subject</label><select id="evSub">'+SUBJ.map(function(k){ return '<option value="'+k+'"'+(x&&x.sub===k?' selected':'')+'>'+subName(k)+'</option>'; }).join('')+'</select>'+
+    '<div class="cal-two"><div><label class="msh-step" for="evDate">Date</label><input type="date" id="evDate" value="'+(x?x.date:(ds||today()))+'"></div><div><label class="msh-step" for="evTime">Time</label><input type="time" id="evTime" value="'+(x&&x.time||'')+'"></div></div>'+
+    '<label class="msh-step" for="evRemind">Remind me</label><select id="evRemind">'+CAL_REMIND.map(function(r){ return '<option value="'+r[0]+'"'+(r[0]===calRemind?' selected':'')+'>'+r[1]+'</option>'; }).join('')+'</select>'+
+    '<label class="msh-step" for="evNote">Notes</label><input type="text" class="mname" id="evNote" maxlength="120" placeholder="Topics, room, what to bring" value="'+esc(x&&x.topics||'').replace(/"/g,'&quot;')+'">'+
+    '<button type="button" class="btn main msh-go" data-calsave="1">'+(x?'Save changes':'Add to calendar')+'</button>'+(x?'<button type="button" class="btn ghost" data-caldel="1">Delete</button>':'');
+  s.classList.add('on'); document.getElementById('evBack').classList.add('on');
+  if(!x) setTimeout(function(){ try{ document.getElementById('evTitle').focus(); }catch(e){} },250);
+}
+function calClose(){ document.getElementById('evSheet').classList.remove('on'); document.getElementById('evBack').classList.remove('on'); calEdit=null; }
+function calSave(){
+  var date=document.getElementById('evDate').value; if(!date){ toast('Pick a date'); return; }
+  var x=calEdit?exams.filter(function(e){ return e.id===calEdit; })[0]:null, isNew=!x;
+  if(!x) x={id:'x'+Date.now(),photos:[]};
+  x.type=calType; x.sub=document.getElementById('evSub').value; x.title=document.getElementById('evTitle').value.trim(); x.date=date; x.time=document.getElementById('evTime').value;
+  x.remind=+document.getElementById('evRemind').value; x.topics=document.getElementById('evNote').value.trim();
+  if(isNew) exams.push(x); saveEx(); calSel=date; calMonth=date.slice(0,7); calClose(); renderCal(); try{ renderExams(); }catch(e){}
+  toast((isNew?'Added · ':'Saved · ')+calTitle(x)+' · '+calDayName(date)); buzz();
+  if(x.remind>=0&&'Notification' in window&&Notification.permission==='default') setTimeout(function(){ calAskBell(); },600);
+}
+function calAskBell(){ if(!('Notification' in window)){ toast('This browser can’t show notifications. Add Orbit to your home screen.'); return; }
+  Notification.requestPermission().then(function(p){ toast(p==='granted'?'Reminders are on 🔔':'Reminders stay off. You can turn them on in your phone settings.'); renderCal(); }); }
+function calNotify(title,body){
+  try{ if('Notification' in window&&Notification.permission==='granted'){ if(navigator.serviceWorker&&navigator.serviceWorker.getRegistration){ navigator.serviceWorker.getRegistration().then(function(r){ if(r&&r.showNotification) r.showNotification(title,{body:body,icon:'icon-192.png',badge:'icon-192.png',tag:title}); else new Notification(title,{body:body,icon:'icon-192.png'}); }); } else new Notification(title,{body:body,icon:'icon-192.png'}); } }catch(e){}
+  toast('🔔 '+title+' · '+body); try{ if(navigator.vibrate) navigator.vibrate([120,60,120]); }catch(e){}
+}
+function calTick(){
+  var now=Date.now(), changed=false;
+  exams.forEach(function(x){ var at=calRemindAt(x); if(!at) return; var k=x.id+'@'+at.getTime();
+    if(meta.calSeen[k]) return;
+    if(now>=at.getTime()&&now-at.getTime()<6*3600e3){ meta.calSeen[k]=1; changed=true; calNotify(calTitle(x),calTypeName(x.type)+' · '+calDayName(x.date)+(x.time?' at '+calTime(x):'')); }
+    else if(now-at.getTime()>=6*3600e3){ meta.calSeen[k]=1; changed=true; } });
+  if(changed) save(); calBadge();
+}
+document.addEventListener('click',function(e){
+  var t;
+  if((t=e.target.closest('[data-calday]'))){ calSel=t.dataset.calday; renderCal(); return; }
+  if((t=e.target.closest('[data-calgo]'))){ var d=new Date(calMonth+'-01T00:00'); d.setMonth(d.getMonth()+(+t.dataset.calgo)); calMonth=d.getFullYear()+'-'+pad2(d.getMonth()+1); renderCal(); return; }
+  if((t=e.target.closest('[data-caladd]'))){ calOpen(null,t.dataset.caladd.length===10?t.dataset.caladd:calSel); return; }
+  if((t=e.target.closest('[data-calev]'))){ calOpen(t.dataset.calev); return; }
+  if((t=e.target.closest('[data-caltype]'))){ calType=t.dataset.caltype; t.parentNode.querySelectorAll('[data-caltype]').forEach(function(b){ b.classList.toggle('on',b===t); }); return; }
+  if(e.target.closest('[data-calsave]')){ calSave(); return; }
+  if(e.target.closest('[data-caldel]')){ if(!confirm('Delete this from your calendar?')) return; exams=exams.filter(function(x){ return x.id!==calEdit; }); saveEx(); calClose(); renderCal(); try{ renderExams(); }catch(x){} toast('Deleted'); return; }
+  if(e.target.closest('[data-calclose]')||e.target.id==='evBack'){ calClose(); return; }
+  if(e.target.closest('[data-calbell]')){ calAskBell(); return; }
+  var v=e.target.closest('[data-view="calendar"]'); if(v) setTimeout(renderCal,0);
+});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&document.getElementById('evSheet').classList.contains('on')) calClose(); });
+setInterval(calTick,30000); setTimeout(calTick,4000);
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') calTick(); });
+calBadge();
 // ===== Keep the keypad and the Add button above the floating bottom bar =====
 function moneyKeepVisible(){
   var a=document.getElementById('mlAdd'), nav=document.querySelector('.nav'); if(!a||document.getElementById('view-money').hidden) return;
@@ -4442,7 +4586,7 @@ document.addEventListener('click',function(e){ var b=e.target.closest('[data-mta
   if(e.target.closest('[data-mgo]')) setMoneyTab('add');
 }, true);
 // ===== Always the newest Orbit: when you open the app, it checks for a new version and reloads itself =====
-var APP_VERSION='2026.11.25-2';
+var APP_VERSION='2026.11.25-3';
 function checkUpdate(){
   if(!/^https:/.test(location.protocol)||/claude/.test(location.hostname)) return;
   if(checkUpdate.at&&Date.now()-checkUpdate.at<60000) return; checkUpdate.at=Date.now();
@@ -4525,7 +4669,7 @@ var KU={
 'New here? Create an account':'نوێیت؟ هەژمارێک دروست بکە','Forgot your Orbit password?':'وشەی نهێنیت لەبیرچووە؟','I already have an account':'پێشتر هەژمارم هەیە','Send me the link':'بەستەرەکەم بۆ بنێرە',
 'Sync now':'ئێستا هاوکاتی بکە','Sign out':'چوونەدەرەوە','Synced':'هاوکاتکراوە','Saving…':'پاشەکەوت دەکرێت…','Use my account’s data':'زانیارییەکانی هەژمارەکەم بەکاربهێنە','Combine both':'هەردووکیان تێکەڵ بکە',
 'Download backup file':'داگرتنی فایلی پاشەکەوت','Restore from a file':'گەڕاندنەوە لە فایلێک','Restore from my account':'گەڕاندنەوە لە هەژمارەکەم','Back up to my account':'پاشەکەوتکردن لە هەژمارەکەم','Clear all progress':'سڕینەوەی هەموو پێشکەوتنەکان',
-'Welcome to Orbit':'بەخێربێیت بۆ Orbit','Your whole university life in one place: study path, focus timer, classes, exams and mail.':'هەموو ژیانی زانکۆکەت لە یەک شوێن: ڕێگای خوێندن، کاتژمێری سەرنجدان، وانەکان، تاقیکردنەوەکان و ئیمەیڵ.',
+'Welcome to Orbit':'بەخێربێیت بۆ Orbit','Your whole university life in one place: study path, focus timer, classes, calendar and money.':'هەموو ژیانی زانکۆکەت لە یەک شوێن: ڕێگای خوێندن، کاتژمێری سەرنجدان، وانەکان، تاقیکردنەوەکان و ئیمەیڵ.',
 'Let’s set it up':'با ڕێکی بخەین','I already use Orbit':'پێشتر Orbit بەکاردەهێنم','What should we call you?':'ناوت چی بێت؟','Your first name is enough.':'ناوی یەکەمت بەسە.','Your name':'ناوەکەت','Continue':'بەردەوامبوون',
 'What do you study?':'چی دەخوێنیت؟','Computer Science & AI':'زانستی کۆمپیوتەر و AI','Software Engineering':'ئەندازیاری نەرمەکاڵا','Computer Engineering':'ئەندازیاری کۆمپیوتەر','Something else':'شتێکی تر',
 'Which group are you in?':'لە کام گروپیت؟','You can switch groups later in College.':'دواتر دەتوانیت لە کۆلێژ گروپ بگۆڕیت.','No group / other':'بێ گروپ / هیتر',
@@ -4542,7 +4686,7 @@ var KU={
 'Problem Solving':'چارەسەری کێشە','Computer Fund.':'بنەماکانی کۆمپیوتەر','Computer Fundamentals':'بنەماکانی کۆمپیوتەر','Public Speaking':'قسەکردن بەردەم خەڵک',
 'Saturday':'شەممە','Sunday':'یەکشەممە','Monday':'دووشەممە','Tuesday':'سێشەممە','Wednesday':'چوارشەممە','Thursday':'پێنجشەممە','Friday':'هەینی',
 'Sat':'شەممە','Sun':'یەکش','Mon':'دووش','Tue':'سێش','Wed':'چوارش','Thu':'پێنجش','Fri':'هەینی','Sa':'ش','Su':'ی','Mo':'د','Tu':'س','We':'چ','Th':'پ','Fr':'هـ',
-'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','Report':'ڕاپۆرت','Settings':'ڕێکخستن','Money sections':'بەشەکانی پارە','Send to family':'ناردن بۆ خێزان','How long should the link work?':'بەستەرەکە تا کەی کار بکات؟','Stops at':'دەوەستێت لە','Pick when it should stop':'کاتی وەستانەکەی هەڵبژێرە','Choose a date and time in the future':'بەروار و کاتێکی داهاتوو هەڵبژێرە','Create link':'دروستکردنی بەستەر','Link ready':'بەستەر ئامادەیە','Make a different link':'بەستەرێکی تر دروست بکە','Loading your links…':'بەستەرەکانت بار دەکرێن…','to be able to stop a link early.':'بۆ ئەوەی بتوانیت بەستەرێک زووتر ڕابگریت.','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
+'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','Calendar':'ڕۆژژمێر','Quizzes, exams, assignments and presentations.':'کویز، تاقیکردنەوە، ئەرک و پێشکەشکردنەکان.','Turn on reminders':'ئاگادارکردنەوە چالاک بکە','Orbit can remind you before each quiz, exam or deadline.':'Orbit پێش هەر کویز، تاقیکردنەوە یان کاتی کۆتایی ئاگادارت دەکاتەوە.','Presentation':'پێشکەشکردن','Final exam':'تاقیکردنەوەی کۆتایی','Nothing on this day.':'ئەم ڕۆژە هیچی تێدا نییە.','Nothing coming up. Add your next quiz or deadline when your teacher announces it.':'هیچ شتێک لە ڕێدا نییە. کاتێک مامۆستاکەت ڕایگەیاند زیادی بکە.','Add to calendar':'زیادکردن بۆ ڕۆژژمێر','What is it?':'چییە؟','Title':'ناونیشان','Remind me':'ئاگادارم بکەرەوە','Notes':'تێبینی','No reminder':'بێ ئاگادارکردنەوە','At the time':'لە کاتی خۆیدا','15 min before':'15 خولەک پێشتر','1 hour before':'1 کاتژمێر پێشتر','1 day before':'1 ڕۆژ پێشتر','2 days before':'2 ڕۆژ پێشتر','Save changes':'پاشەکەوتکردنی گۆڕانکاری','Delete':'سڕینەوە','All day':'هەموو ڕۆژ','Edit':'دەستکاری','Event':'بۆنە','e.g. Chapter 3 quiz':'بۆ نموونە: کویزی بەشی 3','Topics, room, what to bring':'بابەت، ژوور، چی بهێنیت','Report':'ڕاپۆرت','Settings':'ڕێکخستن','Money sections':'بەشەکانی پارە','Send to family':'ناردن بۆ خێزان','How long should the link work?':'بەستەرەکە تا کەی کار بکات؟','Stops at':'دەوەستێت لە','Pick when it should stop':'کاتی وەستانەکەی هەڵبژێرە','Choose a date and time in the future':'بەروار و کاتێکی داهاتوو هەڵبژێرە','Create link':'دروستکردنی بەستەر','Link ready':'بەستەر ئامادەیە','Make a different link':'بەستەرێکی تر دروست بکە','Loading your links…':'بەستەرەکانت بار دەکرێن…','to be able to stop a link early.':'بۆ ئەوەی بتوانیت بەستەرێک زووتر ڕابگریت.','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
 'what you have now. Orbit then keeps track of what’s left.':'بۆ ئەوەی ئێستا چەندت هەیە. پاشان Orbit ئەوەی ماوە بەدوادا دەچێت.','Opens until the end of':'تا کۆتایی ڕۆژی',', then it stops.':'، پاشان دەوەستێت.',
 'Sign in to Orbit':'بچۆ ژوورەوە بۆ Orbit','so you can also stop a link before its date.':'بۆ ئەوەی بتوانیت بەستەرێک پێش کاتەکەی ڕابگریت.'
 };
@@ -4608,6 +4752,8 @@ var KU_RULES=[
  [/^(\d+) min left$/,function(m){ return m[1]+' خولەک ماوە'; }],
  [/^(\d+) h(?: (\d+) min)? left$/,function(m){ return m[1]+' کاتژمێر'+(m[2]?' و '+m[2]+' خولەک':'')+' ماوە'; }],
  [/^(\d+) days left$/,function(m){ return m[1]+' ڕۆژ ماوە'; }],
+ [/^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday), (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d+)$/,function(m){ var mi=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(m[2]); return KU[m[1]]+'، '+m[3]+'ی '+KU_MONTHS[mi]; }],
+ [/^(\d{1,2}:\d{2}) (AM|PM)$/,function(m){ return kuTime(m[0]); }],
  [/^Send (.+) to family$/,function(m){ return 'ناردنی '+kuSeg(m[1])+' بۆ خێزان'; }],
  [/^(Sent|Until) (.+)$/,function(m){ return (m[1]==='Sent'?'نێردرا ':'تا ')+kuTime(m[2]); }],
  [/^Works until (.+)$/,function(m){ return 'کار دەکات تا '+kuTime(m[1]); }],
