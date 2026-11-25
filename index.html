@@ -1704,6 +1704,53 @@ html[dir="rtl"] .calev{box-shadow:inset -4px 0 0 var(--ec)}
 .tdcal-rb b{display:block;font-weight:800;font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tdcal-rb small{display:block;color:var(--muted);font-weight:500;font-size:.78rem}
 .tdcal-in{flex:none;font-weight:800;font-size:.82rem;color:var(--ec);font-variant-numeric:tabular-nums}
+
+/* Today: Coming up as separate cards, tap to open */
+#tdFocusBar{display:none!important}
+#tdCal{margin-top:1.4rem}
+.tdc-h{display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem}
+.tdc-h h2{margin:0;font-size:1.15rem}
+.tdc-n{min-width:1.5rem;height:1.5rem;border-radius:999px;display:grid;place-items:center;background:var(--soft);font-weight:800;font-size:.78rem;color:var(--muted);padding:0 .35rem}
+.tdc-h .tlink{margin-inline-start:auto}
+.tdc-list{display:flex;flex-direction:column;gap:.65rem}
+.tdc{border:1px solid color-mix(in srgb,var(--ec) 28%,var(--line));background:var(--surface);border-radius:18px;overflow:hidden;transition:background-color .25s,border-color .25s,box-shadow .25s}
+.tdc.open{background:color-mix(in srgb,var(--ec) 8%,var(--surface));border-color:color-mix(in srgb,var(--ec) 45%,var(--line));box-shadow:0 10px 24px -18px color-mix(in srgb,var(--ec) 70%,#000)}
+.tdc-top{display:flex;align-items:center;gap:.75rem;width:100%;border:0;background:none;padding:.85rem .9rem;text-align:start;color:var(--ink);font:inherit;cursor:pointer}
+.tdc-ic{flex:none;width:2.5rem;height:2.5rem;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--ec) 16%,var(--surface));color:var(--ec)}
+.tdc-ic .ic{width:1.2rem;height:1.2rem;vertical-align:0}
+.tdc-tb{flex:1;min-width:0}
+.tdc-type{display:block;font-weight:800;font-size:.72rem;color:var(--ec);letter-spacing:.01em}
+.tdc-tb b{display:block;font-weight:800;font-size:1rem;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tdc-tb small{display:block;color:var(--muted);font-weight:500;font-size:.8rem}
+.tdc-in{flex:none;font-weight:800;font-size:.8rem;color:var(--ec);background:color-mix(in srgb,var(--ec) 12%,var(--surface));border-radius:999px;padding:.25rem .6rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tdc.soon .tdc-in{background:var(--ec);color:#fff}
+.tdc.live .tdc-in{background:var(--ec);color:#fff;animation:tdcPulse 1.6s ease-in-out infinite}
+@keyframes tdcPulse{50%{opacity:.55}}
+.tdc-chev{flex:none;color:var(--muted);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.tdc-chev .ic{width:1rem;height:1rem;vertical-align:0}
+.tdc.open .tdc-chev{transform:rotate(180deg)}
+.tdc-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.2,.8,.2,1)}
+.tdc.open .tdc-more{grid-template-rows:1fr}
+.tdc-inner{overflow:hidden;padding:0 .9rem;opacity:0;transition:opacity .25s,padding .32s}
+.tdc.open .tdc-inner{padding:0 .9rem .95rem;opacity:1}
+.tdc .cdrow{margin-top:.1rem}
+.tdc-dl{margin:.9rem 0 0;display:flex;flex-direction:column;gap:.45rem}
+.tdc-dl div{display:flex;gap:.8rem;font-size:.86rem}
+.tdc-dl dt{flex:none;width:5.2rem;color:var(--muted);font-weight:700}
+.tdc-dl dd{margin:0;font-weight:600;min-width:0}
+.tdc-edit{margin-top:.9rem!important;min-height:44px}
+@media (prefers-reduced-motion:reduce){.tdc-more,.tdc-inner,.tdc-chev{transition:none}.tdc.live .tdc-in{animation:none}}
+
+/* delete: swipe in Calendar, trash on Today */
+.sw{position:relative;border-radius:14px;overflow:hidden}
+.sw-del{position:absolute;top:0;bottom:0;inset-inline-end:0;width:92px;border:0;background:#E0485A;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;font-weight:800;font-size:.78rem;cursor:pointer;font-family:inherit}
+.sw-del .ic{width:1.2rem;height:1.2rem;vertical-align:0}
+.sw .calev{position:relative;z-index:1;touch-action:pan-y;user-select:none;-webkit-user-select:none;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.tdc-hd{display:flex;align-items:center}
+.tdc-hd .tdc-top{flex:1;min-width:0;padding-inline-end:.3rem}
+.tdc-del{flex:none;width:42px;height:42px;margin-inline-end:.4rem;border:0;background:none;color:var(--muted);border-radius:12px;display:grid;place-items:center;cursor:pointer}
+.tdc-del:hover,.tdc-del:focus-visible{color:#E0485A;background:color-mix(in srgb,#E0485A 10%,transparent);outline:none}
+.tdc-del .ic{width:1.05rem;height:1.05rem;vertical-align:0}
 /* v4: Send to family, clean spacing */
 .appver{text-align:center;color:var(--muted);font-size:.78rem;font-weight:700;margin:1.2rem 0 0}
 .mshare{padding:1.15rem 1.1rem;margin-top:.9rem}
@@ -4515,7 +4562,7 @@ function calDayName(ds){ var d=new Date(ds+'T00:00'), t=today(), tm=new Date(); 
   if(ds===t) return 'Today'; if(ds===isoDay(tm)) return 'Tomorrow'; return d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'}); }
 function calBy(ds){ return exams.filter(function(x){ return x.date===ds; }).sort(function(a,b){ return (a.time||'99').localeCompare(b.time||'99'); }); }
 function calRow(x){
-  return '<button type="button" class="calev" data-calev="'+x.id+'" style="--ec:'+calColor(x.type)+'"><span class="calev-t">'+calTime(x)+'</span><span class="calev-b"><b>'+esc(calTitle(x))+'</b><small>'+calTypeName(x.type)+(x.title?' · '+esc(subName(x.sub)):'')+(x.remind!=null&&x.remind>=0||x.remind==null?' · 🔔 '+CAL_REMIND.filter(function(r){ return r[0]===(x.remind==null?1440:x.remind); })[0][1].toLowerCase():'')+'</small></span></button>';
+  return '<div class="sw"><button type="button" class="sw-del" data-caldelid="'+x.id+'" tabindex="-1" aria-label="Delete '+esc(calTitle(x))+'">'+ic('trash')+'<span>Delete</span></button><button type="button" class="calev" data-calev="'+x.id+'" style="--ec:'+calColor(x.type)+'"><span class="calev-t">'+calTime(x)+'</span><span class="calev-b"><b>'+esc(calTitle(x))+'</b><small>'+calTypeName(x.type)+(x.title?' · '+esc(subName(x.sub)):'')+(x.remind!=null&&x.remind>=0||x.remind==null?' · 🔔 '+CAL_REMIND.filter(function(r){ return r[0]===(x.remind==null?1440:x.remind); })[0][1].toLowerCase():'')+'</small></span></button></div>';
 }
 function renderCal(){
   var el=document.getElementById('calApp'); if(!el) return;
@@ -4596,35 +4643,74 @@ document.addEventListener('visibilitychange',function(){ if(document.visibilityS
 calBadge();
 
 // ===== Today: upcoming calendar items with a live countdown (days · hours · minutes · seconds) =====
-function tdCalItems(){ var now=Date.now(), lim=now+14*864e5; return exams.filter(function(x){ var w=calWhen(x).getTime(); return w>now-30*60000&&w<=lim; }).sort(function(a,b){ return calWhen(a)-calWhen(b); }).slice(0,3); }
+function tdCalItems(){ var now=Date.now(), lim=now+30*864e5; return exams.filter(function(x){ var w=calWhen(x).getTime(); return w>now-30*60000&&w<=lim; }).sort(function(a,b){ return calWhen(a)-calWhen(b); }).slice(0,6); }
 function cdParts(ms){ ms=Math.max(0,ms); var s=Math.floor(ms/1000); return {d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60}; }
 function cdShort(ms){ if(ms<=0) return 'now'; var p=cdParts(ms); return 'in '+(p.d?p.d+'d '+p.h+'h':(p.h?p.h+'h '+p.m+'m':p.m+'m '+p.s+'s')); }
+var tdOpen=null;
 function renderTodayCal(){
   var el=document.getElementById('tdCal'); if(!el) return;
   var items=tdCalItems(); if(!items.length){ el.innerHTML=''; return; }
-  var x=items[0], w=calWhen(x).getTime(), c=calColor(x.type), p=cdParts(w-Date.now());
+  if(!tdOpen||!items.some(function(x){ return x.id===tdOpen; })) tdOpen=items[0].id;
   function box(v,k,l){ return '<span class="cdb"><b data-cdv="'+k+'">'+String(v).padStart(2,'0')+'</b><small>'+l+'</small></span>'; }
-  el.innerHTML='<div class="tdcal" style="--ec:'+c+'"><div class="tdcal-h"><span class="tdcal-lab">'+ic('calendar')+'<span>Coming up</span></span><button type="button" class="tlink" data-view="calendar">Calendar</button></div>'+
-    '<button type="button" class="tdcal-main" data-tdcal="'+x.id+'"><span class="tdcal-type">'+calTypeName(x.type)+'</span><b class="tdcal-title">'+esc(calTitle(x))+'</b><small class="tdcal-when">'+calDayName(x.date)+' · '+calTime(x)+(x.title?' · '+esc(subName(x.sub)):'')+'</small>'+
-    '<span class="cdrow" data-cdto="'+w+'" aria-live="off">'+box(p.d,'d','days')+box(p.h,'h','hours')+box(p.m,'m','min')+box(p.s,'s','sec')+'</span><span class="cdnow" hidden>Happening now</span></button>'+
-    items.slice(1).map(function(y){ var wy=calWhen(y).getTime(); return '<button type="button" class="tdcal-row" data-tdcal="'+y.id+'" style="--ec:'+calColor(y.type)+'"><span class="tdcal-dot"></span><span class="tdcal-rb"><b>'+esc(calTitle(y))+'</b><small>'+calTypeName(y.type)+' · '+calDayName(y.date)+' · '+calTime(y)+'</small></span><span class="tdcal-in" data-cdin="'+wy+'">'+cdShort(wy-Date.now())+'</span></button>'; }).join('')+'</div>';
+  el.innerHTML='<div class="tdc-h"><h2>Coming up</h2><span class="tdc-n">'+items.length+'</span><button type="button" class="tlink" data-view="calendar">Calendar</button></div><div class="tdc-list">'+
+    items.map(function(x,i){ var w=calWhen(x).getTime(), open=x.id===tdOpen, p=cdParts(w-Date.now()), ra=calRemindAt(x);
+      var whenFull=new Date(w).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+(x.time?' · '+calTime(x):' · All day');
+      return '<div class="tdc'+(open?' open':'')+(i===0?' first':'')+'" style="--ec:'+calColor(x.type)+'" data-tdcid="'+x.id+'">'+
+        '<div class="tdc-hd"><button type="button" class="tdc-top" data-tdctoggle="'+x.id+'" aria-expanded="'+open+'"><span class="tdc-ic" aria-hidden="true">'+ic(x.type==='presentation'?'mic':(x.type==='assignment'?'pen':(x.type==='other'?'calendar':'clip')))+'</span>'+
+        '<span class="tdc-tb"><span class="tdc-type">'+calTypeName(x.type)+(i===0?' · Next':'')+'</span><b>'+esc(calTitle(x))+'</b><small>'+calDayName(x.date)+' · '+calTime(x)+'</small></span>'+
+        '<span class="tdc-in" data-cdin="'+w+'">'+cdShort(w-Date.now())+'</span><span class="tdc-chev" aria-hidden="true">'+ic('chev')+'</span></button><button type="button" class="tdc-del" data-caldelid="'+x.id+'" aria-label="Delete '+esc(calTitle(x))+'">'+ic('trash')+'</button></div>'+
+        '<div class="tdc-more"><div class="tdc-inner">'+
+          '<span class="cdrow" data-cdto="'+w+'">'+box(p.d,'d','days')+box(p.h,'h','hours')+box(p.m,'m','min')+box(p.s,'s','sec')+'</span><span class="cdnow" hidden>Happening now</span>'+
+          '<dl class="tdc-dl"><div><dt>When</dt><dd>'+whenFull+'</dd></div><div><dt>Subject</dt><dd>'+esc(subName(x.sub))+'</dd></div>'+
+          '<div><dt>Reminder</dt><dd>'+(ra?CAL_REMIND.filter(function(r){ return r[0]===(x.remind==null?1440:x.remind); })[0][1]+' · '+ra.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+' '+ra.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):'Off')+'</dd></div>'+
+          (x.topics?'<div><dt>Notes</dt><dd>'+esc(x.topics)+'</dd></div>':'')+'</dl>'+
+          '<button type="button" class="btn ghost tdc-edit" data-tdcal="'+x.id+'">Edit</button></div></div></div>'; }).join('')+'</div>';
   tdCalTick();
 }
 function tdCalTick(){
-  var r=document.querySelector('#tdCal .cdrow'); if(!r) return;
-  var ms=+r.dataset.cdto-Date.now();
-  if(ms<=-30*60000){ renderTodayCal(); return; }
-  var p=cdParts(ms); ['d','h','m','s'].forEach(function(k){ var e=r.querySelector('[data-cdv="'+k+'"]'); if(e){ var v=String(p[k]).padStart(2,'0'); if(e.textContent!==v) e.textContent=v; } });
-  r.hidden=ms<=0; var n=document.querySelector('#tdCal .cdnow'); if(n) n.hidden=ms>0;
-  var dbox=r.querySelector('[data-cdv="d"]'); if(dbox) dbox.parentNode.hidden=p.d===0;
-  document.querySelectorAll('#tdCal [data-cdin]').forEach(function(e){ var t=cdShort(+e.dataset.cdin-Date.now()); if(e.textContent!==t) e.textContent=t; });
+  var any=false;
+  document.querySelectorAll('#tdCal .tdc').forEach(function(c){
+    var r=c.querySelector('.cdrow'), ms=+r.dataset.cdto-Date.now(); any=true;
+    if(ms<=-30*60000){ renderTodayCal(); return; }
+    if(c.classList.contains('open')){ var p=cdParts(ms); ['d','h','m','s'].forEach(function(k){ var e=r.querySelector('[data-cdv="'+k+'"]'); if(e){ var v=String(p[k]).padStart(2,'0'); if(e.textContent!==v) e.textContent=v; } });
+      var dbox=r.querySelector('[data-cdv="d"]'); if(dbox) dbox.parentNode.hidden=p.d===0; r.hidden=ms<=0; c.querySelector('.cdnow').hidden=ms>0; }
+    var inn=c.querySelector('[data-cdin]'), tx=cdShort(ms); if(inn.textContent!==tx) inn.textContent=tx;
+    c.classList.toggle('soon',ms>0&&ms<3600e3); c.classList.toggle('live',ms<=0);
+  });
 }
 setInterval(function(){ if(!document.getElementById('view-today').hidden) tdCalTick(); },1000);
 var _rtCal=renderToday; renderToday=function(){ _rtCal.apply(this,arguments); renderTodayCal(); };
 var _calSaveBase=calSave; calSave=function(){ _calSaveBase.apply(this,arguments); renderTodayCal(); };
+document.addEventListener('click',function(e){ var g=e.target.closest('[data-tdctoggle]'); if(g){ var id=g.dataset.tdctoggle;
+    document.querySelectorAll('#tdCal .tdc').forEach(function(c){ var on=c.dataset.tdcid===id&&!c.classList.contains('open'); c.classList.toggle('open',on); c.querySelector('.tdc-top').setAttribute('aria-expanded',String(on)); });
+    tdOpen=(document.querySelector('#tdCal .tdc.open')||{dataset:{}}).dataset.tdcid||'none'; tdCalTick(); return; } });
 document.addEventListener('click',function(e){ var t=e.target.closest('[data-tdcal]'); if(!t) return; var x=exams.filter(function(y){ return y.id===t.dataset.tdcal; })[0]; if(!x) return;
   calSel=x.date; calMonth=x.date.slice(0,7); var b=document.querySelector('.nav [data-view=calendar]'); if(b) b.click(); setTimeout(function(){ calOpen(x.id); },60); });
 renderTodayCal();
+
+// ===== Delete calendar items: swipe right → left (mirrored in Kurdish), or the trash on Today =====
+function calDeleteItem(id,node){
+  var x=exams.filter(function(e){ return e.id===id; })[0]; if(!x) return;
+  var go=function(){ exams=exams.filter(function(e){ return e.id!==id; }); saveEx(); renderCal(); renderTodayCal(); try{ renderExams(); }catch(err){} calBadge(); toast('Deleted · '+calTitle(x)); buzz(); };
+  if(node) collapseThen(node,go); else go();
+}
+(function(){
+  var sx=0, sy=0, el=null, dx=0, moved=false, W=92;
+  function sign(){ return document.documentElement.dir==='rtl'?1:-1; }
+  function closeAll(except){ document.querySelectorAll('.sw.open').forEach(function(o){ if(o!==except){ o.classList.remove('open'); o.querySelector('.calev').style.transform=''; } }); }
+  document.addEventListener('pointerdown',function(e){ var c=e.target.closest('.sw .calev'); if(!c){ if(!e.target.closest('.sw-del')) closeAll(); return; } closeAll(c.parentNode); el=c; sx=e.clientX; sy=e.clientY; dx=c.parentNode.classList.contains('open')?sign()*W:0; moved=false; c.style.transition='none'; });
+  document.addEventListener('pointermove',function(e){ if(!el) return; var x=e.clientX-sx, y=e.clientY-sy;
+    if(!moved&&Math.abs(y)>10&&Math.abs(y)>Math.abs(x)){ el.style.transition=''; el=null; return; }
+    if(Math.abs(x)>8) moved=true; if(!moved) return;
+    var base=el.parentNode.classList.contains('open')?sign()*W:0, v=base+x; if(v*sign()<0) v=0; dx=Math.max(-W*1.5,Math.min(W*1.5,v)); el.style.transform='translateX('+dx+'px)'; });
+  function end(){ if(!el) return; var c=el; el=null; c.style.transition=''; if(!moved) return; var open=Math.abs(dx)>W*0.45; c.parentNode.classList.toggle('open',open); c.style.transform=open?'translateX('+(sign()*W)+'px)':''; c.dataset.swiped='1'; setTimeout(function(){ delete c.dataset.swiped; },400); }
+  document.addEventListener('pointerup',end); document.addEventListener('pointercancel',end);
+  document.addEventListener('click',function(e){ var c=e.target.closest('.sw .calev'); if(!c) return;
+    if(c.dataset.swiped||c.parentNode.classList.contains('open')){ e.stopImmediatePropagation(); e.preventDefault(); if(!c.dataset.swiped){ c.parentNode.classList.remove('open'); c.style.transform=''; } } },true);
+  document.addEventListener('click',function(e){ var d=e.target.closest('[data-caldelid]'); if(!d) return; e.stopImmediatePropagation();
+    var fromToday=!!d.closest('#tdCal'); if(fromToday){ var x=exams.filter(function(y){ return y.id===d.dataset.caldelid; })[0]; if(x&&!confirm('Delete “'+calTitle(x)+'”?')) return; }
+    calDeleteItem(d.dataset.caldelid,d.closest(fromToday?'.tdc':'.sw')); },true);
+})();
 // ===== Keep the keypad and the Add button above the floating bottom bar =====
 function moneyKeepVisible(){
   var a=document.getElementById('mlAdd'), nav=document.querySelector('.nav'); if(!a||document.getElementById('view-money').hidden) return;
@@ -4642,7 +4728,7 @@ document.addEventListener('click',function(e){ var b=e.target.closest('[data-mta
   if(e.target.closest('[data-mgo]')) setMoneyTab('add');
 }, true);
 // ===== Always the newest Orbit: when you open the app, it checks for a new version and reloads itself =====
-var APP_VERSION='2026.11.25-4';
+var APP_VERSION='2026.11.25-6';
 function checkUpdate(){
   if(!/^https:/.test(location.protocol)||/claude/.test(location.hostname)) return;
   if(checkUpdate.at&&Date.now()-checkUpdate.at<60000) return; checkUpdate.at=Date.now();
@@ -4742,7 +4828,7 @@ var KU={
 'Problem Solving':'چارەسەری کێشە','Computer Fund.':'بنەماکانی کۆمپیوتەر','Computer Fundamentals':'بنەماکانی کۆمپیوتەر','Public Speaking':'قسەکردن بەردەم خەڵک',
 'Saturday':'شەممە','Sunday':'یەکشەممە','Monday':'دووشەممە','Tuesday':'سێشەممە','Wednesday':'چوارشەممە','Thursday':'پێنجشەممە','Friday':'هەینی',
 'Sat':'شەممە','Sun':'یەکش','Mon':'دووش','Tue':'سێش','Wed':'چوارش','Thu':'پێنجش','Fri':'هەینی','Sa':'ش','Su':'ی','Mo':'د','Tu':'س','We':'چ','Th':'پ','Fr':'هـ',
-'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','days':'ڕۆژ','hours':'کاتژمێر','min':'خولەک','sec':'چرکە','Happening now':'ئێستا ڕوودەدات','Calendar':'ڕۆژژمێر','Quizzes, exams, assignments and presentations.':'کویز، تاقیکردنەوە، ئەرک و پێشکەشکردنەکان.','Turn on reminders':'ئاگادارکردنەوە چالاک بکە','Orbit can remind you before each quiz, exam or deadline.':'Orbit پێش هەر کویز، تاقیکردنەوە یان کاتی کۆتایی ئاگادارت دەکاتەوە.','Presentation':'پێشکەشکردن','Final exam':'تاقیکردنەوەی کۆتایی','Nothing on this day.':'ئەم ڕۆژە هیچی تێدا نییە.','Nothing coming up. Add your next quiz or deadline when your teacher announces it.':'هیچ شتێک لە ڕێدا نییە. کاتێک مامۆستاکەت ڕایگەیاند زیادی بکە.','Add to calendar':'زیادکردن بۆ ڕۆژژمێر','What is it?':'چییە؟','Title':'ناونیشان','Remind me':'ئاگادارم بکەرەوە','Notes':'تێبینی','No reminder':'بێ ئاگادارکردنەوە','At the time':'لە کاتی خۆیدا','15 min before':'15 خولەک پێشتر','1 hour before':'1 کاتژمێر پێشتر','1 day before':'1 ڕۆژ پێشتر','2 days before':'2 ڕۆژ پێشتر','Save changes':'پاشەکەوتکردنی گۆڕانکاری','Delete':'سڕینەوە','All day':'هەموو ڕۆژ','Edit':'دەستکاری','Event':'بۆنە','e.g. Chapter 3 quiz':'بۆ نموونە: کویزی بەشی 3','Topics, room, what to bring':'بابەت، ژوور، چی بهێنیت','Report':'ڕاپۆرت','Settings':'ڕێکخستن','Money sections':'بەشەکانی پارە','Send to family':'ناردن بۆ خێزان','How long should the link work?':'بەستەرەکە تا کەی کار بکات؟','Stops at':'دەوەستێت لە','Pick when it should stop':'کاتی وەستانەکەی هەڵبژێرە','Choose a date and time in the future':'بەروار و کاتێکی داهاتوو هەڵبژێرە','Create link':'دروستکردنی بەستەر','Link ready':'بەستەر ئامادەیە','Make a different link':'بەستەرێکی تر دروست بکە','Loading your links…':'بەستەرەکانت بار دەکرێن…','to be able to stop a link early.':'بۆ ئەوەی بتوانیت بەستەرێک زووتر ڕابگریت.','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
+'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','When':'کەی','Reminder':'ئاگادارکردنەوە','Off':'کوژاوە','Next':'دواتر','days':'ڕۆژ','hours':'کاتژمێر','min':'خولەک','sec':'چرکە','Happening now':'ئێستا ڕوودەدات','Calendar':'ڕۆژژمێر','Quizzes, exams, assignments and presentations.':'کویز، تاقیکردنەوە، ئەرک و پێشکەشکردنەکان.','Turn on reminders':'ئاگادارکردنەوە چالاک بکە','Orbit can remind you before each quiz, exam or deadline.':'Orbit پێش هەر کویز، تاقیکردنەوە یان کاتی کۆتایی ئاگادارت دەکاتەوە.','Presentation':'پێشکەشکردن','Final exam':'تاقیکردنەوەی کۆتایی','Nothing on this day.':'ئەم ڕۆژە هیچی تێدا نییە.','Nothing coming up. Add your next quiz or deadline when your teacher announces it.':'هیچ شتێک لە ڕێدا نییە. کاتێک مامۆستاکەت ڕایگەیاند زیادی بکە.','Add to calendar':'زیادکردن بۆ ڕۆژژمێر','What is it?':'چییە؟','Title':'ناونیشان','Remind me':'ئاگادارم بکەرەوە','Notes':'تێبینی','No reminder':'بێ ئاگادارکردنەوە','At the time':'لە کاتی خۆیدا','15 min before':'15 خولەک پێشتر','1 hour before':'1 کاتژمێر پێشتر','1 day before':'1 ڕۆژ پێشتر','2 days before':'2 ڕۆژ پێشتر','Save changes':'پاشەکەوتکردنی گۆڕانکاری','Delete':'سڕینەوە','All day':'هەموو ڕۆژ','Edit':'دەستکاری','Event':'بۆنە','e.g. Chapter 3 quiz':'بۆ نموونە: کویزی بەشی 3','Topics, room, what to bring':'بابەت، ژوور، چی بهێنیت','Report':'ڕاپۆرت','Settings':'ڕێکخستن','Money sections':'بەشەکانی پارە','Send to family':'ناردن بۆ خێزان','How long should the link work?':'بەستەرەکە تا کەی کار بکات؟','Stops at':'دەوەستێت لە','Pick when it should stop':'کاتی وەستانەکەی هەڵبژێرە','Choose a date and time in the future':'بەروار و کاتێکی داهاتوو هەڵبژێرە','Create link':'دروستکردنی بەستەر','Link ready':'بەستەر ئامادەیە','Make a different link':'بەستەرێکی تر دروست بکە','Loading your links…':'بەستەرەکانت بار دەکرێن…','to be able to stop a link early.':'بۆ ئەوەی بتوانیت بەستەرێک زووتر ڕابگریت.','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
 'what you have now. Orbit then keeps track of what’s left.':'بۆ ئەوەی ئێستا چەندت هەیە. پاشان Orbit ئەوەی ماوە بەدوادا دەچێت.','Opens until the end of':'تا کۆتایی ڕۆژی',', then it stops.':'، پاشان دەوەستێت.',
 'Sign in to Orbit':'بچۆ ژوورەوە بۆ Orbit','so you can also stop a link before its date.':'بۆ ئەوەی بتوانیت بەستەرێک پێش کاتەکەی ڕابگریت.'
 };
@@ -4813,6 +4899,8 @@ var KU_RULES=[
  [/^in (\d+)d (\d+)h$/,function(m){ return m[1]+' ڕۆژ و '+m[2]+' کاتژمێری ماوە'; }],
  [/^in (\d+)h (\d+)m$/,function(m){ return m[1]+' کاتژمێر و '+m[2]+' خولەکی ماوە'; }],
  [/^in (\d+)m (\d+)s$/,function(m){ return m[1]+' خولەک و '+m[2]+' چرکەی ماوە'; }],
+ [/^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday), (January|February|March|April|May|June|July|August|September|October|November|December) (\d+)$/,function(m){ return KU[m[1]]+'، '+m[3]+'ی '+KU_MONTHS[KU_MONTHS_EN.indexOf(m[2])]; }],
+ [/^(Sun|Mon|Tue|Wed|Thu|Fri|Sat), (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d+)(?: (\d{1,2}:\d{2} [AP]M))?$/,function(m){ var W={Sun:'Sunday',Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday'}; return KU[W[m[1]]]+'، '+m[3]+'ی '+KU_MONTHS[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(m[2])]+(m[4]?' '+kuTime(m[4]):''); }],
  [/^Send (.+) to family$/,function(m){ return 'ناردنی '+kuSeg(m[1])+' بۆ خێزان'; }],
  [/^(Sent|Until) (.+)$/,function(m){ return (m[1]==='Sent'?'نێردرا ':'تا ')+kuTime(m[2]); }],
  [/^Works until (.+)$/,function(m){ return 'کار دەکات تا '+kuTime(m[1]); }],
