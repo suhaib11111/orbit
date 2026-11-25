@@ -4009,7 +4009,7 @@ function packReport(obj){
   if(window.CompressionStream){ try{ var st=new Blob([raw]).stream().pipeThrough(new CompressionStream('deflate-raw')); return new Response(st).arrayBuffer().then(function(b){ return 'z'+b64u(new Uint8Array(b)); },function(){ return 'j'+b64u(raw); }); }catch(e){} }
   return Promise.resolve('j'+b64u(raw));
 }
-function reportBase(){ return /github\.io$/.test(location.hostname)?location.href.split('#')[0].split('?')[0].replace(/[^\/]*$/,'')+'report.html':REPORT_HOME; }
+function reportBase(){ return /(github\.io|vercel\.app)$/.test(location.hostname)?location.href.split('#')[0].split('?')[0].replace(/[^\/]*$/,'')+'report.html':REPORT_HOME; }
 function ensureLink(mk,lang){
   var key=mk+'|'+lang, sig=JSON.stringify(reportPayload(monthReport(mk))), c=repLinks[key];
   if(c&&c.sig===sig) return c.url;
@@ -4140,7 +4140,7 @@ var _renderToday=renderToday; renderToday=function(){ _renderToday.apply(this,ar
 // ===== Orbit account: one login (email + an Orbit-only password), the same data on every device =====
 var SB_URL='https://hauryaiqyapiumjgedtr.supabase.co', SB_KEY='sb_publishable_rtk_DdwyFmIbw_71H4cr-w_a4PndB1r';
 var SB_LIB='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js';
-var APP_URL=/github\.io$/.test(location.hostname)?location.origin+location.pathname.replace(/[^\/]*$/,''):'https://suhaib11111.github.io/orbit/';
+var APP_URL=/(github\.io|vercel\.app)$/.test(location.hostname)?location.origin+location.pathname.replace(/[^\/]*$/,''):'https://suhaib11111.github.io/orbit/';
 var SB=null, sbLoading=null, acct={user:null,mode:'signin',msg:'',email:'',choice:null,ready:false};
 var SYNC_KEY='orbit-sync-v1', SNAP_KEY='orbit-before-sync', SY=null, syBusy=false, syAgain=false, syTimer=null, syState='off', syApplying=false, syTries=0;
 try{ SY=JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){}
@@ -4442,7 +4442,7 @@ document.addEventListener('click',function(e){ var b=e.target.closest('[data-mta
   if(e.target.closest('[data-mgo]')) setMoneyTab('add');
 }, true);
 // ===== Always the newest Orbit: when you open the app, it checks for a new version and reloads itself =====
-var APP_VERSION='2026.11.25-1';
+var APP_VERSION='2026.11.25-2';
 function checkUpdate(){
   if(!/^https:/.test(location.protocol)||/claude/.test(location.hostname)) return;
   if(checkUpdate.at&&Date.now()-checkUpdate.at<60000) return; checkUpdate.at=Date.now();
