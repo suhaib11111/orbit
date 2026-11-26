@@ -2713,7 +2713,12 @@ var UKH_G2={
  tue:[{id:"g2g",s:660,e:750,code:"MAT119",name:"Mathematics for AI",room:"W8"},{id:"g2h",s:780,e:870,code:"CSE102",name:"Problem Solving Techniques",room:"G15"}]
 };
 if(!meta.tt) meta.tt={G1:{},G2:{},MY:{}};
-if(!meta.g2Filled){ var g2now=meta.tt.G2||{}; if(!Object.keys(g2now).some(function(k){ return (g2now[k]||[]).length; })) meta.tt.G2=JSON.parse(JSON.stringify(UKH_G2)); meta.g2Filled=1; }
+// UKH CS & AI timetables fill an empty group once, only for CS & AI students (others add their own classes)
+['G1','G2'].forEach(function(g){ var flag=g==='G1'?'g1Filled':'g2Filled', src=g==='G1'?UKH_G1:UKH_G2;
+  if(meta[flag]||!meta.profile) return;
+  var cur=meta.tt[g]||{};
+  if(meta.profile.major==='csai'&&!Object.keys(cur).some(function(k){ return (cur[k]||[]).length; })) meta.tt[g]=JSON.parse(JSON.stringify(src));
+  meta[flag]=1; });
 if(!meta.group) meta.group='G1';
 if(!meta.teachers) meta.teachers={};
 CLASSES=null;
@@ -4728,7 +4733,7 @@ document.addEventListener('click',function(e){ var b=e.target.closest('[data-mta
   if(e.target.closest('[data-mgo]')) setMoneyTab('add');
 }, true);
 // ===== Always the newest Orbit: when you open the app, it checks for a new version and reloads itself =====
-var APP_VERSION='2026.11.25-6';
+var APP_VERSION='2026.11.26-1';
 function checkUpdate(){
   if(!/^https:/.test(location.protocol)||/claude/.test(location.hostname)) return;
   if(checkUpdate.at&&Date.now()-checkUpdate.at<60000) return; checkUpdate.at=Date.now();
