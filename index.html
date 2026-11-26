@@ -1751,6 +1751,34 @@ html[dir="rtl"] .calev{box-shadow:inset -4px 0 0 var(--ec)}
 .tdc-del{flex:none;width:42px;height:42px;margin-inline-end:.4rem;border:0;background:none;color:var(--muted);border-radius:12px;display:grid;place-items:center;cursor:pointer}
 .tdc-del:hover,.tdc-del:focus-visible{color:#E0485A;background:color-mix(in srgb,#E0485A 10%,transparent);outline:none}
 .tdc-del .ic{width:1.05rem;height:1.05rem;vertical-align:0}
+
+/* Calendar: the selected day's spending, behind Face ID or a PIN */
+.spend-lock{display:flex;align-items:center;gap:.85rem;width:100%;border:1px dashed color-mix(in srgb,var(--brand-t) 35%,var(--line));background:var(--surface);border-radius:18px;padding:.95rem 1rem;text-align:start;color:var(--ink);font:inherit;cursor:pointer;transition:border-color .2s,transform .15s}
+.spend-lock:hover,.spend-lock:focus-visible{border-color:var(--brand-t);outline:none}
+.spend-lock:active{transform:scale(.985)}
+.sl-ic{flex:none;width:2.6rem;height:2.6rem;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--brand-t) 12%,var(--surface));color:var(--brand-t)}
+.sl-ic .ic{width:1.2rem;height:1.2rem;vertical-align:0}
+.spend-lock b{display:block;font-weight:800;font-size:1rem}
+.spend-lock small{display:block;color:var(--muted);font-weight:500;font-size:.84rem;margin-top:.1rem}
+.spend-card{padding:1rem;animation:spIn .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes spIn{from{opacity:0;transform:translateY(6px)}}
+.sp-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(5rem,1fr));gap:.5rem;margin-bottom:.7rem}
+.sp-sum div{background:var(--soft);border-radius:12px;padding:.55rem .7rem;min-width:0}
+.sp-sum small{display:block;color:var(--muted);font-weight:700;font-size:.74rem}
+.sp-sum b{display:block;font-weight:800;font-size:1rem;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-list{display:flex;flex-direction:column}
+.sp-row{display:flex;align-items:center;gap:.7rem;padding:.6rem 0;border-top:1px solid var(--line)}
+.sp-row:first-child{border-top:0}
+.sp-t{flex:none;width:4.1rem;color:var(--muted);font-weight:700;font-size:.8rem;font-variant-numeric:tabular-nums}
+.sp-b{flex:1;min-width:0}
+.sp-b b{display:block;font-weight:700;font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sp-b small{display:block;color:var(--muted);font-size:.78rem}
+.sp-a{flex:none;font-weight:800;font-variant-numeric:tabular-nums;font-size:.92rem}
+.sp-row.in .sp-a{color:#2E9E6A}
+.sp-foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:.3rem;padding-top:.15rem}
+.msec-h .mlink .ic{width:.95rem;height:.95rem;vertical-align:-2px}
+.pin-in{text-align:center;letter-spacing:.45em;font-size:1.3rem!important;font-weight:800}
+@media (prefers-reduced-motion:reduce){.spend-card{animation:none}.spend-lock:active{transform:none}}
 /* v4: Send to family, clean spacing */
 .appver{text-align:center;color:var(--muted);font-size:.78rem;font-weight:700;margin:1.2rem 0 0}
 .mshare{padding:1.15rem 1.1rem;margin-top:.9rem}
@@ -4585,7 +4613,7 @@ function renderCal(){
     '<div class="cal-wd">'+['Sat','Sun','Mon','Tue','Wed','Thu','Fri'].map(function(w){ return '<span>'+w+'</span>'; }).join('')+'</div><div class="cal-grid">'+cells+'</div>'+
     '<div class="cal-legend">'+CAL_TYPES.slice(0,5).map(function(c){ return '<span><i style="background:'+c[2]+'"></i>'+c[1]+'</span>'; }).join('')+'</div></div>'+
     '<section class="msec"><div class="msec-h"><h2>'+calDayName(calSel)+'</h2><button type="button" class="mlink" data-caladd="'+calSel+'">+ Add</button></div>'+(sel.length?'<div class="cal-list">'+sel.map(calRow).join('')+'</div>':'<div class="mempty">Nothing on this day.</div>')+'</section>'+
-    '<section class="msec"><div class="msec-h"><h2>Coming up</h2></div>'+(soon.length?'<div class="cal-list">'+soon.map(function(x){ return '<div class="cal-soonday">'+calDayName(x.date)+'</div>'+calRow(x); }).join('')+'</div>':'<div class="mempty">Nothing coming up. Add your next quiz or deadline when your teacher announces it.</div>')+'</section>';
+    '<section class="msec"><div class="msec-h"><h2>Coming up</h2></div>'+(soon.length?'<div class="cal-list">'+soon.map(function(x){ return '<div class="cal-soonday">'+calDayName(x.date)+'</div>'+calRow(x); }).join('')+'</div>':'<div class="mempty">Nothing coming up. Add your next quiz or deadline when your teacher announces it.</div>')+'</section>'+spendHtml(calSel);
   calBadge();
 }
 function calBadge(){ var b=document.getElementById('calBadge'); if(!b) return; var lim=new Date(); lim.setDate(lim.getDate()+3); var n=exams.filter(function(x){ var w=calWhen(x); return w>=new Date(Date.now()-3600e3)&&w<=lim; }).length; b.hidden=!n; b.textContent=n>9?'9+':n; }
@@ -4716,6 +4744,92 @@ function calDeleteItem(id,node){
     var fromToday=!!d.closest('#tdCal'); if(fromToday){ var x=exams.filter(function(y){ return y.id===d.dataset.caldelid; })[0]; if(x&&!confirm('Delete “'+calTitle(x)+'”?')) return; }
     calDeleteItem(d.dataset.caldelid,d.closest(fromToday?'.tdc':'.sw')); },true);
 })();
+// ===== Calendar: the selected day's spending, behind Face ID (passkey) or a PIN. Per device; nothing leaves the phone. =====
+var LOCK_KEY='orbit-spend-lock', spendOpenUntil=0;
+function lockGet(){ try{ return JSON.parse(localStorage.getItem(LOCK_KEY)||'null'); }catch(e){ return null; } }
+function lockSet(v){ try{ if(v) localStorage.setItem(LOCK_KEY,JSON.stringify(v)); else localStorage.removeItem(LOCK_KEY); }catch(e){} }
+function spendOpen(){ return Date.now()<spendOpenUntil; }
+function spendUnlock(){ spendOpenUntil=Date.now()+5*60000; renderCal(); }
+function spendLockNow(){ spendOpenUntil=0; if(!document.getElementById('view-calendar').hidden) renderCal(); }
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden'&&spendOpenUntil) spendLockNow(); });
+setInterval(function(){ if(spendOpenUntil&&!spendOpen()) spendLockNow(); },15000);
+function lockB64u(buf){ var s='', b=new Uint8Array(buf); for(var i=0;i<b.length;i++) s+=String.fromCharCode(b[i]); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+function lockUnb64u(s){ s=s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; var r=atob(s), b=new Uint8Array(r.length); for(var i=0;i<r.length;i++) b[i]=r.charCodeAt(i); return b; }
+function faceIdAvailable(){ if(!window.PublicKeyCredential||!window.isSecureContext||!PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) return Promise.resolve(false); return PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().catch(function(){ return false; }); }
+function faceIdSetup(){
+  return navigator.credentials.create({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:'Orbit',id:location.hostname},
+    user:{id:crypto.getRandomValues(new Uint8Array(16)),name:'Spending lock',displayName:'Orbit spending lock'},
+    pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
+    authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000}})
+    .then(function(c){ lockSet({type:'face',id:lockB64u(c.rawId),host:location.hostname}); });
+}
+function faceIdCheck(l){
+  return navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),rpId:location.hostname,allowCredentials:[{type:'public-key',id:lockUnb64u(l.id)}],userVerification:'required',timeout:60000}});
+}
+function pinHash(pin,salt){
+  if(window.crypto&&crypto.subtle) return crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+':'+pin)).then(lockB64u);
+  var h=2166136261; for(var i=0,s=salt+':'+pin;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return Promise.resolve('f'+(h>>>0).toString(36));
+}
+function spendHtml(ds){
+  var l=lockGet(), head='<section class="msec" id="calSpend"><div class="msec-h"><h2>Money · '+calDayName(ds)+'</h2>'+(l&&spendOpen()?'<button type="button" class="mlink" data-spendlock="1">'+ic('lock')+' Lock</button>':'')+'</div>';
+  if(!l) return head+'<button type="button" class="spend-lock" data-spendsetup="1"><span class="sl-ic">'+ic('lock')+'</span><span><b>See what you spent this day</b><small>Protect it first with Face ID or a PIN</small></span></button></section>';
+  if(!spendOpen()) return head+'<button type="button" class="spend-lock" data-spendopen="1"><span class="sl-ic">'+ic('lock')+'</span><span><b>Spending is locked</b><small>'+(l.type==='face'?'Tap to open with Face ID':'Tap to enter your PIN')+'</small></span></button></section>';
+  var log=money.log.filter(function(g){ return g.date===ds; }).sort(function(a,b){ return (a.at||0)-(b.at||0); }), inc=money.income.filter(function(g){ return g.date===ds; }), sav=money.saves.filter(function(g){ return g.date===ds&&!g.out; });
+  var tot=log.reduce(function(a,g){ return a+(g.amount||0); },0), tin=inc.reduce(function(a,g){ return a+g.amount; },0), tsv=sav.reduce(function(a,g){ return a+g.amount; },0);
+  function tm(g){ return g.at?new Date(g.at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):''; }
+  var rows=log.map(function(g){ var c=catOf(g.cat); return '<div class="sp-row"><span class="sp-t">'+tm(g)+'</span><span class="mrow-ic" style="--cc:'+c.color+'" aria-hidden="true">'+ic(c.icon)+'</span><span class="sp-b"><b>'+esc(g.note||c.name)+'</b><small>'+c.name+(g.people>1?' · your share':'')+'</small></span><span class="sp-a">'+(g.amount?moneyFmt(g.amount):'Free')+'</span></div>'; }).join('')+
+    inc.map(function(g){ return '<div class="sp-row in"><span class="sp-t">'+tm(g)+'</span><span class="mrow-ic" style="--cc:#2E7D5B" aria-hidden="true">'+ic('inarrow')+'</span><span class="sp-b"><b>Money in</b><small>'+walletName(g.wallet)+'</small></span><span class="sp-a">+'+moneyFmt(g.amount)+'</span></div>'; }).join('');
+  return head+'<div class="card spend-card"><div class="sp-sum"><div><small>Spent</small><b>'+moneyFmt(tot)+'</b></div><div><small>Items</small><b>'+log.length+'</b></div>'+(tin?'<div><small>Money in</small><b>'+moneyShort(tin)+'</b></div>':'')+(tsv?'<div><small>Saved</small><b>'+moneyShort(tsv)+'</b></div>':'')+'</div>'+
+    (rows?'<div class="sp-list">'+rows+'</div>':'<div class="mempty">Nothing spent this day.</div>')+'<div class="sp-foot"><button type="button" class="mlink" data-spendchange="1">Change lock</button><button type="button" class="mlink" data-view="money">Open Money</button></div></div></section>';
+}
+function pinSheet(mode){
+  var s=document.getElementById('evSheet');
+  var titles={set:'Choose a PIN',check:'Enter your PIN',change:'Enter your current PIN'};
+  s.innerHTML='<div class="cs-h"><h2>'+titles[mode]+'</h2><button type="button" class="mdel" data-calclose="1" aria-label="Close">'+ic('xcircle')+'</button></div>'+
+    '<p class="msh-note" style="margin-top:0">'+(mode==='set'?'4 to 8 numbers. Only for this device; Orbit never sends it anywhere.':'This keeps your spending private on this device.')+'</p>'+
+    '<input type="password" class="mname pin-in" id="pinA" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="PIN">'+
+    (mode==='set'?'<input type="password" class="mname pin-in" id="pinB" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="Type it again" style="margin-top:.6rem">':'')+
+    '<p class="acct-msg" id="pinMsg"></p><button type="button" class="btn main msh-go" data-pinok="'+mode+'">'+(mode==='set'?'Save PIN':'Unlock')+'</button>'+(mode!=='set'?'<button type="button" class="mlink msh-again" data-pinforgot="1">Forgot your PIN?</button>':'');
+  s.classList.add('on'); document.getElementById('evBack').classList.add('on'); setTimeout(function(){ try{ document.getElementById('pinA').focus(); }catch(e){} },250);
+}
+function lockChooser(){
+  faceIdAvailable().then(function(fid){
+    var s=document.getElementById('evSheet');
+    s.innerHTML='<div class="cs-h"><h2>Lock your spending</h2><button type="button" class="mdel" data-calclose="1" aria-label="Close">'+ic('xcircle')+'</button></div>'+
+      '<p class="msh-note" style="margin-top:0">Only you can open what you spent each day. The lock stays on this device.</p>'+
+      (fid?'<button type="button" class="btn main msh-go" data-lockpick="face">Use Face ID</button>':'<p class="msh-note">Face ID isn’t available in this browser. Add Orbit to your home screen on iPhone to use it.</p>')+
+      '<button type="button" class="btn ghost" data-lockpick="pin">Use a PIN instead</button>';
+    s.classList.add('on'); document.getElementById('evBack').classList.add('on');
+  });
+}
+function spendTryOpen(){
+  var l=lockGet(); if(!l) return lockChooser();
+  if(l.type==='face'){
+    if(l.host!==location.hostname){ toast('Face ID was set up on another address. Set it up again here.'); lockSet(null); return lockChooser(); }
+    faceIdCheck(l).then(function(){ spendUnlock(); buzz(); }).catch(function(){ toast('Face ID didn’t open it. Try again.'); });
+  } else pinSheet('check');
+}
+document.addEventListener('click',function(e){
+  var t;
+  if(e.target.closest('[data-spendsetup]')){ lockChooser(); return; }
+  if(e.target.closest('[data-spendopen]')){ spendTryOpen(); return; }
+  if(e.target.closest('[data-spendlock]')){ spendLockNow(); return; }
+  if(e.target.closest('[data-spendchange]')){ if(!confirm('Change how your spending is locked?')) return; lockSet(null); spendOpenUntil=0; lockChooser(); return; }
+  if((t=e.target.closest('[data-lockpick]'))){ if(t.dataset.lockpick==='pin'){ pinSheet('set'); return; }
+    t.disabled=true; faceIdSetup().then(function(){ calClose(); spendUnlock(); toast('Face ID lock is on 🔒'); }).catch(function(){ t.disabled=false; toast('Face ID setup was cancelled. You can use a PIN instead.'); }); return; }
+  if((t=e.target.closest('[data-pinok]'))){ var a=(document.getElementById('pinA').value||'').trim(), msg=document.getElementById('pinMsg');
+    if(!/^\d{4,8}$/.test(a)){ msg.textContent='Use 4 to 8 numbers.'; return; }
+    if(t.dataset.pinok==='set'){ var b2=(document.getElementById('pinB').value||'').trim(); if(a!==b2){ msg.textContent='The two PINs don’t match.'; return; }
+      var salt=lockB64u(crypto.getRandomValues(new Uint8Array(12))); pinHash(a,salt).then(function(h){ lockSet({type:'pin',salt:salt,hash:h}); calClose(); spendUnlock(); toast('PIN lock is on 🔒'); }); return; }
+    var l=lockGet(); if(!l) return; pinHash(a,l.salt).then(function(h){ if(h===l.hash){ calClose(); spendUnlock(); buzz(); } else { msg.textContent='Wrong PIN. Try again.'; document.getElementById('pinA').value=''; } }); return; }
+  if(e.target.closest('[data-pinforgot]')){
+    if(acct&&acct.user){ var pw=prompt('Type your Orbit account password to remove the PIN:'); if(!pw) return;
+      SB.auth.signInWithPassword({email:acct.user.email,password:pw}).then(function(r){ if(r.error) throw r.error; lockSet(null); calClose(); toast('PIN removed. Choose a new lock.'); lockChooser(); }).catch(function(){ toast('That password isn’t right.'); }); }
+    else if(confirm('Remove the PIN on this device? You can then choose a new one.')){ lockSet(null); calClose(); lockChooser(); }
+    return; }
+});
+document.addEventListener('keydown',function(e){ if(e.key==='Enter'&&e.target&&e.target.classList&&e.target.classList.contains('pin-in')){ var b=document.querySelector('[data-pinok]'); if(b) b.click(); } });
+
 // ===== Keep the keypad and the Add button above the floating bottom bar =====
 function moneyKeepVisible(){
   var a=document.getElementById('mlAdd'), nav=document.querySelector('.nav'); if(!a||document.getElementById('view-money').hidden) return;
@@ -4733,7 +4847,7 @@ document.addEventListener('click',function(e){ var b=e.target.closest('[data-mta
   if(e.target.closest('[data-mgo]')) setMoneyTab('add');
 }, true);
 // ===== Always the newest Orbit: when you open the app, it checks for a new version and reloads itself =====
-var APP_VERSION='2026.11.26-1';
+var APP_VERSION='2026.11.26-2';
 function checkUpdate(){
   if(!/^https:/.test(location.protocol)||/claude/.test(location.hostname)) return;
   if(checkUpdate.at&&Date.now()-checkUpdate.at<60000) return; checkUpdate.at=Date.now();
@@ -4833,7 +4947,7 @@ var KU={
 'Problem Solving':'چارەسەری کێشە','Computer Fund.':'بنەماکانی کۆمپیوتەر','Computer Fundamentals':'بنەماکانی کۆمپیوتەر','Public Speaking':'قسەکردن بەردەم خەڵک',
 'Saturday':'شەممە','Sunday':'یەکشەممە','Monday':'دووشەممە','Tuesday':'سێشەممە','Wednesday':'چوارشەممە','Thursday':'پێنجشەممە','Friday':'هەینی',
 'Sat':'شەممە','Sun':'یەکش','Mon':'دووش','Tue':'سێش','Wed':'چوارش','Thu':'پێنجش','Fri':'هەینی','Sa':'ش','Su':'ی','Mo':'د','Tu':'س','We':'چ','Th':'پ','Fr':'هـ',
-'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','When':'کەی','Reminder':'ئاگادارکردنەوە','Off':'کوژاوە','Next':'دواتر','days':'ڕۆژ','hours':'کاتژمێر','min':'خولەک','sec':'چرکە','Happening now':'ئێستا ڕوودەدات','Calendar':'ڕۆژژمێر','Quizzes, exams, assignments and presentations.':'کویز، تاقیکردنەوە، ئەرک و پێشکەشکردنەکان.','Turn on reminders':'ئاگادارکردنەوە چالاک بکە','Orbit can remind you before each quiz, exam or deadline.':'Orbit پێش هەر کویز، تاقیکردنەوە یان کاتی کۆتایی ئاگادارت دەکاتەوە.','Presentation':'پێشکەشکردن','Final exam':'تاقیکردنەوەی کۆتایی','Nothing on this day.':'ئەم ڕۆژە هیچی تێدا نییە.','Nothing coming up. Add your next quiz or deadline when your teacher announces it.':'هیچ شتێک لە ڕێدا نییە. کاتێک مامۆستاکەت ڕایگەیاند زیادی بکە.','Add to calendar':'زیادکردن بۆ ڕۆژژمێر','What is it?':'چییە؟','Title':'ناونیشان','Remind me':'ئاگادارم بکەرەوە','Notes':'تێبینی','No reminder':'بێ ئاگادارکردنەوە','At the time':'لە کاتی خۆیدا','15 min before':'15 خولەک پێشتر','1 hour before':'1 کاتژمێر پێشتر','1 day before':'1 ڕۆژ پێشتر','2 days before':'2 ڕۆژ پێشتر','Save changes':'پاشەکەوتکردنی گۆڕانکاری','Delete':'سڕینەوە','All day':'هەموو ڕۆژ','Edit':'دەستکاری','Event':'بۆنە','e.g. Chapter 3 quiz':'بۆ نموونە: کویزی بەشی 3','Topics, room, what to bring':'بابەت، ژوور، چی بهێنیت','Report':'ڕاپۆرت','Settings':'ڕێکخستن','Money sections':'بەشەکانی پارە','Send to family':'ناردن بۆ خێزان','How long should the link work?':'بەستەرەکە تا کەی کار بکات؟','Stops at':'دەوەستێت لە','Pick when it should stop':'کاتی وەستانەکەی هەڵبژێرە','Choose a date and time in the future':'بەروار و کاتێکی داهاتوو هەڵبژێرە','Create link':'دروستکردنی بەستەر','Link ready':'بەستەر ئامادەیە','Make a different link':'بەستەرێکی تر دروست بکە','Loading your links…':'بەستەرەکانت بار دەکرێن…','to be able to stop a link early.':'بۆ ئەوەی بتوانیت بەستەرێک زووتر ڕابگریت.','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
+'Language · زمان':'زمان · Language','AM':'پ.ن','PM':'د.ن','Spending is locked':'خەرجییەکان داخراون','Tap to open with Face ID':'دەست بنێ بۆ کردنەوە بە Face ID','Tap to enter your PIN':'دەست بنێ بۆ نووسینی PIN','See what you spent this day':'ببینە ئەم ڕۆژە چیت خەرج کردووە','Protect it first with Face ID or a PIN':'سەرەتا بە Face ID یان PIN بیپارێزە','Lock':'داخستن','Change lock':'گۆڕینی قوفڵ','Open Money':'کردنەوەی پارە','Items':'دانە','Nothing spent this day.':'ئەم ڕۆژە هیچ خەرج نەکراوە.','Lock your spending':'خەرجییەکانت دابخە','Use Face ID':'بەکارهێنانی Face ID','Use a PIN instead':'لەبری ئەوە PIN بەکاربهێنە','Choose a PIN':'PIN هەڵبژێرە','Enter your PIN':'PIN بنووسە','Save PIN':'پاشەکەوتکردنی PIN','Unlock':'کردنەوە','Forgot your PIN?':'PINەکەت لەبیر چووە؟','Only you can open what you spent each day. The lock stays on this device.':'تەنها تۆ دەتوانیت خەرجی هەر ڕۆژێک بکەیتەوە. قوفڵەکە لەسەر ئەم ئامێرە دەمێنێتەوە.','4 to 8 numbers. Only for this device; Orbit never sends it anywhere.':'٤ بۆ ٨ ژمارە. تەنها بۆ ئەم ئامێرە؛ Orbit هەرگیز بۆ هیچ شوێنێکی نانێرێت.','This keeps your spending private on this device.':'ئەمە خەرجییەکانت لەسەر ئەم ئامێرە تایبەت دەهێڵێتەوە.','Face ID isn’t available in this browser. Add Orbit to your home screen on iPhone to use it.':'Face ID لەم وێبگەڕەدا بەردەست نییە. Orbit زیاد بکە بۆ شاشەی سەرەکی ئایفۆن.','Use 4 to 8 numbers.':'٤ بۆ ٨ ژمارە بەکاربهێنە.','The two PINs don’t match.':'هەردوو PINەکە وەک یەک نین.','Wrong PIN. Try again.':'PIN هەڵەیە. دووبارە هەوڵ بدەرەوە.','PIN lock is on':'قوفڵی PIN چالاکە','Face ID lock is on':'قوفڵی Face ID چالاکە','When':'کەی','Reminder':'ئاگادارکردنەوە','Off':'کوژاوە','Next':'دواتر','days':'ڕۆژ','hours':'کاتژمێر','min':'خولەک','sec':'چرکە','Happening now':'ئێستا ڕوودەدات','Calendar':'ڕۆژژمێر','Quizzes, exams, assignments and presentations.':'کویز، تاقیکردنەوە، ئەرک و پێشکەشکردنەکان.','Turn on reminders':'ئاگادارکردنەوە چالاک بکە','Orbit can remind you before each quiz, exam or deadline.':'Orbit پێش هەر کویز، تاقیکردنەوە یان کاتی کۆتایی ئاگادارت دەکاتەوە.','Presentation':'پێشکەشکردن','Final exam':'تاقیکردنەوەی کۆتایی','Nothing on this day.':'ئەم ڕۆژە هیچی تێدا نییە.','Nothing coming up. Add your next quiz or deadline when your teacher announces it.':'هیچ شتێک لە ڕێدا نییە. کاتێک مامۆستاکەت ڕایگەیاند زیادی بکە.','Add to calendar':'زیادکردن بۆ ڕۆژژمێر','What is it?':'چییە؟','Title':'ناونیشان','Remind me':'ئاگادارم بکەرەوە','Notes':'تێبینی','No reminder':'بێ ئاگادارکردنەوە','At the time':'لە کاتی خۆیدا','15 min before':'15 خولەک پێشتر','1 hour before':'1 کاتژمێر پێشتر','1 day before':'1 ڕۆژ پێشتر','2 days before':'2 ڕۆژ پێشتر','Save changes':'پاشەکەوتکردنی گۆڕانکاری','Delete':'سڕینەوە','All day':'هەموو ڕۆژ','Edit':'دەستکاری','Event':'بۆنە','e.g. Chapter 3 quiz':'بۆ نموونە: کویزی بەشی 3','Topics, room, what to bring':'بابەت، ژوور، چی بهێنیت','Report':'ڕاپۆرت','Settings':'ڕێکخستن','Money sections':'بەشەکانی پارە','Send to family':'ناردن بۆ خێزان','How long should the link work?':'بەستەرەکە تا کەی کار بکات؟','Stops at':'دەوەستێت لە','Pick when it should stop':'کاتی وەستانەکەی هەڵبژێرە','Choose a date and time in the future':'بەروار و کاتێکی داهاتوو هەڵبژێرە','Create link':'دروستکردنی بەستەر','Link ready':'بەستەر ئامادەیە','Make a different link':'بەستەرێکی تر دروست بکە','Loading your links…':'بەستەرەکانت بار دەکرێن…','to be able to stop a link early.':'بۆ ئەوەی بتوانیت بەستەرێک زووتر ڕابگریت.','1 hour':'1 کاتژمێر','Custom':'دیاریکراو','Stop all':'وەستاندنی هەموو','Last moment it opens':'دوایین کات کە دەکرێتەوە','The link stops working after':'بەستەرەکە دەوەستێت دوای','Link ready ✓':'بەستەر ئامادەیە ✓','Tap':'دابگرە','at the top when money comes in, or':'لە سەرەوە کاتێک پارە دێت، یان',
 'what you have now. Orbit then keeps track of what’s left.':'بۆ ئەوەی ئێستا چەندت هەیە. پاشان Orbit ئەوەی ماوە بەدوادا دەچێت.','Opens until the end of':'تا کۆتایی ڕۆژی',', then it stops.':'، پاشان دەوەستێت.',
 'Sign in to Orbit':'بچۆ ژوورەوە بۆ Orbit','so you can also stop a link before its date.':'بۆ ئەوەی بتوانیت بەستەرێک پێش کاتەکەی ڕابگریت.'
 };
@@ -4906,6 +5020,7 @@ var KU_RULES=[
  [/^in (\d+)m (\d+)s$/,function(m){ return m[1]+' خولەک و '+m[2]+' چرکەی ماوە'; }],
  [/^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday), (January|February|March|April|May|June|July|August|September|October|November|December) (\d+)$/,function(m){ return KU[m[1]]+'، '+m[3]+'ی '+KU_MONTHS[KU_MONTHS_EN.indexOf(m[2])]; }],
  [/^(Sun|Mon|Tue|Wed|Thu|Fri|Sat), (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d+)(?: (\d{1,2}:\d{2} [AP]M))?$/,function(m){ var W={Sun:'Sunday',Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday'}; return KU[W[m[1]]]+'، '+m[3]+'ی '+KU_MONTHS[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(m[2])]+(m[4]?' '+kuTime(m[4]):''); }],
+ [/^Money · (.+)$/,function(m){ return 'پارە · '+kuSeg(m[1]); }],
  [/^Send (.+) to family$/,function(m){ return 'ناردنی '+kuSeg(m[1])+' بۆ خێزان'; }],
  [/^(Sent|Until) (.+)$/,function(m){ return (m[1]==='Sent'?'نێردرا ':'تا ')+kuTime(m[2]); }],
  [/^Works until (.+)$/,function(m){ return 'کار دەکات تا '+kuTime(m[1]); }],
